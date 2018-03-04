@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Netlify on Yen-Ting, Su Personal Website</title>
+    <link>/tags/netlify/</link>
+    <description>Recent content in Netlify on Yen-Ting, Su Personal Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Sat, 03 Mar 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/netlify/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>利用R的Blogdown套件建立個人部落格網站</title>
+      <link>/blog/create-my-website/</link>
+      <pubDate>Sat, 03 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/create-my-website/</guid>
+      <description>前言此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 用R语言的blogdown+hugo+netlify+github 建博客 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
+架設這個網站會需要用到：
+RRstudioR的blogdown套件GitGithubNetlify會採用這個架構來建立部落格網站，主要原因是因為R語言是我現在寫程式最主要的工具。在之前我有嘗試用Jekyll+Github部署的方式來建立部落格網站，但發現如果要在Markdown中呈現R語言程式的執行結果，好像會有困難(?)。後來發現Rstudio有出 blogdown套件，所以就跳過來用blogdown套件來達成我想要的目標。
+在本機端建立部落格專案在參考的文章中，是先利用R專案(Project)的Git GUI的功能，來連結Github。再從這個專案資料夾中，創造另外一個R的Blogdown專案，負責處理部落格內容。但我發現在Rstudio內使用Git的GUI實在不是很順暢，比如說我想點選要Push的檔案上傳到Github，會時常卡住沒反應。網路上有人說Windows在這部份好像一直都有問題(?)，後來我就放棄，改採最一般的方法來處理。
+我的處理方式是，先在Github上建立好Repository，然後利用命令提示字元(cmd)，把在Github的專案Clone到本機端。之後在本機端的Repository資料夾，建立R的Blogdown專案。以下是我的步驟：
+首先在Github建立Repository，名稱就依自己喜好，能認得就好，我在這邊命名為「MyBlog」。
+在建立完Repository後，打開命令提示字元，利用git clone指令把Repository Clone到本機端。
+開啟RStudio，點選建立專案。
+選擇New Directory。
+選擇Website using blogdown，開啟Blogdown專案。
+接下來這邊要注意，因為我們要把部落格專案內容放到Github的資料夾，所以Directory name要和Repository的名稱是一樣的，路徑也要和Repository所在的路徑相同。
+另外此處也可以調整想要建立的主題，只要修改Hugo theme 就可以了。
+主題可到Hugo的主題網站查詢 https://themes.gohugo.io，挑選自己喜歡的主題，像我的主題是挑選 Cocoa。如果喜歡這個主題，只要點選Download，就會跳轉到該主題的Github頁面。
+只要把使用者和Repository名稱複製下來，貼到Hugo theme，就可以使用該主題。
+以Cocoa主題為例，Hugo theme這邊就要輸入nishanths/cocoa-hugo-theme。
+另外需要注意的是，不同的主題內的設置有可能會不一樣，因為Hugo並不是只有Rstudio能處理，開發主題的人並不一定會以Rstudio的Blogdown設定來配合設計。舉例來說，如果使用Cocoa主題，部落格的文章是讀取content/blog的資料夾。如果用Rstudio內的Addins的New Post來發表文章，則會放在content/post資料夾內，因此會發現部落格都不會讀到自己寫的文章，我自己後來是去改Cocoa主題內的程式碼來修正此問題。為了方便教學，這邊還是用原本的主題吧！設定如下：
+在確認設置都沒問題後，點選Create Project按鈕，這樣R的Blogdown專案就建構完成。Rstudio會重新開啟，這時候就會發現右下角的檔案目錄已經把Hugo需要的檔案都布置好啦！
+接下來只要在Console上，輸入blogdown::serve_site()，就可以產生出部落格網站。
+右下角的Viewer視窗就是網站的預覽，可以點選紅框內的圖案，就可以用瀏覽器觀看。
+以上就是在本機端建立部落格專案的流程。
+部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
+config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
+Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。</description>
+    </item>
+    
+  </channel>
+</rss>

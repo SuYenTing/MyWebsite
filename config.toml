@@ -11,7 +11,7 @@ title               = "Yen-Ting, Su Personal Website"
 pygmentsuseclasses  = true
 disqusshortname     = "SuYenTing" # Comment out to disable Disqus.
 pluralizelisttitles = false
-googleAnalytics     = "UA-123-45"
+googleAnalytics     = ""
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [permalinks]
@@ -36,7 +36,7 @@ url                    = "/about/"
 # url                    = "/code/"
 
 [params]
-include_rss            = true                          # include RSS <link> tag in <head> and show RSS icon
+include_rss            = false                         # include RSS <link> tag in <head> and show RSS icon
 latestpostscount       = 5                             # how many posts to display on the home page
 i18n_flags             = false                         # whether to display small country flags for available translations
 author                 = "Yen-Ting, Su"
