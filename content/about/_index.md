@@ -1,18 +1,47 @@
 +++
-date = "2015-08-22T06:42:21-07:00"
-draft = false
-title = "About"
+title = ""
+date = "2018-03-04T15:37:20+08:00"
+draft = true
 
 +++
 
-Along with [Ford Prefect](https://en.wikipedia.org/wiki/Ford_Prefect_\(character\)), Dent barely escapes the Earth's destruction as it is demolished to make way for a *hyperspace bypass*. Arthur spends the next several years, still wearing his dressing gown, helplessly launched from crisis to crisis while trying to straighten out his lifestyle. 
+---
 
-> He rather enjoys tea, but seems to have trouble obtaining it in the far reaches of the galaxy. 
+### 現職
+2017年03月-至今  
+國立中山大學財務管理學系 王昭文教授研究助理
 
-In time, he learns how to fly and carves a niche for himself as a sandwich-maker.
+參與研究計畫:
 
-<img src="//placehold.it/300x300" class="profile">
+* 效率投組維度縮減法在指數追蹤與績效增強之應用：智能貝他評分法則、時變資產報酬與最適策略組合法則(科技部計畫)
+* 股票技術分析圖形辨識資訊服務之產學合作(非政府產學合作案)
 
-<br />
+---
 
-[About this site](colophon/)
+### 研究/興趣領域
+* 量化投資策略
+* 機器學習之財務相關應用
+* 交易訊號自動化系統
+* R語言程式
+
+---
+
+### 學歷
+* 2013年09月-2016年03月  國立中山大學財務管理所 碩士
+(畢業論文題目：支持向量機模型在台灣加權股價指數趨勢之預測)
+* 2009年9月-2013年7月 國立暨南國際大學經濟學系 學士
+
+---
+
+### 經歷
+
+* 2016年03月-2017年02月 中華民國陸軍預算財務士
+* 2015年10月-2016年01月 中國興業基金量化投資部門實習生
+* 2015年09月-2016年01月 中國復旦大學金融所交換生
+
+---
+
+### 競賽成果
+
+* 2014年06月 南山人壽第一屆南山盃保險個案比賽第一名(擔任隊長)
+* 2011年12月 台灣證券交易所第八屆證券投資智慧王競賽總決賽亞軍(擔任隊長)

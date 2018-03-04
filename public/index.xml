@@ -78,10 +78,10 @@ $ git reset -- HEAD@{2}  It takes some getting used to, but it&amp;rsquo;s defin
     
     <item>
       <title>colophon</title>
-      <link>/about/colophon/</link>
+      <link>/about_old/colophon/</link>
       <pubDate>Sat, 22 Aug 2015 06:28:26 -0700</pubDate>
       
-      <guid>/about/colophon/</guid>
+      <guid>/about_old/colophon/</guid>
       <description>This website is a personal homepage.
 The site is built with Hugo—a static site generator made with Go. The website source code is available on GitHub. It uses the cocoa theme. The posts are written in Markdown.
 The primary font face is Open Sans and the monospace font face is Ubuntu Mono. The social icons are from the Ionicons font set. CSS classes for code syntax highlighting are inserted during compile-time by Hugo using Pygments.</description>

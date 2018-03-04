@@ -103,11 +103,11 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2018-03-04%2015%3a32%3a58.8888082%20%2b0800%20CST%20m%3d%2b1.451469101">
-    <link rel="stylesheet" href="/css/pygments.css?t=2018-03-04%2015%3a32%3a58.8888082%20%2b0800%20CST%20m%3d%2b1.451469101">
-    <link rel="stylesheet" href="/css/main.css?t=2018-03-04%2015%3a32%3a58.8888082%20%2b0800%20CST%20m%3d%2b1.451469101">
+    <link rel="stylesheet" href="/css/reset.css?t=2018-03-04%2016%3a13%3a10.4887999%20%2b0800%20CST%20m%3d%2b0.275165201">
+    <link rel="stylesheet" href="/css/pygments.css?t=2018-03-04%2016%3a13%3a10.4887999%20%2b0800%20CST%20m%3d%2b0.275165201">
+    <link rel="stylesheet" href="/css/main.css?t=2018-03-04%2016%3a13%3a10.4887999%20%2b0800%20CST%20m%3d%2b0.275165201">
     
-        <link rel="stylesheet" href="/css/override.css?t=2018-03-04%2015%3a32%3a58.8888082%20%2b0800%20CST%20m%3d%2b1.451469101">
+        <link rel="stylesheet" href="/css/override.css?t=2018-03-04%2016%3a13%3a10.4887999%20%2b0800%20CST%20m%3d%2b0.275165201">
     
 
 
@@ -227,12 +227,11 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
                     <div class="date" title='Sat Mar 3 2018 00:00:00 UTC'>Mar 3, 2018</div>
                     
                     
-		    <div class="reading-time"><div class="middot"></div>One minute read</div>
-                    
                 </div>
             </div>
             <div class="markdown">
-                <div class="section level2">
+                <hr />
+<div class="section level2">
 <h2>前言</h2>
 <p>此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 <a href="https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/">用R语言的blogdown+hugo+netlify+github 建博客</a> 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。</p>
 <p>架設這個網站會需要用到：</p>
@@ -245,6 +244,7 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 <li>Netlify</li>
 </ul>
 <p>會採用這個架構來建立部落格網站，主要原因是因為R語言是我現在寫程式最主要的工具。在之前我有嘗試用Jekyll+Github部署的方式來建立部落格網站，但發現如果要在Markdown中呈現R語言程式的執行結果，好像會有困難(?)。後來發現Rstudio有出 <a href="https://github.com/rstudio/blogdown">blogdown</a>套件，所以就跳過來用blogdown套件來達成我想要的目標。</p>
+<hr />
 </div>
 <div class="section level2">
 <h2>在本機端建立部落格專案</h2>
@@ -317,6 +317,7 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 
 </div>
 <p>以上就是在本機端建立部落格專案的流程。</p>
+<hr />
 </div>
 <div class="section level2">
 <h2>部落格專案內容</h2>
@@ -358,9 +359,11 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 <img src="18.png" />
 
 </div>
-<p>另外可以到<code>content/post</code>資料夾內，剛寫好的文章存放在裡頭。此外要注意的是，如果你是使用R的markdown撰寫(副檔名為Rmd)，一樣也是會放到這個資料夾內，且<strong>不需要點透過Knit轉成html檔案</strong>，Blogdown套件會自動處理，非常方便。</p>
-<div class="section level3">
-<h3>將部落格放到網路上</h3>
+<p>另外可以到<code>content/post</code>資料夾內，剛寫好的文章存放在裡頭。此外要注意的是，如果你是使用R的markdown撰寫(副檔名為Rmd)，一樣也是會放到這個資料夾內，且<strong>不需要透過Knit轉成html檔案</strong>，Blogdown套件會自動處理，非常方便。</p>
+<hr />
+</div>
+<div class="section level2">
+<h2>將部落格放到網路上</h2>
 <p>在本機端撰寫好部落格文章後，接下來就是要把部落格放到網路上去。此處我們將檔案Push到Github，並透過Netlify網站來協助我們部署。</p>
 <div class="figure">
 <img src="19.png" />
@@ -401,7 +404,6 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 
 </div>
 <p>以上就是整個建站的過程。在設定好Github與Netlify的連結後，之後只要在本機端打好文章，然後用Git Push到Github上，Netlify網頁就會一併更新，非常方便。</p>
-</div>
 </div>
 
                 <br>
