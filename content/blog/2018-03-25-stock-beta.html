@@ -1,0 +1,224 @@
+---
+title: 上市股票Beta估計
+author: Yen-Ting, Su
+date: '2018-03-25'
+slug: stock-beta
+categories:
+  - Programming
+tags:
+  - R
+---
+
+
+
+<script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<div class="section level2">
+<h2>前言</h2>
+<p>最近在幫老師製作教學講義的案例，要用資本資產定價模型(Capital Asset Pricing Model, CAPM)，去估計2017年每支上市股票的<span class="math inline">\(\beta\)</span>。這個問題在碩士班時就有用程式寫過，並沒有很難。但當時程式能力弱弱的，主要是用迴圈去一支一支計算。這次要寫這個程式有一些新的想法，之前看網路上的文章有用到<code>apply</code>家族可以一次估計多個模型的範例，因此透過這次的題目，可以把這個想法實作出來。</p>
+</div>
+<div id="capm" class="section level2">
+<h2>資本資產定價模型(CAPM)</h2>
+<p>資本資產定價模型(CAPM)是財務領域中的重要模型之一，主要用於解釋資本市場如何決定股票的報酬率。財金系的大二學生，在上財務管理或投資學時，一定會學到這個模型。此模型用一般<strong>無截距</strong>的最小平方法(Ordinary Least Squares, OLS)估計即可，模型如下：</p>
+<p><span class="math display">\[E(R_i)-R_f=\beta (E(R_m)-R_f)\]</span></p>
+<p><span class="math inline">\(E(R_i)\)</span>：股票<span class="math inline">\(i\)</span>的期望報酬率</p>
+<p><span class="math inline">\(E(R_i)-R_f\)</span>：股票<span class="math inline">\(i\)</span>的市場風險溢酬</p>
+<p><span class="math inline">\(E(R_m)\)</span>：市場的期望報酬率</p>
+<p><span class="math inline">\(E(R_m)-R_f\)</span>：市場風險溢酬</p>
+<p><span class="math inline">\(R_f\)</span>：無風險利率</p>
+<p>估計樣本的時間頻率一般會採用月頻，樣本數為近60個月。這個模型的重點是在看估計出來的<span class="math inline">\(\beta\)</span>，<span class="math inline">\(\beta\)</span>是衡量這支股票報酬率與市場報酬率之間的連動性。</p>
+<p>若<span class="math inline">\(\beta\)</span>等於1，代表每當市場報酬率上升1%時，股票期望報酬也會跟著上升1%。</p>
+<p>若<span class="math inline">\(\beta\)</span>等於1.2，代表每當市場報酬率上升1%時，股票期望報酬會上升1.2%</p>
+<p>若<span class="math inline">\(\beta\)</span>等於0.5，代表每當市場報酬率上升1%時，股票期望報酬只會上升0.5%。</p>
+<p>詳細的模型說明可參考<a href="https://en.wikipedia.org/wiki/Capital_asset_pricing_model">維基百科</a>。</p>
+</div>
+<div class="section level2">
+<h2>資料來源</h2>
+<p>資料是從TEJ資料庫取得，我們以2017年12月為估計時點，需要60個月的樣本，因此資料期間為2013年1月至2017年12月。市場月報酬率以<strong>報酬指數</strong>計算得出，股票報酬率以<strong>調整後價格</strong>計算，無風險利率採用臺灣銀行一年期定存利率<strong>月化</strong>。</p>
+</div>
+<div class="section level2">
+<h2>實作過程</h2>
+<p>資料整理的部份此處略過，主要是透過<code>tidyverse</code>套件來整理資料，並確保每支股票在2013年1月至2017年12月之間，共有60筆完整樣本，若沒有則會被踢除。資料整理完後，欄位如下圖所示：</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre class="r"><code># 讀取資料
+load(&quot;./stock-beta/data.Rdata&quot;)</code></pre>
+<pre class="r"><code># 呈現資料前10筆內容
+head(data,10)   </code></pre>
+<pre><code>## # A tibble: 10 x 5
+##     code  name yearMonth monthRetDiffRf mktRetDiffRf
+##    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;
+##  1  1101  台泥    201301     0.02185934  0.007980063
+##  2  1101  台泥    201302    -0.05101724  0.004219091
+##  3  1101  台泥    201303    -0.03574836 -0.006903142
+##  4  1101  台泥    201304     0.04286810  0.023525057
+##  5  1101  台泥    201305     0.02348827  0.014479895
+##  6  1101  台泥    201306    -0.04015518 -0.017032388
+##  7  1101  台泥    201307     0.04075384  0.026309119
+##  8  1101  台泥    201308     0.06632723  0.001275860
+##  9  1101  台泥    201309     0.08374738  0.016691697
+## 10  1101  台泥    201310     0.02398032  0.031032618</code></pre>
+<p>欄位依序為股票代碼(code)、股票名稱(name)、年月(yearMonth)、股票風險溢酬(monthRetDiffRef)及市場風險溢酬(mktRetDiffRf)。我們對資料做一些簡單的確認：</p>
+<pre class="r"><code># 完整期間(60個月)的股票家數
+length(unique(data$code))    </code></pre>
+<pre><code>## [1] 814</code></pre>
+<pre class="r"><code># 資料起始月份
+min(data$yearMonth)   </code></pre>
+<pre><code>## [1] &quot;201301&quot;</code></pre>
+<pre class="r"><code># 資料結束月份
+max(data$yearMonth)          </code></pre>
+<pre><code>## [1] &quot;201712&quot;</code></pre>
+<p>接下來開始估計每支股票的<span class="math inline">\(\beta\)</span>，先把CAPM模型部份包成函數。此處因為只需要輸出一個<span class="math inline">\(\beta\)</span>，所以只要用<code>sapply()</code>即可，程式碼如下：</p>
+<pre class="r"><code>library(tidyverse)
+stockList &lt;- unique(data$code)  # 股票清單 
+
+# CAPM自製函數
+CapmModel &lt;- function(ix){
+  
+  # 讀取股票資料
+  iData &lt;- data %&gt;% filter(code==ix)
+  
+  # 無截距模型估計
+  model &lt;- lm(formula= monthRetDiffRf ~ 0 + mktRetDiffRf, data= iData)
+  
+  # 取出Beta
+  beta &lt;- model$coefficients
+  
+  return(as.numeric(beta))
+}
+
+# 啟動計時器
+ptm &lt;- proc.time()              
+
+# 估計模型
+result &lt;- sapply(stockList, CapmModel)
+
+# 結束計時器
+ptm &lt;- proc.time() - ptm        
+
+# 整理資料表
+result &lt;- tibble(code=stockList, beta=result)</code></pre>
+<pre class="r"><code># 呈現估計結果資料前10筆內容
+head(result, 10) </code></pre>
+<pre><code>## # A tibble: 10 x 2
+##     code      beta
+##    &lt;chr&gt;     &lt;dbl&gt;
+##  1  1101 1.1441944
+##  2  1102 0.8365439
+##  3  1103 1.0268844
+##  4  1104 1.1261626
+##  5  1108 0.5381048
+##  6  1109 0.7843204
+##  7  1110 0.5746827
+##  8  1201 0.6311286
+##  9  1203 0.5260553
+## 10  1210 0.9716523</code></pre>
+<pre class="r"><code># 執行時間
+ptm</code></pre>
+<pre><code>##    user  system elapsed 
+##    3.03    0.00    3.04</code></pre>
+<p>這邊有一個地方可以提速，就是可以不用使用<code>lm()</code>函數，直接套公式解出<span class="math inline">\(\beta\)</span>。因為lm函數執行時會同時紀錄其他迴歸的資訊(例如<span class="math inline">\(R^2\)</span>等)，是我們不需要的，所以如果套公式解，就可以少算很多東西。無截距最小平方模型的<span class="math inline">\(\beta\)</span>估計式(<a href="http://www.real-statistics.com/multiple-regression/multiple-regression-without-intercept/">參考</a>)為：</p>
+<p><span class="math display">\[\beta=(X^TX)^{-1}X^TY\]</span></p>
+<pre class="r"><code># CAPM自製函數
+CapmModel &lt;- function(ix){
+  
+  # 讀取股票資料
+  iData &lt;- data %&gt;% filter(code==ix)
+  
+  # 公式解Beta
+  x &lt;- iData$mktRetDiffRf
+  y &lt;- iData$monthRetDiffRf
+  beta &lt;- (solve(x%*%x)%*%x%*%y) %&gt;% as.vector()
+  
+  return(as.numeric(beta))
+}
+
+# 啟動計時器
+ptm &lt;- proc.time()              
+
+# 估計模型
+result &lt;- sapply(stockList, CapmModel)
+
+# 結束計時器
+ptm &lt;- proc.time() - ptm        
+
+# 整理資料表
+result &lt;- tibble(code=stockList, beta=result)</code></pre>
+<pre class="r"><code># 呈現估計結果資料前10筆內容
+head(result, 10) </code></pre>
+<pre><code>## # A tibble: 10 x 2
+##     code      beta
+##    &lt;chr&gt;     &lt;dbl&gt;
+##  1  1101 1.1441944
+##  2  1102 0.8365439
+##  3  1103 1.0268844
+##  4  1104 1.1261626
+##  5  1108 0.5381048
+##  6  1109 0.7843204
+##  7  1110 0.5746827
+##  8  1201 0.6311286
+##  9  1203 0.5260553
+## 10  1210 0.9716523</code></pre>
+<pre class="r"><code># 執行時間
+ptm</code></pre>
+<pre><code>##    user  system elapsed 
+##    2.53    0.00    2.53</code></pre>
+<p>透過程式的執行時間，可以看出直接輸入公式解<span class="math inline">\(\beta\)</span>比使用<code>lm()</code>函數快上許多。</p>
+<p>2017年12月每支股票的<span class="math inline">\(\beta\)</span>估計完後，可以來做一些簡單的分析。</p>
+<pre class="r"><code># 併入股票名稱
+result &lt;- result %&gt;% 
+  left_join(distinct(data, code, name), by=c(&quot;code&quot;=&quot;code&quot;)) %&gt;% 
+  select(code, name, beta)
+
+# Beta前10名股票
+result %&gt;% arrange(desc(beta)) %&gt;% filter(row_number()&lt;=10) </code></pre>
+<pre><code>## # A tibble: 10 x 3
+##     code   name     beta
+##    &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;
+##  1  1475   本盟 3.343982
+##  2  2439   美律 2.909284
+##  3  2305   全友 2.674976
+##  4  6116   彩晶 2.674676
+##  5  4739   康普 2.662479
+##  6  8261   富鼎 2.656260
+##  7  2491 吉祥全 2.516768
+##  8  2364   倫飛 2.507841
+##  9  2337   旺宏 2.462604
+## 10  6243   迅杰 2.450715</code></pre>
+<pre class="r"><code># Beta後10名股票
+result %&gt;% arrange(beta) %&gt;% filter(row_number()&lt;=10) </code></pre>
+<pre><code>## # A tibble: 10 x 3
+##      code      name        beta
+##     &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 910708 恒大健-DR -1.35318396
+##  2   2496      卓越 -0.70620896
+##  3   2722      夏都 -0.33139508
+##  4 911608   明輝-DR -0.20563715
+##  5   1436    華友聯 -0.08366797
+##  6   4119      旭富 -0.04332977
+##  7 910482 聖馬丁-DR -0.03954565
+##  8   9929      秋雨 -0.03939288
+##  9   8101      華冠 -0.02676573
+## 10   1220      台榮  0.03418441</code></pre>
+<pre class="r"><code># 繪製Beta的分配圖 
+ggplot(result, aes(x=beta)) + geom_histogram()</code></pre>
+<p><img src="/blog/2018-03-25-stock-beta_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>可以繪製單一股票估計的CAPM模型迴歸線，例如2330台積電。</p>
+<pre class="r"><code>plotCode &lt;- 2330
+iData &lt;- data %&gt;% filter(code==plotCode)
+ggplot(iData, aes(x=mktRetDiffRf, y=monthRetDiffRf)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, formula = y ~ 0 + x, se = F) +
+  labs(title=paste0(plotCode,&quot; CAPM模型&quot;), x =&quot;市場風險溢酬&quot;, y = &quot;股票風險溢酬&quot;)</code></pre>
+<p><img src="/blog/2018-03-25-stock-beta_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>也可以同時繪製多檔股票進行比較，這邊選擇2330台積電、2412中華電及3008大立光。</p>
+<pre class="r"><code>plotCode &lt;- c(2330, 2412, 3008)
+iData &lt;- data %&gt;% filter(code %in% plotCode)
+ggplot(iData, aes(x=mktRetDiffRf, y=monthRetDiffRf, colour=code)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, formula = y ~ 0 + x, se = F) +
+  labs(title=paste0(&quot;CAPM模型比較&quot;), x =&quot;市場風險溢酬&quot;, y = &quot;股票風險溢酬&quot;)</code></pre>
+<p><img src="/blog/2018-03-25-stock-beta_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>從上圖可以看出，2412中華電信的迴歸線斜率(也就是<span class="math inline">\(\beta\)</span>)接近0，股價不會隨著市場走勢有所變動。<span class="math inline">\(\beta\)</span>本身即是反映一檔股票背後的市場風險。在市場走多頭時，投資人可以勇敢投資高<span class="math inline">\(\beta\)</span>股票，讓自己的報酬率比市場報酬率還高;市場走空頭時，則可轉為投資低<span class="math inline">\(\beta\)</span>股票，抵擋市場不景氣時帶來的影響。</p>
+</div>

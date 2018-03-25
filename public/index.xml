@@ -6,10 +6,34 @@
     <description>Recent content on Yen-Ting, Su Personal Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 10 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 25 Mar 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>上市股票Beta估計</title>
+      <link>/blog/stock-beta/</link>
+      <pubDate>Sun, 25 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/stock-beta/</guid>
+      <description>前言最近在幫老師製作教學講義的案例，要用資本資產定價模型(Capital Asset Pricing Model, CAPM)，去估計2017年每支上市股票的\(\beta\)。這個問題在碩士班時就有用程式寫過，並沒有很難。但當時程式能力弱弱的，主要是用迴圈去一支一支計算。這次要寫這個程式有一些新的想法，之前看網路上的文章有用到apply家族可以一次估計多個模型的範例，因此透過這次的題目，可以把這個想法實作出來。
+資本資產定價模型(CAPM)資本資產定價模型(CAPM)是財務領域中的重要模型之一，主要用於解釋資本市場如何決定股票的報酬率。財金系的大二學生，在上財務管理或投資學時，一定會學到這個模型。此模型用一般無截距的最小平方法(Ordinary Least Squares, OLS)估計即可，模型如下：
+\[E(R_i)-R_f=\beta (E(R_m)-R_f)\]
+\(E(R_i)\)：股票\(i\)的期望報酬率
+\(E(R_i)-R_f\)：股票\(i\)的市場風險溢酬
+\(E(R_m)\)：市場的期望報酬率
+\(E(R_m)-R_f\)：市場風險溢酬
+\(R_f\)：無風險利率
+估計樣本的時間頻率一般會採用月頻，樣本數為近60個月。這個模型的重點是在看估計出來的\(\beta\)，\(\beta\)是衡量這支股票報酬率與市場報酬率之間的連動性。
+若\(\beta\)等於1，代表每當市場報酬率上升1%時，股票期望報酬也會跟著上升1%。
+若\(\beta\)等於1.2，代表每當市場報酬率上升1%時，股票期望報酬會上升1.2%
+若\(\beta\)等於0.5，代表每當市場報酬率上升1%時，股票期望報酬只會上升0.5%。
+詳細的模型說明可參考維基百科。
+資料來源資料是從TEJ資料庫取得，我們以2017年12月為估計時點，需要60個月的樣本，因此資料期間為2013年1月至2017年12月。市場月報酬率以報酬指數計算得出，股票報酬率以調整後價格計算，無風險利率採用臺灣銀行一年期定存利率月化。
+實作過程資料整理的部份此處略過，主要是透過tidyverse套件來整理資料，並確保每支股票在2013年1月至2017年12月之間，共有60筆完整樣本，若沒有則會被踢除。資料整理完後，欄位如下圖所示：
+library(tidyverse)# 讀取資料load(&amp;quot;./stock-beta/data.Rdata&amp;quot;)# 呈現資料前10筆內容head(data,10) ## # A tibble: 10 x 5## code name yearMonth monthRetDiffRf mktRetDiffRf## &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;## 1 1101 台泥 201301 0.02185934 0.007980063## 2 1101 台泥 201302 -0.</description>
+    </item>
     
     <item>
       <title>爬蟲-財富中國500強股票排行榜資料</title>
