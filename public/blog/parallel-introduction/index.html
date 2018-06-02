@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="author" content="Yen-Ting, Su">
+<meta name="description" content="前言在做量化投資策略參數最佳化時，都會透過for迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件parallel，只要將要程式碼包裝成函數形式，就可以跑平行運算。
+接下來文章一開始會先用for迴圈做一個簡單的範例，再來會使用apply家族提升速度，最後用平行運算讓速度再往上提升。透過這個範例，可以看到如何使用平行運算及平行運算的速度。
+使用套件library(parallel) # 平行運算套件library(tidyverse) # 資料科學專用套件包For迴圈寫法我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。
+output &lt;- NULL # 建立儲存表power &lt;- 2 # 次方數ptm &lt;- proc.time() # 啟動計時器for(ix in 1:1000){rowData &lt;- tibble(num1 = ix, num2 = ix^power) output &lt;- output %&gt;% bind_rows(rowData)}forTime &lt;- proc.time() - ptm # 結束計時器 執行完後，output會是：
+output## # A tibble: 1,000 x 2## num1 num2## &lt;int&gt; &lt;dbl&gt;## 1 1 1## 2 2 4## 3 3 9## 4 4 16## 5 5 25## 6 6 36## 7 7 49## 8 8 64## 9 9 81## 10 10 100## # .">
+
+<meta property="og:title" content="R的平行運算" />
+<meta property="og:description" content="前言在做量化投資策略參數最佳化時，都會透過for迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件parallel，只要將要程式碼包裝成函數形式，就可以跑平行運算。
+接下來文章一開始會先用for迴圈做一個簡單的範例，再來會使用apply家族提升速度，最後用平行運算讓速度再往上提升。透過這個範例，可以看到如何使用平行運算及平行運算的速度。
+使用套件library(parallel) # 平行運算套件library(tidyverse) # 資料科學專用套件包For迴圈寫法我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。
+output &lt;- NULL # 建立儲存表power &lt;- 2 # 次方數ptm &lt;- proc.time() # 啟動計時器for(ix in 1:1000){rowData &lt;- tibble(num1 = ix, num2 = ix^power) output &lt;- output %&gt;% bind_rows(rowData)}forTime &lt;- proc.time() - ptm # 結束計時器 執行完後，output會是：
+output## # A tibble: 1,000 x 2## num1 num2## &lt;int&gt; &lt;dbl&gt;## 1 1 1## 2 2 4## 3 3 9## 4 4 16## 5 5 25## 6 6 36## 7 7 49## 8 8 64## 9 9 81## 10 10 100## # ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/parallel-introduction/" />
+
+
+
+<meta property="article:published_time" content="2018-06-02T00:00:00&#43;00:00"/>
+
+<meta property="article:modified_time" content="2018-06-02T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+<title>
+
+
+     R的平行運算 
+
+</title>
+<link rel="canonical" href="/blog/parallel-introduction/">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:500">
+
+
+
+    
+    <link rel="stylesheet" href="/css/reset.css?t=2018-06-02%2016%3a10%3a45.1487432%20%2b0800%20CST%20m%3d%2b0.143916601">
+    <link rel="stylesheet" href="/css/pygments.css?t=2018-06-02%2016%3a10%3a45.1487432%20%2b0800%20CST%20m%3d%2b0.143916601">
+    <link rel="stylesheet" href="/css/main.css?t=2018-06-02%2016%3a10%3a45.1487432%20%2b0800%20CST%20m%3d%2b0.143916601">
+    
+        <link rel="stylesheet" href="/css/override.css?t=2018-06-02%2016%3a10%3a45.1487432%20%2b0800%20CST%20m%3d%2b0.143916601">
+    
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/img/leaf.ico"
+
+>
+
+
+
+
+
+
+
+
+</head>
+
+
+<body lang="en">
+
+<section class="header">
+    <div class="container">
+        <div class="content">
+            
+                
+                
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+                <a href="/"><img class="avatar" src="/img/profile.jpg" srcset="/img/profile.jpg 1x"></a>
+            
+            <a href="/"><div class="name">Yen-Ting, Su</div></a>
+            
+            <nav>
+                <ul>
+                    
+                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
+                    
+                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+        
+            <a href="//github.com/SuYenTing" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
+        
+
+        
+
+	
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="mailto:sn86056@gmail.com"><img class="icon" src="/img/email.svg" alt="email" /></a>
+        
+
+        
+
+        
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    R的平行運算
+
+</div>
+
+                    <div class="initials"><a href="/">ad</a></div>
+                </div>
+                <div class="meta">
+                    
+                    <div class="date" title='Sat Jun 2 2018 00:00:00 UTC'>Jun 2, 2018</div>
+                    
+                    
+                </div>
+            </div>
+            <div class="markdown">
+                <div class="section level2">
+<h2>前言</h2>
+<p>在做量化投資策略參數最佳化時，都會透過<code>for</code>迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件<code>parallel</code>，只要將要程式碼包裝成函數形式，就可以跑平行運算。</p>
+<p>接下來文章一開始會先用<code>for</code>迴圈做一個簡單的範例，再來會使用<code>apply</code>家族提升速度，最後用平行運算讓速度再往上提升。透過這個範例，可以看到如何使用平行運算及平行運算的速度。</p>
+</div>
+<div class="section level2">
+<h2>使用套件</h2>
+<pre class="r"><code>library(parallel)    # 平行運算套件
+library(tidyverse)   # 資料科學專用套件包</code></pre>
+</div>
+<div id="for" class="section level2">
+<h2>For迴圈寫法</h2>
+<p>我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。</p>
+<pre class="r"><code>output &lt;- NULL     # 建立儲存表
+power &lt;- 2         # 次方數
+ptm &lt;- proc.time() # 啟動計時器
+
+for(ix in 1:1000){
+
+  rowData &lt;- tibble(num1 = ix, num2 = ix^power) 
+  output &lt;- output %&gt;% bind_rows(rowData)
+  
+}
+
+forTime &lt;- proc.time() - ptm  # 結束計時器 </code></pre>
+<p>執行完後，<code>output</code>會是：</p>
+<pre class="r"><code>output</code></pre>
+<pre><code>## # A tibble: 1,000 x 2
+##     num1  num2
+##    &lt;int&gt; &lt;dbl&gt;
+##  1     1     1
+##  2     2     4
+##  3     3     9
+##  4     4    16
+##  5     5    25
+##  6     6    36
+##  7     7    49
+##  8     8    64
+##  9     9    81
+## 10    10   100
+## # ... with 990 more rows</code></pre>
+<p>在<code>for</code>迴圈的寫法，執行速度為5.31秒：</p>
+<pre class="r"><code>forTime</code></pre>
+<pre><code>##    user  system elapsed 
+##    5.30    0.02    5.31</code></pre>
+</div>
+<div id="apply" class="section level2">
+<h2>Apply寫法</h2>
+<p>在R語言中，透過<code>apply</code>家族的函數改寫<code>for</code>迴圈寫法，可以提升速度。我們將原先問題改為<code>lapply</code>寫法：</p>
+<pre class="r"><code># 將For迴圈內程式碼改為函數
+GenerateData &lt;- function(ix){
+  rowData &lt;- tibble(num1 = ix, num2 = ix^power) 
+  return(rowData)
+}
+
+power &lt;- 2          # 次方數
+ptm &lt;- proc.time()  # 啟動計時器
+
+output &lt;- lapply(c(1:1000), GenerateData)  # 執行lapply
+output &lt;- do.call(bind_rows, output)       # 整併資料
+
+lapplyTime &lt;- proc.time() - ptm  # 結束計時器 </code></pre>
+<pre class="r"><code>lapplyTime</code></pre>
+<pre><code>##    user  system elapsed 
+##    5.85    0.00    6.00</code></pre>
+<p>在lapply的寫法，執行的速度為6秒，相較於For迴圈寫法，提升-0.69秒。</p>
+</div>
+<div class="section level2">
+<h2>平行運算寫法</h2>
+<p>接下來就是進入本篇的重點平行運算寫法。</p>
+<p>首先我們先看電腦的執行緒有幾個，這部分每台電腦都會不一樣，以我的電腦為例，共有8個。</p>
+<pre class="r"><code>myCoreNums &lt;- detectCores()
+myCoreNums</code></pre>
+<pre><code>## [1] 8</code></pre>
+<p>接下來是設定待會跑程式時，要用多少的執行緒來協助我們。這邊建議執行緒<strong>最多</strong>就設定電腦執行緒個數減1，為何要減1？主要是讓電腦有1個執行緒能夠維持電腦的基本運作。如果將所有執行緒拿來跑程式，電腦有時候就會直接掛掉黑屏給你看，用平行運算也是要很小心的。</p>
+<pre class="r"><code>cl &lt;- makeCluster(myCoreNums-1)</code></pre>
+<p>執行緒設定好後，下一個步驟是將函數內會用到的資料及套件部署到各個執行緒。這邊可以想像成我在每個執行緒中都開啟一個R程式，但這個R程式的變數區和套件都還沒被載入，所以我們要將資料及套件都傳進去執行緒內。</p>
+<p>以範例來說，函數內的<code>power</code>變數並不是在<code>function</code>內產生，所以就要<code>power</code>變數部署進去。另外<code>function</code>內有用到<code>tidyverse</code>套件，也需要部署到執行緒內。</p>
+<pre class="r"><code>clusterExport(cl, c(&quot;power&quot;))               # 傳入變數
+clusterEvalQ(cl, c(library(tidyverse)))     # 傳入套件</code></pre>
+<p>此處做個補充，由於這是一個小小的範例，在這個範例內只需要部署到1個變數及1個套件就可以運作。但實際上常會需要部署很多變數及套件，寫法為：</p>
+<pre class="r"><code>clusterExport(cl, c(&quot;variable1&quot;, &quot;variable2&quot;, &quot;variable3&quot;))                      # 傳入變數
+clusterEvalQ(cl, c(library(package1), library(package2), library(package3)))     # 傳入套件</code></pre>
+<p>在部署完變數後，接下來就可以開始執行平行演算函數。其實很簡單，只要將<code>lapply</code>函數改成<code>parLapply</code>，第一個引數加入<code>cl</code>即可。</p>
+<pre class="r"><code>ptm &lt;- proc.time()  # 啟動計時器
+
+output &lt;- parLapply(cl, c(1:1000), GenerateData)   # 執行平行運算
+output &lt;- do.call(bind_rows, output)               # 整併資料
+
+parLapplyTime &lt;- proc.time() - ptm  # 結束計時器 </code></pre>
+<pre class="r"><code>parLapplyTime</code></pre>
+<pre><code>##    user  system elapsed 
+##    0.06    0.00    1.84</code></pre>
+<p>在平行運算的的寫法，執行的速度為1.84秒，比<code>for</code>迴圈寫法快3.47秒，比<code>lapply</code>的寫法快4.16秒。這僅僅是處理1,000筆資料的數據，當資料量大時，速度差異將會更大。</p>
+<p>在運作完平行運算後，要記得將平行運算關掉，不要浪費電腦效能</p>
+<pre class="r"><code>stopCluster(cl)</code></pre>
+<p>以下為完整的平行運算範例程式碼：</p>
+<pre class="r"><code>library(parallel)    # 平行運算套件
+library(tidyverse)   # 資料科學專用套件包
+
+power &lt;- 2 # 次方數
+
+# 資料產生函數
+GenerateData &lt;- function(ix){
+  rowData &lt;- tibble(num1 = ix, num2 = ix^power) 
+  return(rowData)
+}
+
+# 設定執行函數
+myCoreNums &lt;- detectCores()
+cl &lt;- makeCluster(myCoreNums-1)
+
+# 部署變數及套件至執行緒
+clusterExport(cl, c(&quot;power&quot;))               # 傳入變數
+clusterEvalQ(cl, c(library(tidyverse)))     # 傳入套件
+
+ptm &lt;- proc.time()  # 啟動計時器
+
+output &lt;- parLapply(cl, c(1:1000), GenerateData)   # 執行平行運算
+output &lt;- do.call(bind_rows, output)               # 整併資料
+
+parLapplyTime &lt;- proc.time() - ptm  # 結束計時器 
+
+stopCluster(cl) # 結束平行運算</code></pre>
+</div>
+<div class="section level2">
+<h2>結語</h2>
+<p><code>parallel</code>套件能使用的函數不僅僅只有<code>parLapply</code>，只要是<code>apply</code>家族的函數皆可以使用，可以在Console輸入<code>?parLapply</code>查詢。在寫程式時，我習慣在一開始都會先用<code>for</code>迴圈去處理問題，觀看部分資料執行的狀況是否正確。確認無誤要開始跑全部資料時，將<code>for</code>迴圈程式碼改成<code>function</code>寫法，並搭配<code>apply</code>家族函數，這樣就可以很輕易地再改寫成平行運算程式碼。目前用下來覺得平行運算套件真的是很方便，速度很快。但如果要說缺點的話，就是如果平行運算出錯時，很難去Debug，有時還是需要回到<code>for</code>迴圈去尋找問題發生點。</p>
+</div>
+<div class="section level2">
+<h2>參考來源</h2>
+<p>當初是看這篇學會平行運算的寫法:<a href="https://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/" class="uri">https://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/</a>，裡面也有介紹其他R的平行演算套件，像是<code>foreach</code>套件等，有興趣的話可以去看看。</p>
+</div>
+
+                <br>
+		<p class="back-to-posts"><a href="/blog/">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "SuYenTing" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+
+
+</body>
+</html>
+

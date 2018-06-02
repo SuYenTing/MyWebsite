@@ -161,6 +161,7 @@ ptm
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 
+
 # 併入股票名稱
 result <- result %>% 
   left_join(distinct(data, code, name), by=c("code"="code")) %>% 

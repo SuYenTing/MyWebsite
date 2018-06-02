@@ -6,10 +6,23 @@
     <description>Recent content on Yen-Ting, Su Personal Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 25 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R的平行運算</title>
+      <link>/blog/parallel-introduction/</link>
+      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/parallel-introduction/</guid>
+      <description>前言在做量化投資策略參數最佳化時，都會透過for迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件parallel，只要將要程式碼包裝成函數形式，就可以跑平行運算。
+接下來文章一開始會先用for迴圈做一個簡單的範例，再來會使用apply家族提升速度，最後用平行運算讓速度再往上提升。透過這個範例，可以看到如何使用平行運算及平行運算的速度。
+使用套件library(parallel) # 平行運算套件library(tidyverse) # 資料科學專用套件包For迴圈寫法我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。
+output &amp;lt;- NULL # 建立儲存表power &amp;lt;- 2 # 次方數ptm &amp;lt;- proc.time() # 啟動計時器for(ix in 1:1000){rowData &amp;lt;- tibble(num1 = ix, num2 = ix^power) output &amp;lt;- output %&amp;gt;% bind_rows(rowData)}forTime &amp;lt;- proc.time() - ptm # 結束計時器 執行完後，output會是：
+output## # A tibble: 1,000 x 2## num1 num2## &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt;## 1 1 1## 2 2 4## 3 3 9## 4 4 16## 5 5 25## 6 6 36## 7 7 49## 8 8 64## 9 9 81## 10 10 100## # .</description>
+    </item>
     
     <item>
       <title>上市股票Beta估計</title>

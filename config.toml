@@ -8,7 +8,6 @@ publishdir          = "public"
 theme = "cocoa-hugo-theme"
 author              = "Yen-Ting, Su"
 title               = "Yen-Ting, Su Personal Website"
-pygmentsuseclasses  = true
 disqusshortname     = "SuYenTing" # Comment out to disable Disqus.
 pluralizelisttitles = false
 googleAnalytics     = ""
@@ -43,7 +42,7 @@ author                 = "Yen-Ting, Su"
 cachebuster            = true                          # add the current unix timestamp in query string for cache busting css assets
 dateform               = "Jan 2, 2006"
 dateformfull           = "Mon Jan 2 2006 15:04:05 MST"
-description            = "Don't panic"
+description            = ""
 email                  = "sn86056@gmail.com"
 extracssfiles          = [ "/css/override.css" ]       # In your `static` directory, add/remove files as necessary.
 faviconfile            = "img/leaf.ico"
@@ -58,8 +57,8 @@ selfintro              = ""                            # appears in the site hea
 # mastodon               = "//example.com/@you"
 
 highlightjs            = true
-# highlightjslanguages = ["go"]                        # additional languages not included in the "common" set
-# highlightjsStyle     = "darcula"
+# highlightjslanguages = ["github"]                    # additional languages not included in the "common" set
+# highlightjsStyle     = "github"
 
 piwik                  = false                         # If true, Piwik integration is enabled
 # piwik_url            = "//www.example.com/piwik/"    # URL to your Piwik installation. Must End with a slash

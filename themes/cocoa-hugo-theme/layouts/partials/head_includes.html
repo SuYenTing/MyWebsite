@@ -11,10 +11,15 @@
 {{ end }}
 
 <!-- CSS -->
-
-{{ if .Site.Params.highlightjs }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/{{ .Site.Params.highlightjsStyle | default "default" }}.min.css">
+<!-- {{ if .Site.Params.highlightjs }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/{{ .Site.Params.highlightjsStyle | default "default" }}.min.js">
 {{ end }}
+-->
+
+<!--<script src="https://cdn.bootcss.com/highlight.js/9.12.0/languages/yaml.min.js"></script>-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Fonts and icon CSS -->
 

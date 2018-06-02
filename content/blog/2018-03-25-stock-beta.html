@@ -117,7 +117,7 @@ head(result, 10) </code></pre>
 <pre class="r"><code># 執行時間
 ptm</code></pre>
 <pre><code>##    user  system elapsed 
-##    3.03    0.00    3.04</code></pre>
+##    3.06    0.00    3.09</code></pre>
 <p>這邊有一個地方可以提速，就是可以不用使用<code>lm()</code>函數，直接套公式解出<span class="math inline">\(\beta\)</span>。因為lm函數執行時會同時紀錄其他迴歸的資訊(例如<span class="math inline">\(R^2\)</span>等)，是我們不需要的，所以如果套公式解，就可以少算很多東西。無截距最小平方模型的<span class="math inline">\(\beta\)</span>估計式(<a href="http://www.real-statistics.com/multiple-regression/multiple-regression-without-intercept/">參考</a>)為：</p>
 <p><span class="math display">\[\beta=(X^TX)^{-1}X^TY\]</span></p>
 <pre class="r"><code># CAPM自製函數
@@ -163,7 +163,7 @@ head(result, 10) </code></pre>
 <pre class="r"><code># 執行時間
 ptm</code></pre>
 <pre><code>##    user  system elapsed 
-##    2.53    0.00    2.53</code></pre>
+##    2.49    0.00    2.53</code></pre>
 <p>透過程式的執行時間，可以看出直接輸入公式解<span class="math inline">\(\beta\)</span>比使用<code>lm()</code>函數快上許多。</p>
 <p>2017年12月每支股票的<span class="math inline">\(\beta\)</span>估計完後，可以來做一些簡單的分析。</p>
 <pre class="r"><code># 併入股票名稱
