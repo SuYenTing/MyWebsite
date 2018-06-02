@@ -52,10 +52,10 @@ forTime &lt;- proc.time() - ptm  # 結束計時器 </code></pre>
 ##  9     9    81
 ## 10    10   100
 ## # ... with 990 more rows</code></pre>
-<p>在<code>for</code>迴圈的寫法，執行速度為5.31秒：</p>
+<p>在<code>for</code>迴圈的寫法，執行速度為5.89秒：</p>
 <pre class="r"><code>forTime</code></pre>
 <pre><code>##    user  system elapsed 
-##    5.30    0.02    5.31</code></pre>
+##    5.87    0.00    5.89</code></pre>
 </div>
 <div id="apply" class="section level2">
 <h2>Apply寫法</h2>
@@ -75,8 +75,8 @@ output &lt;- do.call(bind_rows, output)       # 整併資料
 lapplyTime &lt;- proc.time() - ptm  # 結束計時器 </code></pre>
 <pre class="r"><code>lapplyTime</code></pre>
 <pre><code>##    user  system elapsed 
-##    5.85    0.00    6.00</code></pre>
-<p>在lapply的寫法，執行的速度為6秒，相較於For迴圈寫法，提升-0.69秒。</p>
+##    5.48    0.00    5.50</code></pre>
+<p>在lapply的寫法，執行的速度為5.5秒，相較於For迴圈寫法，提升0.39秒。</p>
 </div>
 <div class="section level2">
 <h2>平行運算寫法</h2>
@@ -103,8 +103,8 @@ output &lt;- do.call(bind_rows, output)               # 整併資料
 parLapplyTime &lt;- proc.time() - ptm  # 結束計時器 </code></pre>
 <pre class="r"><code>parLapplyTime</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.06    0.00    1.84</code></pre>
-<p>在平行運算的的寫法，執行的速度為1.84秒，比<code>for</code>迴圈寫法快3.47秒，比<code>lapply</code>的寫法快4.16秒。這僅僅是處理1,000筆資料的數據，當資料量大時，速度差異將會更大。</p>
+##    0.02    0.00    1.49</code></pre>
+<p>在平行運算的的寫法，執行的速度為1.49秒，比<code>for</code>迴圈寫法快4.4秒，比<code>lapply</code>的寫法快4.01秒。這僅僅是處理1,000筆資料的數據，當資料量大時，速度差異將會更大。</p>
 <p>在運作完平行運算後，要記得將平行運算關掉，不要浪費電腦效能</p>
 <pre class="r"><code>stopCluster(cl)</code></pre>
 <p>以下為完整的平行運算範例程式碼：</p>

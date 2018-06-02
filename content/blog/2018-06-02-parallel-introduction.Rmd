@@ -185,3 +185,4 @@ stopCluster(cl) # 結束平行運算
 當初是看這篇學會平行運算的寫法:[https://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/](https://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/)，裡面也有介紹其他R的平行演算套件，像是`foreach`套件等，有興趣的話可以去看看。
 
 
+
