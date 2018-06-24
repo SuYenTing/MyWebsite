@@ -13,16 +13,16 @@
 但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
 這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。
 資料來源首先我們使用tidyqunat套件，這個套件整合quantmode套件與tidyverse套件。利用此套件的tq_get函數至Yahoo Finance下載台股大盤股價資料，做為此次的範例資料集。
-以下為sockData的資料內容:
-## # A tibble: 2,573 x 7## date open high low close volume adjusted## &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;## 1 2008-01-02 8491.57 8532.92 8319.58 8323.05 4372600 8323.018## 2 2008-01-03 8171.68 8243.93 8130.41 8184.20 3636400 8184.169## 3 2008-01-04 8134.04 8247.18 8097.85 8221.10 4603600 8221.067## 4 2008-01-07 7959.92 8015.93 7883.37 7883.37 4539800 7883.340## 5 2008-01-08 7909.">
+以下為sockData的資料內容，我們只取出日期及收盤價資訊:
+## # A tibble: 2,573 x 2## date close## &lt;date&gt; &lt;dbl&gt;## 1 2008-01-02 8323.05## 2 2008-01-03 8184.20## 3 2008-01-04 8221.10## 4 2008-01-07 7883.37## 5 2008-01-08 7962.91## 6 2008-01-09 8085.06## 7 2008-01-10 8057.27## 8 2008-01-11 8029.31## 9 2008-01-14 8173.41## 10 2008-01-15 8428.84## # ... with 2,563 more rows快速計算MA假設我們要計算5日、10日、20日、60日及90日移動平均線，則寫法為：">
 
 <meta property="og:title" content="利用eval函數計算多個移動平均線指標" />
 <meta property="og:description" content="前言我們通常會利用dplyr套件搭配TTR套件的SMA函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:
 但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
 這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。
 資料來源首先我們使用tidyqunat套件，這個套件整合quantmode套件與tidyverse套件。利用此套件的tq_get函數至Yahoo Finance下載台股大盤股價資料，做為此次的範例資料集。
-以下為sockData的資料內容:
-## # A tibble: 2,573 x 7## date open high low close volume adjusted## &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;## 1 2008-01-02 8491.57 8532.92 8319.58 8323.05 4372600 8323.018## 2 2008-01-03 8171.68 8243.93 8130.41 8184.20 3636400 8184.169## 3 2008-01-04 8134.04 8247.18 8097.85 8221.10 4603600 8221.067## 4 2008-01-07 7959.92 8015.93 7883.37 7883.37 4539800 7883.340## 5 2008-01-08 7909." />
+以下為sockData的資料內容，我們只取出日期及收盤價資訊:
+## # A tibble: 2,573 x 2## date close## &lt;date&gt; &lt;dbl&gt;## 1 2008-01-02 8323.05## 2 2008-01-03 8184.20## 3 2008-01-04 8221.10## 4 2008-01-07 7883.37## 5 2008-01-08 7962.91## 6 2008-01-09 8085.06## 7 2008-01-10 8057.27## 8 2008-01-11 8029.31## 9 2008-01-14 8173.41## 10 2008-01-15 8428.84## # ... with 2,563 more rows快速計算MA假設我們要計算5日、10日、20日、60日及90日移動平均線，則寫法為：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/use-eval-function-compute-ma/" />
 
@@ -67,11 +67,11 @@
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2018-06-24%2016%3a07%3a26.7947458%20%2b0800%20CST%20m%3d%2b0.188890901">
-    <link rel="stylesheet" href="/css/pygments.css?t=2018-06-24%2016%3a07%3a26.7947458%20%2b0800%20CST%20m%3d%2b0.188890901">
-    <link rel="stylesheet" href="/css/main.css?t=2018-06-24%2016%3a07%3a26.7947458%20%2b0800%20CST%20m%3d%2b0.188890901">
+    <link rel="stylesheet" href="/css/reset.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
+    <link rel="stylesheet" href="/css/pygments.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
+    <link rel="stylesheet" href="/css/main.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
     
-        <link rel="stylesheet" href="/css/override.css?t=2018-06-24%2016%3a07%3a26.7947458%20%2b0800%20CST%20m%3d%2b0.188890901">
+        <link rel="stylesheet" href="/css/override.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
     
 
 
@@ -199,50 +199,49 @@
                 <div class="section level2">
 <h2>前言</h2>
 <p>我們通常會利用<code>dplyr</code>套件搭配<code>TTR</code>套件的<code>SMA</code>函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma.js"></script>
 <p>但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。</p>
 <p>這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。</p>
 </div>
 <div class="section level2">
 <h2>資料來源</h2>
 <p>首先我們使用<code>tidyqunat</code>套件，這個套件整合<code>quantmode</code>套件與<code>tidyverse</code>套件。利用此套件的<code>tq_get</code>函數至<a href="https://finance.yahoo.com/">Yahoo Finance</a>下載台股大盤股價資料，做為此次的範例資料集。</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma-2.js"></script>
-<p>以下為sockData的資料內容:</p>
-<pre><code>## # A tibble: 2,573 x 7
-##          date    open    high     low   close  volume adjusted
-##        &lt;date&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
-##  1 2008-01-02 8491.57 8532.92 8319.58 8323.05 4372600 8323.018
-##  2 2008-01-03 8171.68 8243.93 8130.41 8184.20 3636400 8184.169
-##  3 2008-01-04 8134.04 8247.18 8097.85 8221.10 4603600 8221.067
-##  4 2008-01-07 7959.92 8015.93 7883.37 7883.37 4539800 7883.340
-##  5 2008-01-08 7909.26 8011.07 7895.78 7962.91 4618800 7962.880
-##  6 2008-01-09 7842.16 8085.06 7818.31 8085.06 4682400 8085.029
-##  7 2008-01-10 8153.08 8177.13 8057.27 8057.27 4480000 8057.239
-##  8 2008-01-11 8134.11 8151.95 8026.34 8029.31 3920400 8029.279
-##  9 2008-01-14 8254.00 8260.88 8097.68 8173.41 6106000 8173.379
-## 10 2008-01-15 8316.24 8546.20 8312.02 8428.84 7548600 8428.808
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma-2.js"></script>
+<p>以下為sockData的資料內容，我們只取出日期及收盤價資訊:</p>
+<pre><code>## # A tibble: 2,573 x 2
+##          date   close
+##        &lt;date&gt;   &lt;dbl&gt;
+##  1 2008-01-02 8323.05
+##  2 2008-01-03 8184.20
+##  3 2008-01-04 8221.10
+##  4 2008-01-07 7883.37
+##  5 2008-01-08 7962.91
+##  6 2008-01-09 8085.06
+##  7 2008-01-10 8057.27
+##  8 2008-01-11 8029.31
+##  9 2008-01-14 8173.41
+## 10 2008-01-15 8428.84
 ## # ... with 2,563 more rows</code></pre>
 </div>
 <div id="ma" class="section level2">
 <h2>快速計算MA</h2>
 <p>假設我們要計算5日、10日、20日、60日及90日移動平均線，則寫法為：</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma-3.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma-3"></script>
 <p>執行上述程式碼後，即會得到各天期的移動平均線:</p>
-<pre><code>## # A tibble: 2,573 x 12
-##          date    open    high     low   close  volume adjusted      MA5
-##        &lt;date&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-##  1 2008-01-02 8491.57 8532.92 8319.58 8323.05 4372600 8323.018       NA
-##  2 2008-01-03 8171.68 8243.93 8130.41 8184.20 3636400 8184.169       NA
-##  3 2008-01-04 8134.04 8247.18 8097.85 8221.10 4603600 8221.067       NA
-##  4 2008-01-07 7959.92 8015.93 7883.37 7883.37 4539800 7883.340       NA
-##  5 2008-01-08 7909.26 8011.07 7895.78 7962.91 4618800 7962.880 8114.926
-##  6 2008-01-09 7842.16 8085.06 7818.31 8085.06 4682400 8085.029 8067.328
-##  7 2008-01-10 8153.08 8177.13 8057.27 8057.27 4480000 8057.239 8041.942
-##  8 2008-01-11 8134.11 8151.95 8026.34 8029.31 3920400 8029.279 8003.584
-##  9 2008-01-14 8254.00 8260.88 8097.68 8173.41 6106000 8173.379 8061.592
-## 10 2008-01-15 8316.24 8546.20 8312.02 8428.84 7548600 8428.808 8154.778
-## # ... with 2,563 more rows, and 4 more variables: MA10 &lt;dbl&gt;, MA20 &lt;dbl&gt;,
-## #   MA60 &lt;dbl&gt;, MA90 &lt;dbl&gt;</code></pre>
+<pre><code>## # A tibble: 2,573 x 7
+##          date   close      MA5     MA10  MA20  MA60  MA90
+##        &lt;date&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 2008-01-02 8323.05       NA       NA    NA    NA    NA
+##  2 2008-01-03 8184.20       NA       NA    NA    NA    NA
+##  3 2008-01-04 8221.10       NA       NA    NA    NA    NA
+##  4 2008-01-07 7883.37       NA       NA    NA    NA    NA
+##  5 2008-01-08 7962.91 8114.926       NA    NA    NA    NA
+##  6 2008-01-09 8085.06 8067.328       NA    NA    NA    NA
+##  7 2008-01-10 8057.27 8041.942       NA    NA    NA    NA
+##  8 2008-01-11 8029.31 8003.584       NA    NA    NA    NA
+##  9 2008-01-14 8173.41 8061.592       NA    NA    NA    NA
+## 10 2008-01-15 8428.84 8154.778 8134.852    NA    NA    NA
+## # ... with 2,563 more rows</code></pre>
 <p>只要將想要計算的移動平均線日數放入<code>maDays</code>向量，透過<code>for</code>迴圈及<code>eval</code>函數運作就可解決我們的問題，不用寫太多相似的程式碼。</p>
 </div>
 <div id="eval" class="section level2">

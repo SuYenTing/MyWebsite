@@ -13,7 +13,7 @@ tags:
 
 我們通常會利用`dplyr`套件搭配`TTR`套件的`SMA`函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:
 
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma.js"></script>
 
 但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日...至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
 
@@ -27,13 +27,14 @@ tags:
 library(tidyquant)
 stockData <- c("^TWII") %>% 
   tq_get(get = "stock.price") %>% 
-  na.omit()
+  na.omit() %>%
+  select(date, close)
 ```
 
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma-2.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma-2.js"></script>
 
 
-以下為sockData的資料內容:
+以下為sockData的資料內容，我們只取出日期及收盤價資訊:
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 stockData
@@ -51,7 +52,7 @@ for(ix in maDays){
 }
 ```
 
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma-3.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma-3"></script>
 
 執行上述程式碼後，即會得到各天期的移動平均線:
 
