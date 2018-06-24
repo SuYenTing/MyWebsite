@@ -3,12 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/blog/parallel-introduction/</loc>
-    <lastmod>2018-06-02T00:00:00+00:00</lastmod>
+    <loc>/blog/use-eval-function-compute-ma/</loc>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/blog/tidyquant-package-introduction/</loc>
+    <lastmod>2018-06-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/parallel-introduction/</loc>
     <lastmod>2018-06-02T00:00:00+00:00</lastmod>
   </url>
   
@@ -74,7 +79,7 @@
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2018-06-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -109,13 +114,13 @@
   
   <url>
     <loc>/categories/programming/</loc>
-    <lastmod>2018-06-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/r/</loc>
-    <lastmod>2018-06-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -145,7 +150,7 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-06-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -1,7 +1,7 @@
 ---
 title: Tidyquant套件介紹
 author: Yen-Ting, Su
-date: '2018-06-02'
+date: '2018-06-10'
 slug: tidyquant-package-introduction
 categories:
   - Programming

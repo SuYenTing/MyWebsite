@@ -6,10 +6,36 @@
     <description>Recent content in R on Yen-Ting, Su Personal Website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 02 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>利用eval函數計算多個移動平均線指標</title>
+      <link>/blog/use-eval-function-compute-ma/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/use-eval-function-compute-ma/</guid>
+      <description>前言我們通常會利用dplyr套件搭配TTR套件的SMA函數來計算移動平均線指標
+</description>
+    </item>
+    
+    <item>
+      <title>Tidyquant套件介紹</title>
+      <link>/blog/tidyquant-package-introduction/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/tidyquant-package-introduction/</guid>
+      <description>前言 R語言在財務領域中，常用到的套件大概有下列幾個：
+ xts/zoo: 處理時間序列之套件。 TTR: 計算金融資產技術指標之套件。 quantmod: 金融資產技術分析回測套件，可至Yahoo Finance或Google Finance下載歷史股價數據或其他金融相關數據。並且整合TTR套件，繪製出漂亮的技術分析圖析。 PerformanceAnalytics: 計算金融資產報酬績效指標之套件。  現在的R語言在資料科學的浪潮之下，資料數據格式已走向tidy data形式。tidyverse套件已是每位R使用者必學的套件，使用此套件讓資料整理的程式碼簡潔又快速，讓R語言的方便性邁向更高一層。然而在財務領域的套件，目前皆是以時間序列資料格式(xts)為基礎建構而成。意即要使用這些套件的函數時，需要先將資料先轉為xts格式，才能做財務分析。若要在tidyverse套件中使用這些財務領域套件的函數，會有許多限制，需要做額外的整理才能使用，非常不方便。
+針對這個痛點，R語言有人站出來解決這個問題，Matt Dancho和Davis Vaughan開發出tidyquant套件，為財務領域套件與tidyverse套件搭起一座橋梁，讓tidyverse套件能夠很輕易地使用財務領域套件。
+圖1 tidyquant套件示意圖 (圖片截至於tidyquant套件的影片介紹)
+tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可參考以下連結:
+ Introduction to tidyquant Core Functions in tidyquant R Quantitative Analysis Package Integrations in tidyquant Scaling and Modeling with tidyquant Charting with tidyquant Performance Analysis with tidyquant  當然，本篇文章的說明也都是從以上的說明範例檔案來學習並寫出來的！差別在於我們是用中文說明及臺灣的股市價格資料來做範例，並只擷取重要部分，讓大家可以快速地掌握脈絡。
+數據下載 做股市分析的第一步就是要取得股價資料，tidyquant套件的tq_get()函數整合quantmod套件的getSymbols()函數。透過tq_get()函數可以從網路上一次下載多檔股票資料，並且以tibble格式儲存資料，讓後續的資料處理更加方便。此處示範如何下載2017/06/01至2018/05/31，鴻海、台積電、中華電信及臺灣加權指數的歷史價格資料。在tq_get()函數內的引數為:
+ x: 金融資產的代碼，需配合資料源。 get: 資料下載來源，此處我們設定參數為stock.price，從Yahoo Finance下載歷史股價資料。 from: 資料下載起始日。 to: 資料下載結束日。  tq_get()函數可下載的資料來源相當多，除了股價資料外，也有財務比率指標(Morningstar)、股利股息資料(Yahoo Finance)及總經資料(FRED)等，只要修改函數內的get參數即可取得。詳細內容可參考原作者的說明文件：Core Functions in tidyquant。</description>
+    </item>
     
     <item>
       <title>R的平行運算</title>
@@ -22,22 +48,6 @@
 使用套件library(parallel) # 平行運算套件library(tidyverse) # 資料科學專用套件包For迴圈寫法我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。
 output &amp;lt;- NULL # 建立儲存表power &amp;lt;- 2 # 次方數ptm &amp;lt;- proc.time() # 啟動計時器for(ix in 1:1000){rowData &amp;lt;- tibble(num1 = ix, num2 = ix^power) output &amp;lt;- output %&amp;gt;% bind_rows(rowData)}forTime &amp;lt;- proc.time() - ptm # 結束計時器 執行完後，output會是：
 output## # A tibble: 1,000 x 2## num1 num2## &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt;## 1 1 1## 2 2 4## 3 3 9## 4 4 16## 5 5 25## 6 6 36## 7 7 49## 8 8 64## 9 9 81## 10 10 100## # .</description>
-    </item>
-    
-    <item>
-      <title>Tidyquant套件介紹</title>
-      <link>/blog/tidyquant-package-introduction/</link>
-      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/tidyquant-package-introduction/</guid>
-      <description>前言 R語言在財務領域中，常用到的套件大概有下列幾個：
- xts/zoo: 處理時間序列之套件。 TTR: 計算金融資產技術指標之套件。 quantmod: 金融資產技術分析回測套件，可至Yahoo Finance或Google Finance下載歷史股價數據或其他金融相關數據。並且整合TTR套件，繪製出漂亮的技術分析圖析。 PerformanceAnalytics: 計算金融資產報酬績效指標之套件。  現在的R語言在資料科學的浪潮之下，資料數據格式已走向tidy data形式。tidyverse套件已是每位R使用者必學的套件，使用此套件讓資料整理的程式碼簡潔又快速，讓R語言的方便性邁向更高一層。然而在財務領域的套件，目前皆是以時間序列資料格式(xts)為基礎建構而成。意即要使用這些套件的函數時，需要先將資料先轉為xts格式，才能做財務分析。若要在tidyverse套件中使用這些財務領域套件的函數，會有許多限制，需要做額外的整理才能使用，非常不方便。
-針對這個痛點，R語言有人站出來解決這個問題，Matt Dancho和Davis Vaughan開發出tidyquant套件，為財務領域套件與tidyverse套件搭起一座橋梁，讓tidyverse套件能夠很輕易地使用財務領域套件。
-圖1 tidyquant套件示意圖 (圖片截至於tidyquant套件的影片介紹)
-tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可參考以下連結:
- Introduction to tidyquant Core Functions in tidyquant R Quantitative Analysis Package Integrations in tidyquant Scaling and Modeling with tidyquant Charting with tidyquant Performance Analysis with tidyquant  當然，本篇文章的說明也都是從以上的說明範例檔案來學習並寫出來的！差別在於我們是用中文說明及臺灣的股市價格資料來做範例，並只擷取重要部分，讓大家可以快速地掌握脈絡。
-數據下載 做股市分析的第一步就是要取得股價資料，tidyquant套件的tq_get()函數整合quantmod套件的getSymbols()函數。透過tq_get()函數可以從網路上一次下載多檔股票資料，並且以tibble格式儲存資料，讓後續的資料處理更加方便。此處示範如何下載2017/06/01至2018/05/31，鴻海、台積電、中華電信及臺灣加權指數的歷史價格資料。在tq_get()函數內的引數為:
- x: 金融資產的代碼，需配合資料源。 get: 資料下載來源，此處我們設定參數為stock.price，從Yahoo Finance下載歷史股價資料。 from: 資料下載起始日。 to: 資料下載結束日。  tq_get()函數可下載的資料來源相當多，除了股價資料外，也有財務比率指標(Morningstar)、股利股息資料(Yahoo Finance)及總經資料(FRED)等，只要修改函數內的get參數即可取得。詳細內容可參考原作者的說明文件：Core Functions in tidyquant。</description>
     </item>
     
     <item>
