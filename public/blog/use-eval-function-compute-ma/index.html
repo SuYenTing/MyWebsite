@@ -67,11 +67,11 @@
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
-    <link rel="stylesheet" href="/css/pygments.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
-    <link rel="stylesheet" href="/css/main.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
+    <link rel="stylesheet" href="/css/reset.css?t=2018-06-24%2016%3a27%3a51.1492796%20%2b0800%20CST%20m%3d%2b0.155910401">
+    <link rel="stylesheet" href="/css/pygments.css?t=2018-06-24%2016%3a27%3a51.1492796%20%2b0800%20CST%20m%3d%2b0.155910401">
+    <link rel="stylesheet" href="/css/main.css?t=2018-06-24%2016%3a27%3a51.1492796%20%2b0800%20CST%20m%3d%2b0.155910401">
     
-        <link rel="stylesheet" href="/css/override.css?t=2018-06-24%2016%3a15%3a26.0146051%20%2b0800%20CST%20m%3d%2b0.163903801">
+        <link rel="stylesheet" href="/css/override.css?t=2018-06-24%2016%3a27%3a51.1492796%20%2b0800%20CST%20m%3d%2b0.155910401">
     
 
 
@@ -199,14 +199,14 @@
                 <div class="section level2">
 <h2>前言</h2>
 <p>我們通常會利用<code>dplyr</code>套件搭配<code>TTR</code>套件的<code>SMA</code>函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-1"></script>
 <p>但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。</p>
 <p>這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。</p>
 </div>
 <div class="section level2">
 <h2>資料來源</h2>
 <p>首先我們使用<code>tidyqunat</code>套件，這個套件整合<code>quantmode</code>套件與<code>tidyverse</code>套件。利用此套件的<code>tq_get</code>函數至<a href="https://finance.yahoo.com/">Yahoo Finance</a>下載台股大盤股價資料，做為此次的範例資料集。</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma-2.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-2"></script>
 <p>以下為sockData的資料內容，我們只取出日期及收盤價資訊:</p>
 <pre><code>## # A tibble: 2,573 x 2
 ##          date   close
@@ -226,7 +226,7 @@
 <div id="ma" class="section level2">
 <h2>快速計算MA</h2>
 <p>假設我們要計算5日、10日、20日、60日及90日移動平均線，則寫法為：</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2?file=2018-06-24-use-eval-function-compute-ma-3"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-3"></script>
 <p>執行上述程式碼後，即會得到各天期的移動平均線:</p>
 <pre><code>## # A tibble: 2,573 x 7
 ##          date   close      MA5     MA10  MA20  MA60  MA90
@@ -246,6 +246,10 @@
 </div>
 <div id="eval" class="section level2">
 <h2>eval函數</h2>
+</div>
+<div class="section level2">
+<h2>完整程式碼範例</h2>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma"></script>
 </div>
 
                 <br>
