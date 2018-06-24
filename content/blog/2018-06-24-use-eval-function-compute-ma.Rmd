@@ -11,6 +11,56 @@ tags:
 
 ## 前言
 
-我們通常會利用`dplyr`套件搭配`TTR`套件的`SMA`函數來計算移動平均線指標
+我們通常會利用`dplyr`套件搭配`TTR`套件的`SMA`函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:
 
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js"></script>
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma.js"></script>
+
+但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日...至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
+
+這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。
+
+## 資料來源
+
+首先我們使用`tidyqunat`套件，這個套件整合`quantmode`套件與`tidyverse`套件。利用此套件的`tq_get`函數至[Yahoo Finance](https://finance.yahoo.com/)下載台股大盤股價資料，做為此次的範例資料集。
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(tidyquant)
+stockData <- c("^TWII") %>% 
+  tq_get(get = "stock.price") %>% 
+  na.omit()
+```
+
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma-2.js"></script>
+
+
+以下為sockData的資料內容:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+stockData
+```
+
+## 快速計算MA
+
+假設我們要計算5日、10日、20日、60日及90日移動平均線，則寫法為：
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+maDays <- c(5, 10, 20, 60, 90)
+for(ix in maDays){
+  evalCommand <- paste0("stockData <- stockData %>% mutate(MA",ix," = SMA(close, ", ix,"))")
+  eval(parse(text=evalCommand))
+}
+```
+
+<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2#file-2018-06-24-use-eval-function-compute-ma-3.js"></script>
+
+執行上述程式碼後，即會得到各天期的移動平均線:
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+stockData
+```
+
+只要將想要計算的移動平均線日數放入`maDays`向量，透過`for`迴圈及`eval`函數運作就可解決我們的問題，不用寫太多相似的程式碼。
+
+## eval函數
+
+
