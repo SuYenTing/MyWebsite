@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="author" content="Yen-Ting, Su">
+<meta name="description" content="前言 本篇文章將介紹如何在Microsoft Azure雲端平台上，建立CentOS作業系統的虛擬機器。並且能夠透過Windows遠端桌面連入進行控制，以及在CentOS作業系統上安裝R軟體和MySQL資料庫。
+CentOS為Linux系統之一，有興趣的人可參考維基介紹。
+參考來源部分，主要是參考賽門於iT邦幫忙網站發表的系列文章連線Microsoft Azure的CentOS 7虛擬機器，並透過Google尋找網路資源解決遇到的問題。
+另外這是我第一次碰Linux系統，本人非資訊背景出身。文章僅供參考，有發現錯誤或有問題的地方，歡迎底下留言指教，謝謝您！
+在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
+帳戶辦完後，登入Azure網站，並點選入口網站，即可開始建立虛擬機器。建立虛擬機器的方式，可參考Microsoft Azure 虛擬機器完全攻略，裡面有詳細的影音操作說明，包含Windows及Linux作業系統建置方式。以下簡單說明建置步驟：
+在入口網站畫面左側點選虛擬機器選項：
+按下左上角的新增，新增一台虛擬機器。接下要選擇作業系統，在搜尋列上輸入centos，點選CentOS-based 7.4：
+進入確認畫面，直接點選建立：
+接下來要依序設定共4個步驟，第1個步驟選項部分：
+ 名稱： 在Azure雲端平台上做虛擬機器辨識用的。 使用者名稱： 待會要登入虛擬機器時的帳號。 驗證類型： 可選SSH公開金鑰及單純用密碼形式。此處安全層級要高的話，應該選SSH公開金鑰會比較合適，但為方便此處還是選密碼。 資源群組： 方便管理多台虛擬機器使用，有時候一個專案可能需要開多台虛擬機器(例如分散式運算)，可以將多台虛擬機器劃分在同一個群組底下方便做管理。此處我們只用1台虛擬機器，所以資源群組的名稱就依個人喜好命名即可。 位置： 則是看虛擬機器想要架設在哪個地點，不同的地點收費會不一樣。  第2個步驟選項部分，則是挑選虛擬機器的規格，不同的規則會有不同的收費價錢，此處選擇Microsoft推薦的等級(即前面有星星的)：2顆CPU、記憶體8G及SSD硬碟16GB。
+Microsoft Azure有提供定價計算機，讓使用者可以計算虛擬機器在各個地點及配備所需要的金額。
+第3步驟部分，將公用輸入連接埠5個選項全部打開後，按下確定。
+第4步驟部分，是做最後確認，並且會預估此次開設虛擬機器每小時大概要花費的費用。確認無誤後，按下建立。
+按下建立後，會自動跳轉回儀表板，並且會出現正在部署的動態框，此處需要等待一段時間。等部署結束後，就可以準備開始連入虛擬機器。
+架設完後，點選動態框進去。
+此畫面下，可看到此台虛擬機器的IP及運作狀況。待會可透過IP連到這台虛擬機器進行溝通。
+如果此處是架設Windows作業系統，我們可以利用自己電腦的Windows遠端桌面服務，輸入IP及使用者帳密，即可快速連到該電腦進行操作。但因為此處我們是架設Linux系統，需要再安裝其他軟體，讓Linux系統能與Windows系統做連結。
+Windows遠端桌面連接CentOS虛擬機器方式 在Azure上架設好虛擬機器後，接下來我們要想辦法讓我們自己的電腦(Windows)能夠遠端連到CentOS作業系統，此處我們需要安裝3個軟體：
+ GNOME： Linux的桌面環境軟體之一，安裝此軟體後，能讓Linux擁有像Windows的桌面環境。 VNC Server： 讓Linux作業系統能夠從遠端連入進行操控。 xrdp： 能使用Windows遠端桌面連線至Linux桌面環境。  下載putty 因為虛擬機器目前無桌面環境，需要透過Bash指令來安裝。首先先下載putty.exe，此軟體能讓我們用Bash的方式和CentOS溝通。
+putty.exe下載位置: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+網站下載位置示意圖
+下載putty.exe後，打開輸入虛擬機器IP按確認即可使用：
+首次連入時，會出現此視窗，直接點選是即可：
+連入後，輸入帳號及密碼，即可與虛擬機器進行溝通：
+安裝EPEL EPEL(Extra Packages for Enterprise Linux)是由Fedora社群維護打造，提供多個新版本的套件庫供Linux系統使用。參考網站: https://fedoraproject.org/wiki/EPEL
+在putty輸入下列指令，即可安裝最新版本。
+sudo yum install https://dl.">
+
+<meta property="og:title" content="在Azure雲端平台建立CentOS虛擬機器，並安裝遠端桌面服務、R軟體及MySQL資料庫" />
+<meta property="og:description" content="前言 本篇文章將介紹如何在Microsoft Azure雲端平台上，建立CentOS作業系統的虛擬機器。並且能夠透過Windows遠端桌面連入進行控制，以及在CentOS作業系統上安裝R軟體和MySQL資料庫。
+CentOS為Linux系統之一，有興趣的人可參考維基介紹。
+參考來源部分，主要是參考賽門於iT邦幫忙網站發表的系列文章連線Microsoft Azure的CentOS 7虛擬機器，並透過Google尋找網路資源解決遇到的問題。
+另外這是我第一次碰Linux系統，本人非資訊背景出身。文章僅供參考，有發現錯誤或有問題的地方，歡迎底下留言指教，謝謝您！
+在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
+帳戶辦完後，登入Azure網站，並點選入口網站，即可開始建立虛擬機器。建立虛擬機器的方式，可參考Microsoft Azure 虛擬機器完全攻略，裡面有詳細的影音操作說明，包含Windows及Linux作業系統建置方式。以下簡單說明建置步驟：
+在入口網站畫面左側點選虛擬機器選項：
+按下左上角的新增，新增一台虛擬機器。接下要選擇作業系統，在搜尋列上輸入centos，點選CentOS-based 7.4：
+進入確認畫面，直接點選建立：
+接下來要依序設定共4個步驟，第1個步驟選項部分：
+ 名稱： 在Azure雲端平台上做虛擬機器辨識用的。 使用者名稱： 待會要登入虛擬機器時的帳號。 驗證類型： 可選SSH公開金鑰及單純用密碼形式。此處安全層級要高的話，應該選SSH公開金鑰會比較合適，但為方便此處還是選密碼。 資源群組： 方便管理多台虛擬機器使用，有時候一個專案可能需要開多台虛擬機器(例如分散式運算)，可以將多台虛擬機器劃分在同一個群組底下方便做管理。此處我們只用1台虛擬機器，所以資源群組的名稱就依個人喜好命名即可。 位置： 則是看虛擬機器想要架設在哪個地點，不同的地點收費會不一樣。  第2個步驟選項部分，則是挑選虛擬機器的規格，不同的規則會有不同的收費價錢，此處選擇Microsoft推薦的等級(即前面有星星的)：2顆CPU、記憶體8G及SSD硬碟16GB。
+Microsoft Azure有提供定價計算機，讓使用者可以計算虛擬機器在各個地點及配備所需要的金額。
+第3步驟部分，將公用輸入連接埠5個選項全部打開後，按下確定。
+第4步驟部分，是做最後確認，並且會預估此次開設虛擬機器每小時大概要花費的費用。確認無誤後，按下建立。
+按下建立後，會自動跳轉回儀表板，並且會出現正在部署的動態框，此處需要等待一段時間。等部署結束後，就可以準備開始連入虛擬機器。
+架設完後，點選動態框進去。
+此畫面下，可看到此台虛擬機器的IP及運作狀況。待會可透過IP連到這台虛擬機器進行溝通。
+如果此處是架設Windows作業系統，我們可以利用自己電腦的Windows遠端桌面服務，輸入IP及使用者帳密，即可快速連到該電腦進行操作。但因為此處我們是架設Linux系統，需要再安裝其他軟體，讓Linux系統能與Windows系統做連結。
+Windows遠端桌面連接CentOS虛擬機器方式 在Azure上架設好虛擬機器後，接下來我們要想辦法讓我們自己的電腦(Windows)能夠遠端連到CentOS作業系統，此處我們需要安裝3個軟體：
+ GNOME： Linux的桌面環境軟體之一，安裝此軟體後，能讓Linux擁有像Windows的桌面環境。 VNC Server： 讓Linux作業系統能夠從遠端連入進行操控。 xrdp： 能使用Windows遠端桌面連線至Linux桌面環境。  下載putty 因為虛擬機器目前無桌面環境，需要透過Bash指令來安裝。首先先下載putty.exe，此軟體能讓我們用Bash的方式和CentOS溝通。
+putty.exe下載位置: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+網站下載位置示意圖
+下載putty.exe後，打開輸入虛擬機器IP按確認即可使用：
+首次連入時，會出現此視窗，直接點選是即可：
+連入後，輸入帳號及密碼，即可與虛擬機器進行溝通：
+安裝EPEL EPEL(Extra Packages for Enterprise Linux)是由Fedora社群維護打造，提供多個新版本的套件庫供Linux系統使用。參考網站: https://fedoraproject.org/wiki/EPEL
+在putty輸入下列指令，即可安裝最新版本。
+sudo yum install https://dl." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/azure-install-centos/" />
+
+
+
+<meta property="article:published_time" content="2018-07-08T00:00:00&#43;00:00"/>
+
+<meta property="article:modified_time" content="2018-07-08T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+<title>
+
+
+     在Azure雲端平台建立CentOS虛擬機器，並安裝遠端桌面服務、R軟體及MySQL資料庫 
+
+</title>
+<link rel="canonical" href="/blog/azure-install-centos/">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/github.min.css">
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:500">
+
+
+
+    
+    <link rel="stylesheet" href="/css/reset.css?t=2018-07-11%2021%3a42%3a45.9396787%20%2b0800%20CST%20m%3d%2b0.158908201">
+    <link rel="stylesheet" href="/css/pygments.css?t=2018-07-11%2021%3a42%3a45.9396787%20%2b0800%20CST%20m%3d%2b0.158908201">
+    <link rel="stylesheet" href="/css/main.css?t=2018-07-11%2021%3a42%3a45.9396787%20%2b0800%20CST%20m%3d%2b0.158908201">
+    
+        <link rel="stylesheet" href="/css/override.css?t=2018-07-11%2021%3a42%3a45.9396787%20%2b0800%20CST%20m%3d%2b0.158908201">
+    
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/img/leaf.ico"
+
+>
+
+
+
+
+
+
+
+
+</head>
+
+
+<body lang="en">
+
+<section class="header">
+    <div class="container">
+        <div class="content">
+            
+                
+                
+                
+                
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+                <a href="/"><img class="avatar" src="/img/profile.jpg" srcset="/img/profile.jpg 1x"></a>
+            
+            <a href="/"><div class="name">Yen-Ting, Su</div></a>
+            
+            <nav>
+                <ul>
+                    
+                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
+                    
+                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+        
+            <a href="//github.com/SuYenTing" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
+        
+
+        
+
+	
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="mailto:sn86056@gmail.com"><img class="icon" src="/img/email.svg" alt="email" /></a>
+        
+
+        
+
+        
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    在Azure雲端平台建立CentOS虛擬機器，並安裝遠端桌面服務、R軟體及MySQL資料庫
+
+</div>
+
+                    <div class="initials"><a href="/">ad</a></div>
+                </div>
+                <div class="meta">
+                    
+                    <div class="date" title='Sun Jul 8 2018 00:00:00 UTC'>Jul 8, 2018</div>
+                    
+                    
+                </div>
+            </div>
+            <div class="markdown">
+                
+
+<h2 id="前言">前言</h2>
+
+<p>本篇文章將介紹如何在<a href="https://azure.microsoft.com/zh-tw/">Microsoft Azure</a>雲端平台上，建立CentOS作業系統的虛擬機器。並且能夠透過Windows遠端桌面連入進行控制，以及在CentOS作業系統上安裝R軟體和MySQL資料庫。</p>
+
+<p>CentOS為Linux系統之一，有興趣的人可參考<a href="https://zh.wikipedia.org/wiki/CentOS">維基</a>介紹。</p>
+
+<p>參考來源部分，主要是參考<u>賽門</u>於<a href="https://ithelp.ithome.com.tw/">iT邦幫忙網站</a>發表的系列文章<a href="https://ithelp.ithome.com.tw/articles/10158101">連線Microsoft Azure的CentOS 7虛擬機器</a>，並透過Google尋找網路資源解決遇到的問題。</p>
+
+<p>另外這是我第一次碰Linux系統，本人非資訊背景出身。文章僅供參考，有發現錯誤或有問題的地方，歡迎底下留言指教，謝謝您！</p>
+
+<hr />
+
+<h2 id="在azure建立centos虛擬機器">在Azure建立CentOS虛擬機器</h2>
+
+<p>首先需要至<a href="https://azure.microsoft.com/zh-tw/">Microsoft Azure</a>先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。</p>
+
+<p>帳戶辦完後，登入Azure網站，並點選入口網站，即可開始建立虛擬機器。建立虛擬機器的方式，可參考<a href="https://blogs.msdn.microsoft.com/msdntaiwan/2015/07/13/microsoft-azure-0/">Microsoft Azure 虛擬機器完全攻略</a>，裡面有詳細的影音操作說明，包含Windows及Linux作業系統建置方式。以下簡單說明建置步驟：</p>
+
+<p>在入口網站畫面左側點選<code>虛擬機器</code>選項：</p>
+
+<p><img src="1.png" alt="" /></p>
+
+<p>按下左上角的<code>新增</code>，新增一台虛擬機器。接下要選擇作業系統，在搜尋列上輸入<code>centos</code>，點選<code>CentOS-based 7.4</code>：</p>
+
+<p><img src="2.png" alt="" /></p>
+
+<p>進入確認畫面，直接點選<code>建立</code>：</p>
+
+<p><img src="3.png" alt="" /></p>
+
+<p>接下來要依序設定共4個步驟，第1個步驟選項部分：</p>
+
+<ul>
+<li>名稱： 在Azure雲端平台上做虛擬機器辨識用的。</li>
+<li>使用者名稱： 待會要登入虛擬機器時的帳號。</li>
+<li>驗證類型： 可選SSH公開金鑰及單純用密碼形式。此處安全層級要高的話，應該選SSH公開金鑰會比較合適，但為方便此處還是選密碼。</li>
+<li>資源群組： 方便管理多台虛擬機器使用，有時候一個專案可能需要開多台虛擬機器(例如分散式運算)，可以將多台虛擬機器劃分在同一個群組底下方便做管理。此處我們只用1台虛擬機器，所以資源群組的名稱就依個人喜好命名即可。</li>
+<li>位置： 則是看虛擬機器想要架設在哪個地點，不同的地點收費會不一樣。</li>
+</ul>
+
+<p><img src="4.png" alt="" /></p>
+
+<p>第2個步驟選項部分，則是挑選虛擬機器的規格，不同的規則會有不同的收費價錢，此處選擇Microsoft推薦的等級(即前面有星星的)：2顆CPU、記憶體8G及SSD硬碟16GB。</p>
+
+<p>Microsoft Azure有提供<a href="https://azure.microsoft.com/zh-tw/pricing/calculator/">定價計算機</a>，讓使用者可以計算虛擬機器在各個地點及配備所需要的金額。</p>
+
+<p><img src="5.png" alt="" /></p>
+
+<p>第3步驟部分，將<code>公用輸入連接埠</code>5個選項全部打開後，按下確定。</p>
+
+<p><img src="6.png" alt="" /></p>
+
+<p>第4步驟部分，是做最後確認，並且會預估此次開設虛擬機器每小時大概要花費的費用。確認無誤後，按下<code>建立</code>。</p>
+
+<p><img src="7.png" alt="" /></p>
+
+<p>按下建立後，會自動跳轉回儀表板，並且會出現正在部署的動態框，此處需要等待一段時間。等部署結束後，就可以準備開始連入虛擬機器。</p>
+
+<p><img src="8.png" alt="" /></p>
+
+<p>架設完後，點選動態框進去。</p>
+
+<p><img src="9.png" alt="" /></p>
+
+<p>此畫面下，可看到此台虛擬機器的IP及運作狀況。待會可透過IP連到這台虛擬機器進行溝通。</p>
+
+<p><img src="10.png" alt="" /></p>
+
+<p>如果此處是架設Windows作業系統，我們可以利用自己電腦的Windows遠端桌面服務，輸入IP及使用者帳密，即可快速連到該電腦進行操作。但因為此處我們是架設Linux系統，需要再安裝其他軟體，讓Linux系統能與Windows系統做連結。</p>
+
+<h2 id="windows遠端桌面連接centos虛擬機器方式">Windows遠端桌面連接CentOS虛擬機器方式</h2>
+
+<p>在Azure上架設好虛擬機器後，接下來我們要想辦法讓我們自己的電腦(Windows)能夠遠端連到CentOS作業系統，此處我們需要安裝3個軟體：</p>
+
+<ol>
+<li>GNOME： Linux的桌面環境軟體之一，安裝此軟體後，能讓Linux擁有像Windows的桌面環境。</li>
+<li>VNC Server： 讓Linux作業系統能夠從遠端連入進行操控。</li>
+<li>xrdp： 能使用Windows遠端桌面連線至Linux桌面環境。</li>
+</ol>
+
+<h3 id="下載putty">下載putty</h3>
+
+<p>因為虛擬機器目前無桌面環境，需要透過Bash指令來安裝。首先先下載putty.exe，此軟體能讓我們用Bash的方式和CentOS溝通。</p>
+
+<p>putty.exe下載位置: <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html</a></p>
+
+<p>網站下載位置示意圖</p>
+
+<p><img src="11.png" alt="" /></p>
+
+<p>下載putty.exe後，打開輸入虛擬機器IP按確認即可使用：</p>
+
+<p><img src="12.png" alt="" /></p>
+
+<p>首次連入時，會出現此視窗，直接點選<code>是</code>即可：</p>
+
+<p><img src="13.png" alt="" /></p>
+
+<p>連入後，輸入帳號及密碼，即可與虛擬機器進行溝通：</p>
+
+<p><img src="14.png" alt="" /></p>
+
+<h3 id="安裝epel">安裝EPEL</h3>
+
+<p>EPEL(Extra Packages for Enterprise Linux)是由Fedora社群維護打造，提供多個新版本的套件庫供Linux系統使用。參考網站: <a href="https://fedoraproject.org/wiki/EPEL">https://fedoraproject.org/wiki/EPEL</a></p>
+
+<p>在putty輸入下列指令，即可安裝最新版本。</p>
+
+<pre><code>sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+</code></pre>
+
+<p>安裝完成畫面</p>
+
+<p><img src="15.png" alt="" /></p>
+
+<p>輸入以下指令可確認是否安裝：</p>
+
+<pre><code>sudo yum list installed | grep epel
+</code></pre>
+
+<p>若有回傳結果，代表已成功安裝：</p>
+
+<p><img src="16.png" alt="" /></p>
+
+<h3 id="安裝nux-dextop">安裝Nux dextop</h3>
+
+<p>Nux dextop是另外一個Linux的套件庫，此處需要進行安裝。</p>
+
+<pre><code>sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86\_64/nux-dextop-release-0-1.el7.nux.noarch.rpm
+</code></pre>
+
+<h3 id="安裝gnome桌面環境">安裝GNOME桌面環境</h3>
+
+<pre><code>sudo yum groupinstall basic-desktop desktop-platform x11 fonts
+sudo yum groupinstall &quot;GNOME Desktop&quot; &quot;Graphical Administration Tools&quot;
+</code></pre>
+
+<ul>
+<li>備註: 上面這個指令複製到putty時，上引號(&ldquo;)會變成全形，需要手動改成半形才會正常安裝，執行後需要等待安裝一段時間。</li>
+</ul>
+
+<pre><code>sudo ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target
+</code></pre>
+
+<h3 id="安裝vnc-sever及-xrdp">安裝VNC Sever及 xrdp</h3>
+
+<pre><code>sudo yum install xrdp tigervnc-server
+</code></pre>
+
+<h3 id="設定xrdp">設定xrdp</h3>
+
+<p>執行xrdp</p>
+
+<pre><code>sudo systemctl start xrdp.service
+</code></pre>
+
+<p>觀察xrdp運作情況</p>
+
+<pre><code>sudo netstat -antup | grep xrdp
+</code></pre>
+
+<p>畫面如下所示：</p>
+
+<p><img src="17.png" alt="" /></p>
+
+<p>設定重開機後會自動啟動xrdp</p>
+
+<pre><code>sudo systemctl enable xrdp.service
+</code></pre>
+
+<h3 id="設定vnc-sever">設定VNC Sever</h3>
+
+<pre><code>sudo vncserver
+</code></pre>
+
+<p>執行上一行程式碼後，會需要設定VNC Sever密碼。</p>
+
+<pre><code>sudo pkill vnc
+sudo cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
+sudo vi /etc/systemd/system/vncserver@:1.service
+</code></pre>
+
+<p>執行上行程式碼後，會開啟vi文件，在vi文件中尋找下列段落並進行修改:</p>
+
+<pre><code>[Service]
+Type=forking
+Clean any existing files in /tmp/.X11-unix environment
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :'
+ExecStart=/sbin/runuser -l &lt;USER&gt; -c &quot;/usr/bin/vncserver %i&quot;
+PIDFile=/home/&lt;USER&gt;/.vnc/%H%i.pid
+ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :'
+</code></pre>
+
+<p>將文件中2個<code>&lt;user&gt;</code>改為虛擬機器的使用者名稱(我的使用者名稱為mycentos)，並在ExecStart開始的這一行後方加上<code>-geometry 1900x1080</code>
+參數。1920x1080參數代表顯示解析度，可依Windows桌面的解析度自行調整。</p>
+
+<ul>
+<li>注意: 解析度中間的x是英文小寫x，不是*。</li>
+</ul>
+
+<p>修改完後，vi文件內容如下所示：</p>
+
+<p><img src="18.png" alt="" /></p>
+
+<p>儲存文件(輸入<code>:wq</code>)後跳出，啟動VNC Sever服務：</p>
+
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl start vncserver@:1.service
+sudo systemctl enable vncserver@:1.service
+</code></pre>
+
+<h3 id="修改xrdp設定">修改xrdp設定</h3>
+
+<pre><code>sudo vi /etc/xrdp/xrdp.ini
+</code></pre>
+
+<p>在vi文件中尋找下列段落(要拉很下面):</p>
+
+<pre><code>[Xvnc]
+name=Xvnc
+lib=libvnc.so
+username=ask
+password=ask
+ip=127.0.0.1
+port=-1
+</code></pre>
+
+<p>將上述段落的port參數改為5901，修改後vi文件為:</p>
+
+<pre><code>[Xvnc]
+name=Xvnc
+lib=libvnc.so
+username=ask
+password=ask
+ip=127.0.0.1
+port=5901
+</code></pre>
+
+<p>修改完後儲存<code>:wq</code>，重新啟動xrdp服務:</p>
+
+<pre><code>sudo systemctl restart xrdp.service
+</code></pre>
+
+<p>重新開機</p>
+
+<pre><code>sudo reboot
+</code></pre>
+
+<h3 id="windows遠端桌面連入centos虛擬機器">Windows遠端桌面連入CentOS虛擬機器</h3>
+
+<p>上述步驟處理完後，即可用Windows遠端桌面連入CentOS虛擬機器：</p>
+
+<p><img src="19.png" alt="" /></p>
+
+<p>進入後，還需要再輸入CentOS使用者帳號及密碼：</p>
+
+<p><img src="20.png" alt="" /></p>
+
+<p>登入後，即可看到CentOS虛擬機器的桌面：</p>
+
+<p><img src="21.png" alt="" /></p>
+
+<h2 id="安裝r程式">安裝R程式</h2>
+
+<p>安裝R程式很簡單，直接在putty上直接輸入指令：</p>
+
+<pre><code>sudo yum install R
+</code></pre>
+
+<h2 id="安裝rstudio">安裝Rstudio</h2>
+
+<p>安裝方式及安裝檔案路徑可參考Rstudio網站:
+<a href="https://www.rstudio.com/products/rstudio/download-server/">https://www.rstudio.com/products/rstudio/download-server/</a></p>
+
+<pre><code>sudo wget https://download2.rstudio.org/rstudio-server-rhel-1.1.453-x86_64.rpm
+sudo yum install rstudio-server-rhel-1.1.453-x86_64.rpm
+</code></pre>
+
+<p>安裝完後，需先至Azure設定輸入埠規格，將port=8787開啟。並在Centos防火牆加上例外規則。</p>
+
+<pre><code>sudo firewall-cmd --permanent --zone=public --add-port=8787/tcp
+sudo firewall-cmd --reload
+</code></pre>
+
+<p>規則開啟後，直接在網址輸入<strong>http://<server-ip>:8787</strong>即可連入Rstudio作業環境。</p>
+
+<h2 id="安裝mysql">安裝MySQL</h2>
+
+<p>建議安裝5.7版，最新的8.0版安裝後在新增使用者及在R軟體安裝<code>RMySQL</code>套件會報錯</p>
+
+<p>參考網站: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-7">https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-centos-7</a></p>
+
+<p>指定安裝版本</p>
+
+<pre><code>sudo wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+sudo rpm -ivh mysql57-community-release-el7-9.noarch.rpm
+</code></pre>
+
+<p>安裝MySQL</p>
+
+<pre><code>sudo yum install mysql-server
+</code></pre>
+
+<p>啟動MySQL</p>
+
+<pre><code>sudo systemctl start mysqld
+</code></pre>
+
+<p>觀察MySQL運作狀況</p>
+
+<pre><code>sudo systemctl status mysqld
+</code></pre>
+
+<p>取得root暫時密碼</p>
+
+<pre><code>sudo grep 'temporary password' /var/log/mysqld.log
+</code></pre>
+
+<p>重新設定root密碼，輸入此行後，將暫時密碼輸入進去，即會啟動MySQL：</p>
+
+<pre><code>sudo mysql -uroot -p
+</code></pre>
+
+<p>在MySQL程式中，輸入MySQL程式的密碼修改語句，即可更改密碼：</p>
+
+<pre><code class="language-sql">ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '[要改的密碼]';
+</code></pre>
+
+<p>密碼更改完後，離開資料庫</p>
+
+<pre><code>quit
+</code></pre>
+
+<p>連線至MySQL，測試是否能夠運作</p>
+
+<pre><code>sudo mysql -u root -p
+</code></pre>
+
+<p>在MySQL程式中，輸入MySQL程式碼查詢目前有的資料庫</p>
+
+<pre><code class="language-sql">show databases;
+</code></pre>
+
+<p>若沒問題，離開MySQL資料庫</p>
+
+<pre><code>quit
+</code></pre>
+
+<h2 id="安裝mysql-workbench">安裝MySQL Workbench</h2>
+
+<p>MySQL Workbench是MySQL資料庫的整合開發環境，可讓使用者不用輸入複雜的指令，來管理資料庫。</p>
+
+<p>參考網站:</p>
+
+<ol>
+<li><a href="https://dev.mysql.com/doc/workbench/en/wb-installing-linux.html">https://dev.mysql.com/doc/workbench/en/wb-installing-linux.html</a></li>
+<li><a href="https://stackoverflow.com/questions/47475710/mysql-workbench-cant-open-on-centos-7">https://stackoverflow.com/questions/47475710/mysql-workbench-cant-open-on-centos-7</a></li>
+</ol>
+
+<p>目前MySQL workbench最新版本在CentOS7上支援不佳，安裝後無法打開，因此需指定舊版本安裝。</p>
+
+<pre><code>sudo yum remove mysql-workbench
+sudo yum install yum-plugin-versionlock
+sudo yum install mysql-workbench-community-6.3.8-1.el7.*
+sudo yum versionlock mysql-workbench-community-6.3.8-1.el7.*
+</code></pre>
+
+<p>安裝完後，若要讓外部連入資料庫。需先至Azure設定輸入埠規格，將port=3306開啟。並開啟防火牆例外規則(port=3306)。</p>
+
+<pre><code>sudo firewall-cmd --permanent --zone=public --add-port=3306/tcp
+sudo firewall-cmd --reload
+</code></pre>
+
+<h2 id="處理mysql-workbench中文亂碼問題">處理MySQL Workbench中文亂碼問題</h2>
+
+<p>MySQL在安裝時會默認將字碼設定為latin，若將utf-8字碼的中文字資料匯入至MySQL資料庫後，在MySQL Workbench看資料時會變成亂碼。因此需要將MySQL資料庫字碼設定改為utf-8。</p>
+
+<p>參考網站: <a href="https://stackoverflow.com/questions/3513773/change-mysql-default-character-set-to-utf-8-in-my-cnf">https://stackoverflow.com/questions/3513773/change-mysql-default-character-set-to-utf-8-in-my-cnf</a></p>
+
+<p>進入MySQL設定檔</p>
+
+<pre><code>sudo vi /etc/my.cnf
+</code></pre>
+
+<p>在my.cnf文件中，[mysqld]底下加入3行指令:</p>
+
+<pre><code>collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
+</code></pre>
+
+<p>輸入完後，如下圖所示，然後儲存(<code>:wq</code>)</p>
+
+<p><img src="22.png" alt="" /></p>
+
+<p>重啟MySQL</p>
+
+<pre><code>sudo systemctl stop mysqld
+sudo systemctl start mysqld
+</code></pre>
+
+<p>在MySQL workbench內，輸入MySQL程式碼，確認字碼是否轉成功</p>
+
+<pre><code class="language-sql">show variables like 'char%';
+</code></pre>
+
+<p>查詢結果應如下所示：</p>
+
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th>Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>collation_connection</td>
+<td>utf8_general_ci</td>
+</tr>
+
+<tr>
+<td>collation_database</td>
+<td>utf8_unicode_ci</td>
+</tr>
+
+<tr>
+<td>collation_server</td>
+<td>utf8_unicode_ci</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="安裝r套件發生內存不足問題">安裝R套件發生內存不足問題</h2>
+
+<p>我在安裝R套件(fBasics)時，有遇到記憶體不足問題：</p>
+
+<pre><code class="language-ruby">Error in system2(file.path(R.home(&quot;bin&quot;), &quot;R&quot;), c(if (nzchar(arch)) paste0(&quot;--arch=&quot;,  : 
+  cannot popen ' '/usr/lib64/R/bin/R' --no-save --slave 2&gt;&amp;1 &lt; '/tmp/Rtmpw5YoIV/file15cc3e680577'', probable reason 'Cannot allocate memory'
+</code></pre>
+
+<p>套件安裝時需要大量記憶體，記憶體空間不足就會發生這個狀況。若要解決此狀況，可透過Linux 上的「Swap 空間」來協助。Azure本身的Swap設定是關起來的，需要修改設定檔來開啟。</p>
+
+<p>參考文章：
+<a href="https://serverfault.com/questions/695616/how-to-create-a-swap-for-azure-ubuntu-vm">https://serverfault.com/questions/695616/how-to-create-a-swap-for-azure-ubuntu-vm</a></p>
+
+<h2 id="修改centos作業系統為繁體中文語系">修改CentOS作業系統為繁體中文語系</h2>
+
+<p>如果在操作CentOS的桌面環境覺得看英文太難，可以來透過設定來修改。</p>
+
+<p>參考網站: <a href="https://www.phpini.com/linux/rhel-centos-7-change-system-locale">https://www.phpini.com/linux/rhel-centos-7-change-system-locale</a></p>
+
+<pre><code>sudo localectl set-locale LANG=zh_TW.utf8
+</code></pre>
+
+<p>修改完後重開機，即可看到桌面環境轉為繁體中文。</p>
+
+<pre><code>sudo reboot
+</code></pre>
+
+                <br>
+		<p class="back-to-posts"><a href="/blog/">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "SuYenTing" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/r.min.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/yaml.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+
+
+</body>
+</html>
+
