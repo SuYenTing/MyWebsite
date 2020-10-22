@@ -1,26 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Lstm on Yen-Ting, Su Personal Website</title>
-    <link>/tags/lstm/</link>
-    <description>Recent content in Lstm on Yen-Ting, Su Personal Website</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
-    <lastBuildDate>Sat, 07 Apr 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/lstm/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>LSTM長短期模型應用於股市預測</title>
-      <link>/blog/lstm/</link>
-      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/lstm/</guid>
-      <description>前言長短期記憶模型(Long Short-Term Memory, LSTM)為深度學習領域的循環神經網路(Recurrent Neural Network, RNN)中的一個發展模型。一般常見的機器學習模型，對於具有時間序列的資料掌握度並不是非常高。而LSTM模型，則是專門用來處理具有時間序列性質的資料，且目前此模型在自然語言的處理上，已經有許多文獻進行探討且有相當的成果。
-在應用股市的預測上，傳統財務領域都會透過ARMA、GARCH或VAR等時間序列的計量模型來進行預測。而本篇將以深度學習中的LSTM模型來進行預測。
-</description>
-    </item>
-    
-  </channel>
-</rss>

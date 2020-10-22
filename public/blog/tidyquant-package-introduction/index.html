@@ -45,7 +45,7 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/github.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
 
 
 
@@ -55,11 +55,11 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2020-10-23%2007%3a21%3a44.4156763%20%2b0800%20CST%20m%3d%2b0.284507001">
-    <link rel="stylesheet" href="/css/pygments.css?t=2020-10-23%2007%3a21%3a44.4156763%20%2b0800%20CST%20m%3d%2b0.284507001">
-    <link rel="stylesheet" href="/css/main.css?t=2020-10-23%2007%3a21%3a44.4156763%20%2b0800%20CST%20m%3d%2b0.284507001">
+    <link rel="stylesheet" href="/css/reset.css?t=2020-10-23%2007%3a47%3a36.323818%20%2b0800%20CST%20m%3d%2b0.202163001">
+    <link rel="stylesheet" href="/css/pygments.css?t=2020-10-23%2007%3a47%3a36.323818%20%2b0800%20CST%20m%3d%2b0.202163001">
+    <link rel="stylesheet" href="/css/main.css?t=2020-10-23%2007%3a47%3a36.323818%20%2b0800%20CST%20m%3d%2b0.202163001">
     
-        <link rel="stylesheet" href="/css/override.css?t=2020-10-23%2007%3a21%3a44.4156763%20%2b0800%20CST%20m%3d%2b0.284507001">
+        <link rel="stylesheet" href="/css/override.css?t=2020-10-23%2007%3a47%3a36.323818%20%2b0800%20CST%20m%3d%2b0.202163001">
     
 
 
@@ -98,14 +98,6 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
                 
                     
                 
-                    
-                
-                    
-                
-                    
-                
-                    
-                
                 
                 <a href="/"><img class="avatar" src="/img/profile.jpg" srcset="/img/profile.jpg 1x"></a>
             
@@ -133,7 +125,11 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
 
         
 
+        
+
 	
+
+        
 
         
 
@@ -161,8 +157,6 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
 </section>
 
 
-
-
 <section class="main post non-narrow zero-top-spacing">
     <div class="container">
         <div class="content">
@@ -180,6 +174,8 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
                     
                     <div class="date" title='Sun Jun 10 2018 00:00:00 UTC'>Jun 10, 2018</div>
                     
+                    
+		    <div class="reading-time"><div class="middot"></div>10 minutes read</div>
                     
                 </div>
             </div>
@@ -218,15 +214,15 @@ tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可
 </ol>
 <p><code>tq_get()</code>函數可下載的資料來源相當多，除了股價資料外，也有財務比率指標(<a href="https://www.morningstar.com/">Morningstar</a>)、股利股息資料(<a href="https://finance.yahoo.com/">Yahoo Finance</a>)及總經資料(<a href="https://fred.stlouisfed.org/">FRED</a>)等，只要修改函數內的<code>get</code>參數即可取得。詳細內容可參考原作者的說明文件：<a href="https://cran.r-project.org/web/packages/tidyquant/vignettes/TQ01-core-functions-in-tidyquant.html#get-quantitative-data">Core Functions in tidyquant</a>。</p>
 <p>我們在<a href="https://finance.yahoo.com/">Yahoo Finance</a>要下載的股票代碼為：鴻海(2317.TW)、台積電(2330.TW)及中華電信(2412.TW)及臺灣加權指數(^TWII)，程式碼寫法如下:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 載入套件</span>
-<span style="color:#a6e22e">library</span>(tidyquant)
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 載入套件</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyquant</span><span class="p">)</span>
 
-<span style="color:#75715e"># 下載資料</span>
-stockData <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;^TWII&#34;</span>, <span style="color:#e6db74">&#34;2317.TW&#34;</span>, <span style="color:#e6db74">&#34;2330.TW&#34;</span>, <span style="color:#e6db74">&#34;2412.TW&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">tq_get</span>(get <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;stock.price&#34;</span>, from <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2017-06-01&#34;</span>, to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2018-05-31&#34;</span>)
+<span class="c1"># 下載資料</span>
+<span class="n">stockData</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#34;^TWII&#34;</span><span class="p">,</span> <span class="s">&#34;2317.TW&#34;</span><span class="p">,</span> <span class="s">&#34;2330.TW&#34;</span><span class="p">,</span> <span class="s">&#34;2412.TW&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">tq_get</span><span class="p">(</span><span class="n">get</span> <span class="o">=</span> <span class="s">&#34;stock.price&#34;</span><span class="p">,</span> <span class="n">from</span> <span class="o">=</span> <span class="s">&#34;2017-06-01&#34;</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="s">&#34;2018-05-31&#34;</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockData
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span>
 </code></pre></div><pre><code>## # A tibble: 988 x 8
 ##    symbol       date     open     high      low    close  volume adjusted
 ##     &lt;chr&gt;     &lt;date&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
@@ -245,20 +241,20 @@ stockData
 <hr>
 <h2 id="範例資料來源">範例資料來源</h2>
 <p>除了透過<code>tq_get()</code>函數自<a href="https://finance.yahoo.com/">Yahoo Finance</a>下載資料外，也可以從外部資料庫讀入數據，整理成<code>tidyquant</code>所需要的資料格式。此處以臺灣大專院校財金系最常使用的台灣經濟新報資料庫(TEJ)為例，透過特殊轉檔功能自TEJ下載資料輸出成txt檔案，然後再用R軟體讀入數據。資料期間為2017/06/01至2018/05/31之日頻調整後股價資料。分析資產標的分別為鴻海、台積電、中華電信股票及臺灣加權指數。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 讀取數據</span>
-stockData <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.table</span>(<span style="color:#e6db74">&#34;tej_data.txt&#34;</span>, header <span style="color:#f92672">=</span> T, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\t&#34;</span>, stringsAsFactors <span style="color:#f92672">=</span> F) <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">as_data_frame</span>()
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 讀取數據</span>
+<span class="n">stockData</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&#34;tej_data.txt&#34;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="bp">T</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&#34;\t&#34;</span><span class="p">,</span> <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="bp">F</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">as_data_frame</span><span class="p">()</span>
 
-<span style="color:#75715e"># 整理資料欄位(依序為股票代碼、名稱、日期、開盤價、最高價、最低價、收盤價、成交量及成交金額)</span>
-<span style="color:#a6e22e">colnames</span>(stockData) <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;code&#34;</span>, <span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;date&#34;</span>, <span style="color:#e6db74">&#34;open&#34;</span>, <span style="color:#e6db74">&#34;high&#34;</span>, <span style="color:#e6db74">&#34;low&#34;</span>, <span style="color:#e6db74">&#34;close&#34;</span>, <span style="color:#e6db74">&#34;volume&#34;</span>, <span style="color:#e6db74">&#34;tradeValue&#34;</span>)
+<span class="c1"># 整理資料欄位(依序為股票代碼、名稱、日期、開盤價、最高價、最低價、收盤價、成交量及成交金額)</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">stockData</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#34;code&#34;</span><span class="p">,</span> <span class="s">&#34;name&#34;</span><span class="p">,</span> <span class="s">&#34;date&#34;</span><span class="p">,</span> <span class="s">&#34;open&#34;</span><span class="p">,</span> <span class="s">&#34;high&#34;</span><span class="p">,</span> <span class="s">&#34;low&#34;</span><span class="p">,</span> <span class="s">&#34;close&#34;</span><span class="p">,</span> <span class="s">&#34;volume&#34;</span><span class="p">,</span> <span class="s">&#34;tradeValue&#34;</span><span class="p">)</span>
 
-<span style="color:#75715e"># 將股票代碼及名稱空白格刪除</span>
-stockData <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(code <span style="color:#f92672">=</span> <span style="color:#a6e22e">gsub</span>(<span style="color:#e6db74">&#34;\\s+&#34;</span>,<span style="color:#e6db74">&#34;&#34;</span>, code),
-         name <span style="color:#f92672">=</span> <span style="color:#a6e22e">gsub</span>(<span style="color:#e6db74">&#34;\\s+&#34;</span>,<span style="color:#e6db74">&#34;&#34;</span>, name))
+<span class="c1"># 將股票代碼及名稱空白格刪除</span>
+<span class="n">stockData</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">mutate</span><span class="p">(</span><span class="n">code</span> <span class="o">=</span> <span class="nf">gsub</span><span class="p">(</span><span class="s">&#34;\\s+&#34;</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">code</span><span class="p">),</span>
+         <span class="n">name</span> <span class="o">=</span> <span class="nf">gsub</span><span class="p">(</span><span class="s">&#34;\\s+&#34;</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockData
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span>
 </code></pre></div><pre><code>## # A tibble: 996 x 9
 ##     code     name     date     open     high      low    close  volume
 ##    &lt;chr&gt;    &lt;chr&gt;    &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;int&gt;
@@ -274,16 +270,16 @@ stockData
 ## 10  2330   台積電 20170603   202.26   202.26   201.29   202.26    1535
 ## # ... with 986 more rows, and 1 more variables: tradeValue &lt;int&gt;
 </code></pre><p>由於TEJ資料庫我們採用特殊轉檔功能輸出，因此日期是以8碼數字格式儲存。為了讓<code>tidyquant</code>套件能夠運作，需將日期欄位由數字格式轉為日期格式。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 將8碼數字日期格式轉為日期格式</span>
-DateConvert <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(date){
-  date <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.Date</span>(<span style="color:#a6e22e">as.character</span>(date), <span style="color:#e6db74">&#34;%Y%m%d&#34;</span>)
-  <span style="color:#a6e22e">return</span>(date)
-}
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 將8碼數字日期格式轉為日期格式</span>
+<span class="n">DateConvert</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">date</span><span class="p">){</span>
+  <span class="n">date</span> <span class="o">&lt;-</span> <span class="nf">as.Date</span><span class="p">(</span><span class="nf">as.character</span><span class="p">(</span><span class="n">date</span><span class="p">),</span> <span class="s">&#34;%Y%m%d&#34;</span><span class="p">)</span>
+  <span class="nf">return</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="p">}</span>
 
-stockData <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">mutate</span>(date <span style="color:#f92672">=</span> <span style="color:#a6e22e">DateConvert</span>(date))
+<span class="n">stockData</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span> <span class="nf">mutate</span><span class="p">(</span><span class="n">date</span> <span class="o">=</span> <span class="nf">DateConvert</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockData
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span>
 </code></pre></div><pre><code>## # A tibble: 996 x 9
 ##     code     name       date     open     high      low    close  volume
 ##    &lt;chr&gt;    &lt;chr&gt;     &lt;date&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;int&gt;
@@ -309,20 +305,20 @@ stockData
 <li>技術指標函數之參數設定。</li>
 </ol>
 <p>透過<code>group_by()</code>函數搭配<code>tq_mutate()</code>函數以及<code>TTR</code>套件的技術指標函數，即可用簡潔的程式碼快速地計算出各支股票的技術指標值。以下為計算5日簡單移動平均線範例：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 計算簡單移動平均線參數</span>
-stockData <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">arrange</span>(code, date) <span style="color:#f92672">%&gt;%</span>         <span style="color:#75715e"># 資料排序</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>              <span style="color:#75715e"># 以股票代碼為群組目標</span>
-  <span style="color:#a6e22e">tq_mutate</span>(select <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(close),    <span style="color:#75715e"># 選擇收盤價</span>
-            mutate_fun <span style="color:#f92672">=</span> SMA,     <span style="color:#75715e"># 選擇簡單移動平均線</span>
-            n <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>) <span style="color:#f92672">%&gt;%</span>            <span style="color:#75715e"># 5日簡單移動平均線參數</span>
-  <span style="color:#a6e22e">rename</span>(ma5 <span style="color:#f92672">=</span> SMA)               <span style="color:#75715e"># 重新命名欄位</span>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 計算簡單移動平均線參數</span>
+<span class="n">stockData</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">arrange</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>         <span class="c1"># 資料排序</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>              <span class="c1"># 以股票代碼為群組目標</span>
+  <span class="nf">tq_mutate</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="n">close</span><span class="p">),</span>    <span class="c1"># 選擇收盤價</span>
+            <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span>     <span class="c1"># 選擇簡單移動平均線</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="m">5</span><span class="p">)</span> <span class="o">%&gt;%</span>            <span class="c1"># 5日簡單移動平均線參數</span>
+  <span class="nf">rename</span><span class="p">(</span><span class="n">ma5</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">)</span>               <span class="c1"># 重新命名欄位</span>
   
-<span style="color:#75715e"># 觀看資料</span>
-stockData <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">select</span>(code, date, close, ma5) <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">arrange</span>(code, date) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">na.omit</span>()
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span> <span class="o">%&gt;%</span> 
+  <span class="nf">select</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">close</span><span class="p">,</span> <span class="n">ma5</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">arrange</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">na.omit</span><span class="p">()</span>
 </code></pre></div><pre><code>## # A tibble: 980 x 4
 ## # Groups:   code [4]
 ##     code       date  close     ma5
@@ -339,25 +335,25 @@ stockData <span style="color:#f92672">%&gt;%</span>
 ## 10  2317 2017-06-19 105.34 100.244
 ## # ... with 970 more rows
 </code></pre><p>如果要再算10日及20日簡單移動平均線，則繼續向後新增<code>tq_mutate()</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
   
-  <span style="color:#75715e"># 計算10日簡單移動平均線參數</span>
-  <span style="color:#a6e22e">tq_mutate</span>(select <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(close),
-            mutate_fun <span style="color:#f92672">=</span> SMA,
-            n <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">rename</span>(ma10 <span style="color:#f92672">=</span> SMA) <span style="color:#f92672">%&gt;%</span>
+  <span class="c1"># 計算10日簡單移動平均線參數</span>
+  <span class="nf">tq_mutate</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="n">close</span><span class="p">),</span>
+            <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="m">10</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">rename</span><span class="p">(</span><span class="n">ma10</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">)</span> <span class="o">%&gt;%</span>
   
-  <span style="color:#75715e"># 計算20日簡單移動平均線參數</span>
-  <span style="color:#a6e22e">tq_mutate</span>(select <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(close),
-            mutate_fun <span style="color:#f92672">=</span> SMA,
-            n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">rename</span>(ma20 <span style="color:#f92672">=</span> SMA)
+  <span class="c1"># 計算20日簡單移動平均線參數</span>
+  <span class="nf">tq_mutate</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="n">close</span><span class="p">),</span>
+            <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">rename</span><span class="p">(</span><span class="n">ma20</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockData <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">select</span>(code, date, close, ma10<span style="color:#f92672">:</span>ma20) <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">arrange</span>(code, date) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">na.omit</span>()
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span> <span class="o">%&gt;%</span> 
+  <span class="nf">select</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">close</span><span class="p">,</span> <span class="n">ma10</span><span class="o">:</span><span class="n">ma20</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">arrange</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">na.omit</span><span class="p">()</span>
 </code></pre></div><pre><code>## # A tibble: 920 x 5
 ## # Groups:   code [4]
 ##     code       date  close    ma10     ma20
@@ -374,20 +370,20 @@ stockData <span style="color:#f92672">%&gt;%</span>
 ## 10  2317 2017-07-10 111.11 112.220 108.7090
 ## # ... with 910 more rows
 </code></pre><p>若要計算隨機指標，寫法為:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
   
-  <span style="color:#75715e"># 計算隨機指標</span>
-  <span style="color:#a6e22e">tq_mutate</span>(select <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(high, low, close),   
-            mutate_fun <span style="color:#f92672">=</span> stoch, 
-            nFastK <span style="color:#f92672">=</span> <span style="color:#ae81ff">14</span>, 
-            nFastD <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>, 
-            nSlowD <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>)
+  <span class="c1"># 計算隨機指標</span>
+  <span class="nf">tq_mutate</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">close</span><span class="p">),</span>   
+            <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">stoch</span><span class="p">,</span> 
+            <span class="n">nFastK</span> <span class="o">=</span> <span class="m">14</span><span class="p">,</span> 
+            <span class="n">nFastD</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span> 
+            <span class="n">nSlowD</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockData <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">select</span>(code, date, fastK<span style="color:#f92672">:</span>stoch) <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">arrange</span>(code, date) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">na.omit</span>()
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span> <span class="o">%&gt;%</span> 
+  <span class="nf">select</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">fastK</span><span class="o">:</span><span class="n">stoch</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">arrange</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">na.omit</span><span class="p">()</span>
 </code></pre></div><pre><code>## # A tibble: 928 x 5
 ## # Groups:   code [4]
 ##     code       date     fastK     fastD     stoch
@@ -405,20 +401,20 @@ stockData <span style="color:#f92672">%&gt;%</span>
 ## # ... with 918 more rows
 </code></pre><p><code>tq_mutate()</code>函數內的<code>nFastK</code>、<code>nFastD</code>及<code>nSlowD</code>引數即為原<code>TTR</code>套件<code>stoch()</code>的引數。從上面的資料表可以發現，透過<code>tq_mutate()</code>函數，可將<code>TTR</code>套件<code>stoch()</code>函數跑出的3個欄位結果(<code>fastK</code>、<code>fastD</code>及<code>stoch</code>)全部新增在<code>stockData</code>資料表內。若沒有<code>tq_mutate()</code>這個函數，用<code>mutate()</code>函數計算隨機指標會是件很麻煩的事情。</p>
 <p>若要計算MACD指標，寫法為:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
 
-  <span style="color:#75715e"># 計算MACD指標</span>
-  <span style="color:#a6e22e">tq_mutate</span>(select <span style="color:#f92672">=</span> close,                
-            mutate_fun <span style="color:#f92672">=</span> MACD, 
-            nFast <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span>, 
-            nSlow <span style="color:#f92672">=</span> <span style="color:#ae81ff">26</span>, 
-            nSig  <span style="color:#f92672">=</span> <span style="color:#ae81ff">9</span>)               
+  <span class="c1"># 計算MACD指標</span>
+  <span class="nf">tq_mutate</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="n">close</span><span class="p">,</span>                
+            <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">MACD</span><span class="p">,</span> 
+            <span class="n">nFast</span> <span class="o">=</span> <span class="m">12</span><span class="p">,</span> 
+            <span class="n">nSlow</span> <span class="o">=</span> <span class="m">26</span><span class="p">,</span> 
+            <span class="n">nSig</span>  <span class="o">=</span> <span class="m">9</span><span class="p">)</span>               
 
-<span style="color:#75715e"># 觀看資料</span>
-stockData <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">select</span>(code, date, macd<span style="color:#f92672">:</span>signal) <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">arrange</span>(code, date) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">na.omit</span>()
+<span class="c1"># 觀看資料</span>
+<span class="n">stockData</span> <span class="o">%&gt;%</span> 
+  <span class="nf">select</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">macd</span><span class="o">:</span><span class="n">signal</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+  <span class="nf">arrange</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">na.omit</span><span class="p">()</span>
 </code></pre></div><pre><code>## # A tibble: 864 x 4
 ## # Groups:   code [4]
 ##     code       date     macd   signal
@@ -438,28 +434,28 @@ stockData <span style="color:#f92672">%&gt;%</span>
 <hr>
 <h2 id="計算績效指標寫法示範">計算績效指標寫法示範</h2>
 <p>有時我們會想要計算每個股票的績效指標，進行一些財務分析(例如建構投資組合及股票評價等)。<code>tidyquant</code>套件完美地整合<code>PerformanceAnalytics</code>套件，讓我們很方便地去計算績效指標。在計算績效指標時，我們需先將各檔股票股價資料整理成報酬率資料，並額外整理出臺灣加權指數報酬率做為市場報酬率，資料整理範例如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 計算各資產報酬率</span>
-stockRet <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">select</span>(code<span style="color:#f92672">:</span>date, close) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">arrange</span>(code, date) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(ret <span style="color:#f92672">=</span> close<span style="color:#f92672">/</span><span style="color:#a6e22e">lag</span>(close)<span style="color:#ae81ff">-1</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">ungroup</span>() <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">na.omit</span>()
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 計算各資產報酬率</span>
+<span class="n">stockRet</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span> 
+  <span class="nf">select</span><span class="p">(</span><span class="n">code</span><span class="o">:</span><span class="n">date</span><span class="p">,</span> <span class="n">close</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">arrange</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">mutate</span><span class="p">(</span><span class="n">ret</span> <span class="o">=</span> <span class="n">close</span><span class="o">/</span><span class="nf">lag</span><span class="p">(</span><span class="n">close</span><span class="p">)</span><span class="m">-1</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">ungroup</span><span class="p">()</span> <span class="o">%&gt;%</span>
+  <span class="nf">na.omit</span><span class="p">()</span>
 
-<span style="color:#75715e"># 整理市場報酬率</span>
-mktRet <span style="color:#f92672">&lt;-</span> stockRet <span style="color:#f92672">%&gt;%</span> 
-  <span style="color:#a6e22e">filter</span>(code <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;Y9999&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">select</span>(date, ret) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">rename</span>(mktRet <span style="color:#f92672">=</span> ret)
+<span class="c1"># 整理市場報酬率</span>
+<span class="n">mktRet</span> <span class="o">&lt;-</span> <span class="n">stockRet</span> <span class="o">%&gt;%</span> 
+  <span class="nf">filter</span><span class="p">(</span><span class="n">code</span> <span class="o">==</span> <span class="s">&#34;Y9999&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">select</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">rename</span><span class="p">(</span><span class="n">mktRet</span> <span class="o">=</span> <span class="n">ret</span><span class="p">)</span>
   
-<span style="color:#75715e"># 整理各資產報酬率並且併入各交易日對應的市場報酬率</span>
-stockRet <span style="color:#f92672">&lt;-</span> stockRet <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">select</span>(code<span style="color:#f92672">:</span>date, ret) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(code <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;Y9999&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">left_join</span>(mktRet, by <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;date&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;date&#34;</span>))
+<span class="c1"># 整理各資產報酬率並且併入各交易日對應的市場報酬率</span>
+<span class="n">stockRet</span> <span class="o">&lt;-</span> <span class="n">stockRet</span> <span class="o">%&gt;%</span>
+  <span class="nf">select</span><span class="p">(</span><span class="n">code</span><span class="o">:</span><span class="n">date</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">filter</span><span class="p">(</span><span class="n">code</span> <span class="o">!=</span> <span class="s">&#34;Y9999&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">left_join</span><span class="p">(</span><span class="n">mktRet</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#34;date&#34;</span> <span class="o">=</span> <span class="s">&#34;date&#34;</span><span class="p">))</span>
 </code></pre></div><p>整理完後的資料，每個資產在每個交易日都有日報酬率和當日對應的市場報酬率，如下所示：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockRet
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockRet</span>
 </code></pre></div><pre><code>## # A tibble: 744 x 5
 ##     code  name       date          ret        mktRet
 ##    &lt;chr&gt; &lt;chr&gt;     &lt;date&gt;        &lt;dbl&gt;         &lt;dbl&gt;
@@ -483,15 +479,15 @@ stockRet <span style="color:#f92672">&lt;-</span> stockRet <span style="color:#f
 <li>績效指標函數之參數設定。</li>
 </ol>
 <p>以計算常用的夏普比率為例，此處假設無風險年利率為1%，程式寫法如下。需注意的地方是，計算夏普比率時不需要用到市場報酬率，因此Rb的參數我們給NULL值。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">sharpeRatio <span style="color:#f92672">&lt;-</span> stockRet <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">tq_performance</span>(Ra <span style="color:#f92672">=</span> ret,
-                 Rb <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
-                 performance_fun <span style="color:#f92672">=</span> SharpeRatio,
-                 Rf <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.01</span><span style="color:#f92672">/</span><span style="color:#ae81ff">252</span>)
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">sharpeRatio</span> <span class="o">&lt;-</span> <span class="n">stockRet</span> <span class="o">%&gt;%</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">tq_performance</span><span class="p">(</span><span class="n">Ra</span> <span class="o">=</span> <span class="n">ret</span><span class="p">,</span>
+                 <span class="n">Rb</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span>
+                 <span class="n">performance_fun</span> <span class="o">=</span> <span class="n">SharpeRatio</span><span class="p">,</span>
+                 <span class="n">Rf</span> <span class="o">=</span> <span class="m">0.01</span><span class="o">/</span><span class="m">252</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-sharpeRatio
+<span class="c1"># 觀看資料</span>
+<span class="n">sharpeRatio</span>
 </code></pre></div><pre><code>## # A tibble: 3 x 4
 ## # Groups:   code [3]
 ##    code `ESSharpe(Rf=0%,p=95%)` `StdDevSharpe(Rf=0%,p=95%)`
@@ -502,15 +498,15 @@ sharpeRatio
 ## # ... with 1 more variables: `VaRSharpe(Rf=0%,p=95%)` &lt;dbl&gt;
 </code></pre><p>和<code>tq_mutate()</code>函數架構一樣，<code>tq_performance()</code>函數內的<code>Rf</code>引數為原<code>PerformanceAnalytics</code>套件<code>SharpeRatio()</code>的引數。</p>
 <p>若要跑資本資產定價模型(CAPM)，則寫法為:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">capmTable <span style="color:#f92672">&lt;-</span> stockRet <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">tq_performance</span>(Ra <span style="color:#f92672">=</span> ret, 
-                 Rb <span style="color:#f92672">=</span> mktRet, 
-                 performance_fun <span style="color:#f92672">=</span> table.CAPM,
-                 Rf <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.01</span><span style="color:#f92672">/</span><span style="color:#ae81ff">252</span>)
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">capmTable</span> <span class="o">&lt;-</span> <span class="n">stockRet</span> <span class="o">%&gt;%</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">tq_performance</span><span class="p">(</span><span class="n">Ra</span> <span class="o">=</span> <span class="n">ret</span><span class="p">,</span> 
+                 <span class="n">Rb</span> <span class="o">=</span> <span class="n">mktRet</span><span class="p">,</span> 
+                 <span class="n">performance_fun</span> <span class="o">=</span> <span class="n">table.CAPM</span><span class="p">,</span>
+                 <span class="n">Rf</span> <span class="o">=</span> <span class="m">0.01</span><span class="o">/</span><span class="m">252</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-capmTable
+<span class="c1"># 觀看資料</span>
+<span class="n">capmTable</span>
 </code></pre></div><pre><code>## # A tibble: 3 x 13
 ## # Groups:   code [3]
 ##    code ActivePremium  Alpha AnnualizedAlpha   Beta `Beta-` `Beta+`
@@ -531,16 +527,16 @@ capmTable
 <li>col_rename: 新增的欄位名稱。</li>
 <li>套件函數之參數設定。</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 轉換成月頻資料</span>
-stockMonthRet <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">tq_transmute</span>(select <span style="color:#f92672">=</span> close,
-               mutate_fun <span style="color:#f92672">=</span> periodReturn,
-               col_rename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;monthRet&#34;</span>,
-               period <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;monthly&#34;</span>)
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 轉換成月頻資料</span>
+<span class="n">stockMonthRet</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">tq_transmute</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="n">close</span><span class="p">,</span>
+               <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">periodReturn</span><span class="p">,</span>
+               <span class="n">col_rename</span> <span class="o">=</span> <span class="s">&#34;monthRet&#34;</span><span class="p">,</span>
+               <span class="n">period</span> <span class="o">=</span> <span class="s">&#34;monthly&#34;</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockMonthRet
+<span class="c1"># 觀看資料</span>
+<span class="n">stockMonthRet</span>
 </code></pre></div><pre><code>## # A tibble: 48 x 3
 ## # Groups:   code [4]
 ##     code       date     monthRet
@@ -557,16 +553,16 @@ stockMonthRet
 ## 10  2317 2018-03-31  0.004540295
 ## # ... with 38 more rows
 </code></pre><p>如果想要計算季頻或年頻，只要在<code>period</code>參數改成<code>quarterly</code>或<code>yearly</code>即可：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 轉換成季頻資料</span>
-stockQuarterRet <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">tq_transmute</span>(select <span style="color:#f92672">=</span> close,
-               mutate_fun <span style="color:#f92672">=</span> periodReturn,
-               col_rename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;monthRet&#34;</span>,
-               period <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;quarterly&#34;</span>)
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 轉換成季頻資料</span>
+<span class="n">stockQuarterRet</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">tq_transmute</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="n">close</span><span class="p">,</span>
+               <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">periodReturn</span><span class="p">,</span>
+               <span class="n">col_rename</span> <span class="o">=</span> <span class="s">&#34;monthRet&#34;</span><span class="p">,</span>
+               <span class="n">period</span> <span class="o">=</span> <span class="s">&#34;quarterly&#34;</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockQuarterRet
+<span class="c1"># 觀看資料</span>
+<span class="n">stockQuarterRet</span>
 </code></pre></div><pre><code>## # A tibble: 20 x 3
 ## # Groups:   code [4]
 ##     code       date     monthRet
@@ -591,16 +587,16 @@ stockQuarterRet
 ## 18 Y9999 2017-12-29  0.024934659
 ## 19 Y9999 2018-03-31  0.025992074
 ## 20 Y9999 2018-05-31 -0.004078029
-</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># 轉換成年頻資料</span>
-stockYearRet <span style="color:#f92672">&lt;-</span> stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">group_by</span>(code) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">tq_transmute</span>(select <span style="color:#f92672">=</span> close,
-               mutate_fun <span style="color:#f92672">=</span> periodReturn,
-               col_rename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;monthRet&#34;</span>,
-               period <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yearly&#34;</span>)
+</code></pre><div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="c1"># 轉換成年頻資料</span>
+<span class="n">stockYearRet</span> <span class="o">&lt;-</span> <span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">group_by</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">tq_transmute</span><span class="p">(</span><span class="n">select</span> <span class="o">=</span> <span class="n">close</span><span class="p">,</span>
+               <span class="n">mutate_fun</span> <span class="o">=</span> <span class="n">periodReturn</span><span class="p">,</span>
+               <span class="n">col_rename</span> <span class="o">=</span> <span class="s">&#34;monthRet&#34;</span><span class="p">,</span>
+               <span class="n">period</span> <span class="o">=</span> <span class="s">&#34;yearly&#34;</span><span class="p">)</span>
 
-<span style="color:#75715e"># 觀看資料</span>
-stockYearRet
+<span class="c1"># 觀看資料</span>
+<span class="n">stockYearRet</span>
 </code></pre></div><pre><code>## # A tibble: 8 x 3
 ## # Groups:   code [4]
 ##    code       date    monthRet
@@ -619,68 +615,77 @@ stockYearRet
 <ul>
 <li>繪製股價日頻走勢圖</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> date, y <span style="color:#f92672">=</span> close, color <span style="color:#f92672">=</span> code)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_line</span>(size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Daily Stock Prices&#34;</span>,
-         x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Close Prices&#34;</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">facet_wrap</span>(<span style="color:#f92672">~</span> code, ncol <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>, scales <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;free_y&#34;</span>) <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">scale_y_continuous</span>(labels <span style="color:#f92672">=</span> scales<span style="color:#f92672">::</span>dollar) <span style="color:#f92672">+</span>
-    <span style="color:#a6e22e">theme_tq</span>() <span style="color:#f92672">+</span> 
-    <span style="color:#a6e22e">scale_color_tq</span>()
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">date</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">close</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">code</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">geom_line</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;Daily Stock Prices&#34;</span><span class="p">,</span>
+         <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">&#34;Close Prices&#34;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">facet_wrap</span><span class="p">(</span><span class="o">~</span> <span class="n">code</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">scales</span> <span class="o">=</span> <span class="s">&#34;free_y&#34;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">labels</span> <span class="o">=</span> <span class="n">scales</span><span class="o">::</span><span class="n">dollar</span><span class="p">)</span> <span class="o">+</span>
+    <span class="nf">theme_tq</span><span class="p">()</span> <span class="o">+</span> 
+    <span class="nf">scale_color_tq</span><span class="p">()</span>
 </code></pre></div><p><!-- raw HTML omitted --></p>
 <ul>
 <li>繪製技術分析圖形(以台積電為例)</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(code <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;2330&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> date, y <span style="color:#f92672">=</span> close)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_candlestick</span>(<span style="color:#a6e22e">aes</span>(open <span style="color:#f92672">=</span> open, high <span style="color:#f92672">=</span> high, low <span style="color:#f92672">=</span> low, close <span style="color:#f92672">=</span> close),
-                   color_up <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;firebrick3&#34;</span>, color_down <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;chartreuse3&#34;</span>, 
-                   fill_up  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;firebrick3&#34;</span>, fill_down  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;chartreuse3&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2330 Candlestick Chart&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Closing Price&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">theme_tq</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_date</span>(expand <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>))
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">filter</span><span class="p">(</span><span class="n">code</span> <span class="o">==</span> <span class="s">&#34;2330&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">date</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">close</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">geom_candlestick</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">open</span> <span class="o">=</span> <span class="n">open</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">high</span><span class="p">,</span> <span class="n">low</span> <span class="o">=</span> <span class="n">low</span><span class="p">,</span> <span class="n">close</span> <span class="o">=</span> <span class="n">close</span><span class="p">),</span>
+                   <span class="n">color_up</span> <span class="o">=</span> <span class="s">&#34;firebrick3&#34;</span><span class="p">,</span> <span class="n">color_down</span> <span class="o">=</span> <span class="s">&#34;chartreuse3&#34;</span><span class="p">,</span> 
+                   <span class="n">fill_up</span>  <span class="o">=</span> <span class="s">&#34;firebrick3&#34;</span><span class="p">,</span> <span class="n">fill_down</span>  <span class="o">=</span> <span class="s">&#34;chartreuse3&#34;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;2330 Candlestick Chart&#34;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">&#34;Closing Price&#34;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">theme_tq</span><span class="p">()</span> <span class="o">+</span>
+  <span class="nf">scale_x_date</span><span class="p">(</span><span class="n">expand</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
 </code></pre></div><p><!-- raw HTML omitted --></p>
 <ul>
 <li>繪製技術分析圖形(以台積電為例)及5日、10日及20日均線</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(code <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;2330&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> date, y <span style="color:#f92672">=</span> close)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_candlestick</span>(<span style="color:#a6e22e">aes</span>(open <span style="color:#f92672">=</span> open, high <span style="color:#f92672">=</span> high, low <span style="color:#f92672">=</span> low, close <span style="color:#f92672">=</span> close),
-                   color_up <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;firebrick3&#34;</span>, color_down <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;chartreuse3&#34;</span>, 
-                   fill_up  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;firebrick3&#34;</span>, fill_down  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;chartreuse3&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_ma</span>(ma_fun <span style="color:#f92672">=</span> SMA, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;blue&#34;</span>, linetype <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>,size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_ma</span>(ma_fun <span style="color:#f92672">=</span> SMA, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;orange&#34;</span>, linetype <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_ma</span>(ma_fun <span style="color:#f92672">=</span> SMA, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>, color <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;green&#34;</span>, linetype <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2330 Candlestick Chart&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Closing Price&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">theme_tq</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_date</span>(expand <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>))
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">filter</span><span class="p">(</span><span class="n">code</span> <span class="o">==</span> <span class="s">&#34;2330&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">date</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">close</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">geom_candlestick</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">open</span> <span class="o">=</span> <span class="n">open</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">high</span><span class="p">,</span> <span class="n">low</span> <span class="o">=</span> <span class="n">low</span><span class="p">,</span> <span class="n">close</span> <span class="o">=</span> <span class="n">close</span><span class="p">),</span>
+                   <span class="n">color_up</span> <span class="o">=</span> <span class="s">&#34;firebrick3&#34;</span><span class="p">,</span> <span class="n">color_down</span> <span class="o">=</span> <span class="s">&#34;chartreuse3&#34;</span><span class="p">,</span> 
+                   <span class="n">fill_up</span>  <span class="o">=</span> <span class="s">&#34;firebrick3&#34;</span><span class="p">,</span> <span class="n">fill_down</span>  <span class="o">=</span> <span class="s">&#34;chartreuse3&#34;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">geom_ma</span><span class="p">(</span><span class="n">ma_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">5</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#34;blue&#34;</span><span class="p">,</span> <span class="n">linetype</span> <span class="o">=</span> <span class="m">7</span><span class="p">,</span><span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">geom_ma</span><span class="p">(</span><span class="n">ma_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#34;orange&#34;</span><span class="p">,</span> <span class="n">linetype</span> <span class="o">=</span> <span class="m">7</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">geom_ma</span><span class="p">(</span><span class="n">ma_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#34;green&#34;</span><span class="p">,</span> <span class="n">linetype</span> <span class="o">=</span> <span class="m">7</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;2330 Candlestick Chart&#34;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">&#34;Closing Price&#34;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">theme_tq</span><span class="p">()</span> <span class="o">+</span>
+  <span class="nf">scale_x_date</span><span class="p">(</span><span class="n">expand</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
 </code></pre></div><p><!-- raw HTML omitted --></p>
 <ul>
 <li>繪製技術分析圖形(以台積電為例)及布林通道</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">stockData <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(code <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;2330&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> date, y <span style="color:#f92672">=</span> close, open <span style="color:#f92672">=</span> open, high <span style="color:#f92672">=</span> high, low <span style="color:#f92672">=</span> low, close <span style="color:#f92672">=</span> close)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_candlestick</span>(color_up <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;firebrick3&#34;</span>, color_down <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;chartreuse3&#34;</span>, 
-                   fill_up  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;firebrick3&#34;</span>, fill_down  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;chartreuse3&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bbands</span>(ma_fun <span style="color:#f92672">=</span> SMA, sd <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>, n <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>, 
-              linetype <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.2</span>,
-              fill <span style="color:#f92672">=</span> <span style="color:#a6e22e">palette_light</span>()[[1]],
-              color_bands <span style="color:#f92672">=</span> <span style="color:#a6e22e">palette_light</span>()[[1]],
-              color_ma <span style="color:#f92672">=</span> <span style="color:#a6e22e">palette_light</span>()[[2]]) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2330 Candlestick Chart&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Closing Price&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">theme_tq</span>() <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_x_date</span>(expand <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>))
+<div class="highlight"><pre class="chroma"><code class="language-r" data-lang="r"><span class="n">stockData</span> <span class="o">%&gt;%</span>
+  <span class="nf">filter</span><span class="p">(</span><span class="n">code</span> <span class="o">==</span> <span class="s">&#34;2330&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">date</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">close</span><span class="p">,</span> <span class="n">open</span> <span class="o">=</span> <span class="n">open</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">high</span><span class="p">,</span> <span class="n">low</span> <span class="o">=</span> <span class="n">low</span><span class="p">,</span> <span class="n">close</span> <span class="o">=</span> <span class="n">close</span><span class="p">))</span> <span class="o">+</span>
+  <span class="nf">geom_candlestick</span><span class="p">(</span><span class="n">color_up</span> <span class="o">=</span> <span class="s">&#34;firebrick3&#34;</span><span class="p">,</span> <span class="n">color_down</span> <span class="o">=</span> <span class="s">&#34;chartreuse3&#34;</span><span class="p">,</span> 
+                   <span class="n">fill_up</span>  <span class="o">=</span> <span class="s">&#34;firebrick3&#34;</span><span class="p">,</span> <span class="n">fill_down</span>  <span class="o">=</span> <span class="s">&#34;chartreuse3&#34;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">geom_bbands</span><span class="p">(</span><span class="n">ma_fun</span> <span class="o">=</span> <span class="n">SMA</span><span class="p">,</span> <span class="n">sd</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> 
+              <span class="n">linetype</span> <span class="o">=</span> <span class="m">7</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span>
+              <span class="n">fill</span> <span class="o">=</span> <span class="nf">palette_light</span><span class="p">()</span><span class="n">[[1]]</span><span class="p">,</span>
+              <span class="n">color_bands</span> <span class="o">=</span> <span class="nf">palette_light</span><span class="p">()</span><span class="n">[[1]]</span><span class="p">,</span>
+              <span class="n">color_ma</span> <span class="o">=</span> <span class="nf">palette_light</span><span class="p">()</span><span class="n">[[2]]</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">labs</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&#34;2330 Candlestick Chart&#34;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">&#34;Closing Price&#34;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">theme_tq</span><span class="p">()</span> <span class="o">+</span>
+  <span class="nf">scale_x_date</span><span class="p">(</span><span class="n">expand</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
 </code></pre></div><p><!-- raw HTML omitted --></p>
 <hr>
 <h2 id="結語">結語</h2>
 <p>從上述的範例中，可以看到<code>tidyquant</code>套件很棒地將財務套件與<code>tidyverse</code>套件完美地結合。不用再寫太多複雜的程式和迴圈，繞來繞去地去計算每支股票的技術指標和績效指標。這個套件的整合，對於用R語言做財務分析的使用者來說真是一大福音！本篇文章僅擷取<code>tidyquant</code>套件最重要的部分，但原作者撰寫的說明文章還有更多細節及應用，對於此套件有興趣的讀者，建議可去點閱來看。</p>
 
                 <br>
-		<p class="back-to-posts"><a href="/blog/">Back to posts</a></p>
+                
+                  <div class="tags">
+                    <strong>Tags:</strong>
+                  
+                    <a href="/tags/r">R</a>
+                  
+                  </div>
+                  <br />
+                
+                <p class="back-to-posts"><a href="/blog">Back to posts</a></p>
             </div>
             <br>
             <div class="disqus">
@@ -715,10 +720,6 @@ stockYearRet
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/r.min.js"></script>
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/yaml.min.js"></script>
   
 
   <script type="text/javascript">

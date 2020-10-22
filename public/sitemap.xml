@@ -133,58 +133,8 @@
   </url>
   
   <url>
-    <loc>/blog_old/lesmiserables-hugo/</loc>
-    <lastmod>2015-12-21T04:05:25-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog_old/metamorphosis-kafka/</loc>
-    <lastmod>2015-12-21T04:03:46-06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog_old/use-at-instead-of-head/</loc>
-    <lastmod>2015-08-25T17:09:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/about_old/</loc>
-    <lastmod>2015-08-22T06:42:21-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog_old/</loc>
-    <lastmod>2015-08-22T06:42:21-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/about_old/colophon/</loc>
-    <lastmod>2015-08-22T06:28:26-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/code/</loc>
     <lastmod>2015-08-19T20:29:37-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog_old/2015-07-23-r-rmarkdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/plot/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/regression/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
   </url>
   
 </urlset>

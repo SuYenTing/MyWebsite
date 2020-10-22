@@ -45,6 +45,10 @@
             <a href="{{ .Site.Params.github }}" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
         {{ end }}
 
+        {{ if .Site.Params.gitlab }}
+            <a href="{{ .Site.Params.gitlab }}" target="_blank" rel="noopener"><img class="icon" src="/img/gitlab.svg" alt="gitlab" /></a>
+        {{ end }}
+
         {{ if .Site.Params.twitter }}
             <a href="{{ .Site.Params.twitter }}" target="_blank" rel="noopener"><img class="icon" src="/img/twitter.svg" alt="twitter" /></a>
         {{ end }}
@@ -67,6 +71,10 @@
 
         {{ if .Site.Params.facebook }}
             <a href="{{ .Site.Params.facebook }}" target="_blank" rel="noopener"><img class="icon" src="/img/facebook.svg" alt="facebook" /></a>
+        {{ end }}
+
+        {{ if .Site.Params.telegram }}
+            <a href="{{ .Site.Params.telegram }}" target="_blank" rel="noopener"><img class="icon" src="/img/telegram.svg" alt="telegram" /></a>
         {{ end }}
 
         {{ if .Site.Params.instagram }}
@@ -97,5 +105,3 @@
         </div>
     </div>
 </section>
-
-

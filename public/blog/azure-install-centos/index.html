@@ -87,7 +87,7 @@ sudo yum install https://dl." />
 
 
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/github.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
 
 
 
@@ -97,11 +97,11 @@ sudo yum install https://dl." />
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2020-10-23%2007%3a21%3a44.4036767%20%2b0800%20CST%20m%3d%2b0.272507401">
-    <link rel="stylesheet" href="/css/pygments.css?t=2020-10-23%2007%3a21%3a44.4036767%20%2b0800%20CST%20m%3d%2b0.272507401">
-    <link rel="stylesheet" href="/css/main.css?t=2020-10-23%2007%3a21%3a44.4036767%20%2b0800%20CST%20m%3d%2b0.272507401">
+    <link rel="stylesheet" href="/css/reset.css?t=2020-10-23%2007%3a47%3a36.3168211%20%2b0800%20CST%20m%3d%2b0.195166101">
+    <link rel="stylesheet" href="/css/pygments.css?t=2020-10-23%2007%3a47%3a36.3168211%20%2b0800%20CST%20m%3d%2b0.195166101">
+    <link rel="stylesheet" href="/css/main.css?t=2020-10-23%2007%3a47%3a36.3168211%20%2b0800%20CST%20m%3d%2b0.195166101">
     
-        <link rel="stylesheet" href="/css/override.css?t=2020-10-23%2007%3a21%3a44.4036767%20%2b0800%20CST%20m%3d%2b0.272507401">
+        <link rel="stylesheet" href="/css/override.css?t=2020-10-23%2007%3a47%3a36.3168211%20%2b0800%20CST%20m%3d%2b0.195166101">
     
 
 
@@ -140,14 +140,6 @@ sudo yum install https://dl." />
                 
                     
                 
-                    
-                
-                    
-                
-                    
-                
-                    
-                
                 
                 <a href="/"><img class="avatar" src="/img/profile.jpg" srcset="/img/profile.jpg 1x"></a>
             
@@ -175,7 +167,11 @@ sudo yum install https://dl." />
 
         
 
+        
+
 	
+
+        
 
         
 
@@ -203,8 +199,6 @@ sudo yum install https://dl." />
 </section>
 
 
-
-
 <section class="main post non-narrow zero-top-spacing">
     <div class="container">
         <div class="content">
@@ -222,6 +216,8 @@ sudo yum install https://dl." />
                     
                     <div class="date" title='Sun Jul 8 2018 00:00:00 UTC'>Jul 8, 2018</div>
                     
+                    
+		    <div class="reading-time"><div class="middot"></div>3 minutes read</div>
                     
                 </div>
             </div>
@@ -396,13 +392,13 @@ sudo rpm -ivh mysql57-community-release-el7-9.noarch.rpm
 </code></pre><p>重新設定root密碼，輸入此行後，將暫時密碼輸入進去，即會啟動MySQL：</p>
 <pre><code>sudo mysql -uroot -p
 </code></pre><p>在MySQL程式中，輸入MySQL程式的密碼修改語句，即可更改密碼：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;root&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIED <span style="color:#66d9ef">WITH</span> mysql_native_password <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;[要改的密碼]&#39;</span>;
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">ALTER</span> <span class="k">USER</span> <span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">WITH</span> <span class="n">mysql_native_password</span> <span class="k">BY</span> <span class="s1">&#39;[要改的密碼]&#39;</span><span class="p">;</span>
 </code></pre></div><p>密碼更改完後，離開資料庫</p>
 <pre><code>quit
 </code></pre><p>連線至MySQL，測試是否能夠運作</p>
 <pre><code>sudo mysql -u root -p
 </code></pre><p>在MySQL程式中，輸入MySQL程式碼查詢目前有的資料庫</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">show</span> databases;
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">show</span> <span class="n">databases</span><span class="p">;</span>
 </code></pre></div><p>若沒問題，離開MySQL資料庫</p>
 <pre><code>quit
 </code></pre><h2 id="安裝mysql-workbench">安裝MySQL Workbench</h2>
@@ -435,7 +431,7 @@ character-set-server = utf8
 <pre><code>sudo systemctl stop mysqld
 sudo systemctl start mysqld
 </code></pre><p>在MySQL workbench內，輸入MySQL程式碼，確認字碼是否轉成功</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">show</span> variables <span style="color:#66d9ef">like</span> <span style="color:#e6db74">&#39;char%&#39;</span>;
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">&#39;char%&#39;</span><span class="p">;</span>
 </code></pre></div><p>查詢結果應如下所示：</p>
 <table>
 <thead>
@@ -461,8 +457,8 @@ sudo systemctl start mysqld
 </table>
 <h2 id="安裝r套件發生內存不足問題">安裝R套件發生內存不足問題</h2>
 <p>我在安裝R套件(fBasics)時，有遇到記憶體不足問題：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#66d9ef">Error</span> <span style="color:#66d9ef">in</span> system2(file<span style="color:#f92672">.</span>path(R<span style="color:#f92672">.</span>home(<span style="color:#e6db74">&#34;bin&#34;</span>), <span style="color:#e6db74">&#34;R&#34;</span>), c(<span style="color:#66d9ef">if</span> (nzchar(arch)) paste0(<span style="color:#e6db74">&#34;--arch=&#34;</span>,  : 
-  cannot popen <span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span>lib64<span style="color:#f92672">/</span>R<span style="color:#f92672">/</span>bin<span style="color:#f92672">/</span>R<span style="color:#e6db74">&#39; --no-save --slave 2&gt;&amp;1 &lt; &#39;</span><span style="color:#f92672">/</span>tmp<span style="color:#f92672">/</span><span style="color:#66d9ef">Rtmpw5YoIV</span><span style="color:#f92672">/</span>file15cc3e680577<span style="color:#e6db74">&#39;&#39;</span>, probable reason <span style="color:#e6db74">&#39;Cannot allocate memory&#39;</span>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="no">Error</span> <span class="k">in</span> <span class="n">system2</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">home</span><span class="p">(</span><span class="s2">&#34;bin&#34;</span><span class="p">),</span> <span class="s2">&#34;R&#34;</span><span class="p">),</span> <span class="n">c</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">nzchar</span><span class="p">(</span><span class="n">arch</span><span class="p">))</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&#34;--arch=&#34;</span><span class="p">,</span>  <span class="p">:</span> 
+  <span class="n">cannot</span> <span class="n">popen</span> <span class="s1">&#39; &#39;</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">R</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">R</span><span class="s1">&#39; --no-save --slave 2&gt;&amp;1 &lt; &#39;</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="no">Rtmpw5YoIV</span><span class="o">/</span><span class="n">file15cc3e680577</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">probable</span> <span class="n">reason</span> <span class="s1">&#39;Cannot allocate memory&#39;</span>
 </code></pre></div><p>套件安裝時需要大量記憶體，記憶體空間不足就會發生這個狀況。若要解決此狀況，可透過Linux 上的「Swap 空間」來協助。Azure本身的Swap設定是關起來的，需要修改設定檔來開啟。</p>
 <p>參考文章：
 <a href="https://serverfault.com/questions/695616/how-to-create-a-swap-for-azure-ubuntu-vm">https://serverfault.com/questions/695616/how-to-create-a-swap-for-azure-ubuntu-vm</a></p>
@@ -474,7 +470,18 @@ sudo systemctl start mysqld
 <pre><code>sudo reboot
 </code></pre>
                 <br>
-		<p class="back-to-posts"><a href="/blog/">Back to posts</a></p>
+                
+                  <div class="tags">
+                    <strong>Tags:</strong>
+                  
+                    <a href="/tags/azure">Azure</a>
+                  
+                    <a href="/tags/centos">CentOS</a>
+                  
+                  </div>
+                  <br />
+                
+                <p class="back-to-posts"><a href="/blog">Back to posts</a></p>
             </div>
             <br>
             <div class="disqus">
@@ -509,10 +516,6 @@ sudo systemctl start mysqld
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/r.min.js"></script>
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/yaml.min.js"></script>
   
 
   <script type="text/javascript">

@@ -8,6 +8,7 @@ publishdir          = "public"
 theme = "cocoa-hugo-theme"
 author              = "Yen-Ting, Su"
 title               = "Yen-Ting, Su Personal Website"
+pygmentsuseclasses  = true
 disqusshortname     = "SuYenTing" # Comment out to disable Disqus.
 pluralizelisttitles = false
 googleAnalytics     = ""
@@ -55,10 +56,11 @@ noshowreadtime         = false                         # if true, don't show "<x
 selfintro              = ""                            # appears in the site header when set to a non-empty string
 # twitter                = "//twitter.com/you"
 # mastodon               = "//example.com/@you"
+# telegram               = "//t.me/you"
 
 highlightjs            = true
-highlightjslanguages = ["r", "yaml"]                        # additional languages not included in the "common" set
-highlightjsStyle     = "github"
+# highlightjslanguages = ["go"]                        # additional languages not included in the "common" set
+# highlightjsStyle     = "darcula"
 
 piwik                  = false                         # If true, Piwik integration is enabled
 # piwik_url            = "//www.example.com/piwik/"    # URL to your Piwik installation. Must End with a slash
