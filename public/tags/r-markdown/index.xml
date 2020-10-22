@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R Markdown on Yen-Ting, Su Personal Website</title>
@@ -39,8 +39,7 @@
 以上就是在本機端建立部落格專案的流程。
 部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
 config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
-Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。</description>
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。</description>
     </item>
     
     <item>

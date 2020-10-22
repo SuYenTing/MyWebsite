@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Github on Yen-Ting, Su Personal Website</title>
@@ -17,7 +17,7 @@
       <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/embed-gist-code-introduction/</guid>
-      <description>前言最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解HUGO的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做程式碼高亮)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做Gist的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行JavaScript程式碼即可，非常方便。除了上述好處，Gist可以依據副檔名，自動為程式碼上出漂亮的顏色。這樣我就不用再和HUGO奮戰，直接引Gist到Blog來就好。這篇文章將會簡單介紹如何使用Gist加入至Blog內。
+      <description>前言最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解HUGO的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做程式碼高亮)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做Gist的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行JavaScript程式碼即可，非常方便。除了上述好處，Gist可以依據副檔名，自動為程式碼上出漂亮的顏色。這樣我就不用再和HUGO奮戰，直接引Gist到Blog來就好。這篇文章將會簡單介紹如何使用Gist加入至Blog內。
 如何嵌入程式碼首先連至Gist(https://gist.github.com/)網站，然後以Github帳號登入。登入後選擇右上角的New gist選項，畫面如下：
 接下來把一個簡單的R程式複製貼上來，當然這邊是無法執行跑出結果的，所以我會先在R程式內先確認程式碼是可以跑的。程式碼貼好後記得輸入檔名，畫面如下：
 接下來要發佈這份程式碼，此處有兩個選項在畫面下方可以按，分別為Create secret gist及Create public gist。這兩個選項的差異是，選擇Create secret gist，這份程式碼不會被搜尋引擎找到，只有擁有連結的人才能進來看; 若選擇Create public gist，則其他人在用搜尋引擎搜尋時會被找到。此處我習慣點選Create secret gist按鈕，點選後畫面如下：
@@ -65,8 +65,7 @@
 以上就是在本機端建立部落格專案的流程。
 部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
 config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
-Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。</description>
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。</description>
     </item>
     
   </channel>

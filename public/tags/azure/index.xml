@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Azure on Yen-Ting, Su Personal Website</title>
@@ -21,7 +21,7 @@
 CentOS為Linux系統之一，有興趣的人可參考維基介紹。
 參考來源部分，主要是參考賽門於iT邦幫忙網站發表的系列文章連線Microsoft Azure的CentOS 7虛擬機器，並透過Google尋找網路資源解決遇到的問題。
 另外這是我第一次碰Linux系統，本人非資訊背景出身。文章僅供參考，有發現錯誤或有問題的地方，歡迎底下留言指教，謝謝您！
-在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
+ 在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
 帳戶辦完後，登入Azure網站，並點選入口網站，即可開始建立虛擬機器。建立虛擬機器的方式，可參考Microsoft Azure 虛擬機器完全攻略，裡面有詳細的影音操作說明，包含Windows及Linux作業系統建置方式。以下簡單說明建置步驟：
 在入口網站畫面左側點選虛擬機器選項：
 按下左上角的新增，新增一台虛擬機器。接下要選擇作業系統，在搜尋列上輸入centos，點選CentOS-based 7.4：

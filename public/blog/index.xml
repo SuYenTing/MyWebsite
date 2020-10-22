@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog on Yen-Ting, Su Personal Website</title>
@@ -21,7 +21,7 @@
 CentOS為Linux系統之一，有興趣的人可參考維基介紹。
 參考來源部分，主要是參考賽門於iT邦幫忙網站發表的系列文章連線Microsoft Azure的CentOS 7虛擬機器，並透過Google尋找網路資源解決遇到的問題。
 另外這是我第一次碰Linux系統，本人非資訊背景出身。文章僅供參考，有發現錯誤或有問題的地方，歡迎底下留言指教，謝謝您！
-在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
+ 在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
 帳戶辦完後，登入Azure網站，並點選入口網站，即可開始建立虛擬機器。建立虛擬機器的方式，可參考Microsoft Azure 虛擬機器完全攻略，裡面有詳細的影音操作說明，包含Windows及Linux作業系統建置方式。以下簡單說明建置步驟：
 在入口網站畫面左側點選虛擬機器選項：
 按下左上角的新增，新增一台虛擬機器。接下要選擇作業系統，在搜尋列上輸入centos，點選CentOS-based 7.4：
@@ -53,7 +53,7 @@ sudo yum install https://dl.</description>
       <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/embed-gist-code-introduction/</guid>
-      <description>前言最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解HUGO的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做程式碼高亮)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做Gist的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行JavaScript程式碼即可，非常方便。除了上述好處，Gist可以依據副檔名，自動為程式碼上出漂亮的顏色。這樣我就不用再和HUGO奮戰，直接引Gist到Blog來就好。這篇文章將會簡單介紹如何使用Gist加入至Blog內。
+      <description>前言最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解HUGO的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做程式碼高亮)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做Gist的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行JavaScript程式碼即可，非常方便。除了上述好處，Gist可以依據副檔名，自動為程式碼上出漂亮的顏色。這樣我就不用再和HUGO奮戰，直接引Gist到Blog來就好。這篇文章將會簡單介紹如何使用Gist加入至Blog內。
 如何嵌入程式碼首先連至Gist(https://gist.github.com/)網站，然後以Github帳號登入。登入後選擇右上角的New gist選項，畫面如下：
 接下來把一個簡單的R程式複製貼上來，當然這邊是無法執行跑出結果的，所以我會先在R程式內先確認程式碼是可以跑的。程式碼貼好後記得輸入檔名，畫面如下：
 接下來要發佈這份程式碼，此處有兩個選項在畫面下方可以按，分別為Create secret gist及Create public gist。這兩個選項的差異是，選擇Create secret gist，這份程式碼不會被搜尋引擎找到，只有擁有連結的人才能進來看; 若選擇Create public gist，則其他人在用搜尋引擎搜尋時會被找到。此處我習慣點選Create secret gist按鈕，點選後畫面如下：
@@ -98,10 +98,9 @@ sudo yum install https://dl.</description>
       <description>前言 R語言在財務領域中，常用到的套件大概有下列幾個：
  xts/zoo: 處理時間序列之套件。 TTR: 計算金融資產技術指標之套件。 quantmod: 金融資產技術分析回測套件，可至Yahoo Finance或Google Finance下載歷史股價數據或其他金融相關數據。並且整合TTR套件，繪製出漂亮的技術分析圖析。 PerformanceAnalytics: 計算金融資產報酬績效指標之套件。  現在的R語言在資料科學的浪潮之下，資料數據格式已走向tidy data形式。tidyverse套件已是每位R使用者必學的套件，使用此套件讓資料整理的程式碼簡潔又快速，讓R語言的方便性邁向更高一層。然而在財務領域的套件，目前皆是以時間序列資料格式(xts)為基礎建構而成。意即要使用這些套件的函數時，需要先將資料先轉為xts格式，才能做財務分析。若要在tidyverse套件中使用這些財務領域套件的函數，會有許多限制，需要做額外的整理才能使用，非常不方便。
 針對這個痛點，R語言有人站出來解決這個問題，Matt Dancho和Davis Vaughan開發出tidyquant套件，為財務領域套件與tidyverse套件搭起一座橋梁，讓tidyverse套件能夠很輕易地使用財務領域套件。
-圖1 tidyquant套件示意圖 (圖片截至於tidyquant套件的影片介紹)
 tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可參考以下連結:
  Introduction to tidyquant Core Functions in tidyquant R Quantitative Analysis Package Integrations in tidyquant Scaling and Modeling with tidyquant Charting with tidyquant Performance Analysis with tidyquant  當然，本篇文章的說明也都是從以上的說明範例檔案來學習並寫出來的！差別在於我們是用中文說明及臺灣的股市價格資料來做範例，並只擷取重要部分，讓大家可以快速地掌握脈絡。
-數據下載 做股市分析的第一步就是要取得股價資料，tidyquant套件的tq_get()函數整合quantmod套件的getSymbols()函數。透過tq_get()函數可以從網路上一次下載多檔股票資料，並且以tibble格式儲存資料，讓後續的資料處理更加方便。此處示範如何下載2017/06/01至2018/05/31，鴻海、台積電、中華電信及臺灣加權指數的歷史價格資料。在tq_get()函數內的引數為:
+ 數據下載 做股市分析的第一步就是要取得股價資料，tidyquant套件的tq_get()函數整合quantmod套件的getSymbols()函數。透過tq_get()函數可以從網路上一次下載多檔股票資料，並且以tibble格式儲存資料，讓後續的資料處理更加方便。此處示範如何下載2017/06/01至2018/05/31，鴻海、台積電、中華電信及臺灣加權指數的歷史價格資料。在tq_get()函數內的引數為:
  x: 金融資產的代碼，需配合資料源。 get: 資料下載來源，此處我們設定參數為stock.price，從Yahoo Finance下載歷史股價資料。 from: 資料下載起始日。 to: 資料下載結束日。  tq_get()函數可下載的資料來源相當多，除了股價資料外，也有財務比率指標(Morningstar)、股利股息資料(Yahoo Finance)及總經資料(FRED)等，只要修改函數內的get參數即可取得。詳細內容可參考原作者的說明文件：Core Functions in tidyquant。</description>
     </item>
     
@@ -196,8 +195,7 @@ http://www.fortunechina.com/china500/9/2017。
 以上就是在本機端建立部落格專案的流程。
 部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
 config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
-Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。</description>
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。</description>
     </item>
     
   </channel>

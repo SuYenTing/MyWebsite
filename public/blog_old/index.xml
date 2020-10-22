@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog on Yen-Ting, Su Personal Website</title>
@@ -39,9 +39,9 @@ Bool True or false, that which is said of men often occupies as important a plac
       
       <guid>/blog_old/use-at-instead-of-head/</guid>
       <description>I recently discovered that from git version 1.8.5 onwards, @ can replace HEAD:
-$ git reset --hard @~2 $ git rebase -i @~10 $ git diff @~2..@~3  And also in most scenarios HEAD can be left out completely, so you can say:
-$ git reset -- @{2}  instead of:
-$ git reset -- HEAD@{2}  It takes some getting used to, but it&amp;rsquo;s definitely faster than typing HEAD.</description>
+$ git reset --hard @~2 $ git rebase -i @~10 $ git diff @~2..@~3 And also in most scenarios HEAD can be left out completely, so you can say:
+$ git reset -- @{2} instead of:
+$ git reset -- HEAD@{2} It takes some getting used to, but it&amp;rsquo;s definitely faster than typing HEAD.</description>
     </item>
     
     <item>

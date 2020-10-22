@@ -31,8 +31,7 @@
 以上就是在本機端建立部落格專案的流程。
 部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
 config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
-Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。">
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。">
 
 <meta property="og:title" content="利用R的Blogdown套件建立個人部落格網站" />
 <meta property="og:description" content="前言此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 用R语言的blogdown&#43;hugo&#43;netlify&#43;github 建博客 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
@@ -57,26 +56,11 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 以上就是在本機端建立部落格專案的流程。
 部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
 config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
-Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。" />
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/create-my-website/" />
-
-
-
-<meta property="article:published_time" content="2018-03-03T00:00:00&#43;00:00"/>
-
-<meta property="article:modified_time" content="2018-03-03T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta property="article:published_time" content="2018-03-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-03-03T00:00:00+00:00" />
 
 
 <title>
@@ -103,11 +87,11 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2018-07-11%2021%3a42%3a45.9466749%20%2b0800%20CST%20m%3d%2b0.165904301">
-    <link rel="stylesheet" href="/css/pygments.css?t=2018-07-11%2021%3a42%3a45.9466749%20%2b0800%20CST%20m%3d%2b0.165904301">
-    <link rel="stylesheet" href="/css/main.css?t=2018-07-11%2021%3a42%3a45.9466749%20%2b0800%20CST%20m%3d%2b0.165904301">
+    <link rel="stylesheet" href="/css/reset.css?t=2020-10-23%2007%3a11%3a28.8339912%20%2b0800%20CST%20m%3d%2b0.219971901">
+    <link rel="stylesheet" href="/css/pygments.css?t=2020-10-23%2007%3a11%3a28.8339912%20%2b0800%20CST%20m%3d%2b0.219971901">
+    <link rel="stylesheet" href="/css/main.css?t=2020-10-23%2007%3a11%3a28.8339912%20%2b0800%20CST%20m%3d%2b0.219971901">
     
-        <link rel="stylesheet" href="/css/override.css?t=2018-07-11%2021%3a42%3a45.9466749%20%2b0800%20CST%20m%3d%2b0.165904301">
+        <link rel="stylesheet" href="/css/override.css?t=2020-10-23%2007%3a11%3a28.8339912%20%2b0800%20CST%20m%3d%2b0.219971901">
     
 
 
@@ -232,7 +216,10 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
                 </div>
             </div>
             <div class="markdown">
-                <hr />
+                
+
+
+<hr />
 <div class="section level2">
 <h2>前言</h2>
 <p>此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 <a href="https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/">用R语言的blogdown+hugo+netlify+github 建博客</a> 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。</p>
@@ -414,7 +401,7 @@ config.toml這個檔案是主題作者提供的客製化參數，也是我們主
             <br>
             <div class="disqus">
                 <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
