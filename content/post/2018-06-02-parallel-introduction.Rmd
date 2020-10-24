@@ -1,0 +1,189 @@
+---
+title: R的平行運算
+author: Yen-Ting, Su
+date: '2018-06-02'
+slug: parallel-introduction
+categories:
+  - Programming
+tags:
+  - R
+description: "在做量化投資策略參數最佳化時，都會透過`for`迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件`parallel`，只要將要程式碼包裝成函數形式，就可以跑平行運算。"
+---
+
+## 前言
+
+在做量化投資策略參數最佳化時，都會透過`for`迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件`parallel`，只要將要程式碼包裝成函數形式，就可以跑平行運算。
+
+接下來文章一開始會先用`for`迴圈做一個簡單的範例，再來會使用`apply`家族提升速度，最後用平行運算讓速度再往上提升。透過這個範例，可以看到如何使用平行運算及平行運算的速度。
+
+## 使用套件
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(parallel)    # 平行運算套件
+library(tidyverse)   # 資料科學專用套件包
+```
+
+## For迴圈寫法
+
+我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+
+output <- NULL     # 建立儲存表
+power <- 2         # 次方數
+ptm <- proc.time() # 啟動計時器
+
+for(ix in 1:1000){
+
+  rowData <- tibble(num1 = ix, num2 = ix^power) 
+  output <- output %>% bind_rows(rowData)
+  
+}
+
+forTime <- proc.time() - ptm  # 結束計時器 
+```
+
+執行完後，`output`會是：
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+output
+```
+
+在`for`迴圈的寫法，執行速度為`r forTime[3]`秒：
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+forTime
+```
+
+## Apply寫法
+
+在R語言中，透過`apply`家族的函數改寫`for`迴圈寫法，可以提升速度。我們將原先問題改為`lapply`寫法：
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+
+# 將For迴圈內程式碼改為函數
+GenerateData <- function(ix){
+  rowData <- tibble(num1 = ix, num2 = ix^power) 
+  return(rowData)
+}
+
+power <- 2          # 次方數
+ptm <- proc.time()  # 啟動計時器
+
+output <- lapply(c(1:1000), GenerateData)  # 執行lapply
+output <- do.call(bind_rows, output)       # 整併資料
+
+lapplyTime <- proc.time() - ptm  # 結束計時器 
+```
+
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+lapplyTime
+```
+
+在lapply的寫法，執行的速度為`r lapplyTime[3]`秒，相較於For迴圈寫法，提升`r forTime[3]-lapplyTime[3]`秒。
+
+
+## 平行運算寫法
+
+接下來就是進入本篇的重點平行運算寫法。
+
+首先我們先看電腦的執行緒有幾個，這部分每台電腦都會不一樣，以我的電腦為例，共有8個。
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+myCoreNums <- detectCores()
+myCoreNums
+```
+
+接下來是設定待會跑程式時，要用多少的執行緒來協助我們。這邊建議執行緒**最多**就設定電腦執行緒個數減1，為何要減1？主要是讓電腦有1個執行緒能夠維持電腦的基本運作。如果將所有執行緒拿來跑程式，電腦有時候就會直接掛掉黑屏給你看，用平行運算也是要很小心的。
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+cl <- makeCluster(myCoreNums-1)
+```
+
+執行緒設定好後，下一個步驟是將函數內會用到的資料及套件部署到各個執行緒。這邊可以想像成我在每個執行緒中都開啟一個R程式，但這個R程式的變數區和套件都還沒被載入，所以我們要將資料及套件都傳進去執行緒內。
+
+以範例來說，函數內的`power`變數並不是在`function`內產生，所以就要`power`變數部署進去。另外`function`內有用到`tidyverse`套件，也需要部署到執行緒內。
+
+```{r eval=TRUE, message=FALSE, warning=FALSE, results='hide'}
+clusterExport(cl, c("power"))               # 傳入變數
+clusterEvalQ(cl, c(library(tidyverse)))     # 傳入套件
+```
+
+此處做個補充，由於這是一個小小的範例，在這個範例內只需要部署到1個變數及1個套件就可以運作。但實際上常會需要部署很多變數及套件，寫法為：
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+clusterExport(cl, c("variable1", "variable2", "variable3"))                      # 傳入變數
+clusterEvalQ(cl, c(library(package1), library(package2), library(package3)))     # 傳入套件
+```
+
+在部署完變數後，接下來就可以開始執行平行演算函數。其實很簡單，只要將`lapply`函數改成`parLapply`，第一個引數加入`cl`即可。
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+
+ptm <- proc.time()  # 啟動計時器
+
+output <- parLapply(cl, c(1:1000), GenerateData)   # 執行平行運算
+output <- do.call(bind_rows, output)               # 整併資料
+
+parLapplyTime <- proc.time() - ptm  # 結束計時器 
+
+```
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+parLapplyTime
+```
+
+在平行運算的的寫法，執行的速度為`r parLapplyTime[3]`秒，比`for`迴圈寫法快`r forTime[3]-parLapplyTime[3]`秒，比`lapply`的寫法快`r lapplyTime[3]-parLapplyTime[3]`秒。這僅僅是處理1,000筆資料的數據，當資料量大時，速度差異將會更大。
+
+在運作完平行運算後，要記得將平行運算關掉，不要浪費電腦效能
+
+```{r eval=TRUE, message=FALSE, warning=FALSE}
+stopCluster(cl)
+```
+
+以下為完整的平行運算範例程式碼：
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+
+library(parallel)    # 平行運算套件
+library(tidyverse)   # 資料科學專用套件包
+
+power <- 2 # 次方數
+
+# 資料產生函數
+GenerateData <- function(ix){
+  rowData <- tibble(num1 = ix, num2 = ix^power) 
+  return(rowData)
+}
+
+# 設定執行函數
+myCoreNums <- detectCores()
+cl <- makeCluster(myCoreNums-1)
+
+# 部署變數及套件至執行緒
+clusterExport(cl, c("power"))               # 傳入變數
+clusterEvalQ(cl, c(library(tidyverse)))     # 傳入套件
+
+ptm <- proc.time()  # 啟動計時器
+
+output <- parLapply(cl, c(1:1000), GenerateData)   # 執行平行運算
+output <- do.call(bind_rows, output)               # 整併資料
+
+parLapplyTime <- proc.time() - ptm  # 結束計時器 
+
+stopCluster(cl) # 結束平行運算
+
+```
+
+
+## 結語
+
+`parallel`套件能使用的函數不僅僅只有`parLapply`，只要是`apply`家族的函數皆可以使用，可以在Console輸入`?parLapply`查詢。在寫程式時，我習慣在一開始都會先用`for`迴圈去處理問題，觀看部分資料執行的狀況是否正確。確認無誤要開始跑全部資料時，將`for`迴圈程式碼改成`function`寫法，並搭配`apply`家族函數，這樣就可以很輕易地再改寫成平行運算程式碼。目前用下來覺得平行運算套件真的是很方便，速度很快。但如果要說缺點的話，就是如果平行運算出錯時，很難去Debug，有時還是需要回到`for`迴圈去尋找問題發生點。
+
+
+## 參考來源
+
+當初是看這篇學會平行運算的寫法:[https://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/](https://www.r-bloggers.com/how-to-go-parallel-in-r-basics-tips/)，裡面也有介紹其他R的平行演算套件，像是`foreach`套件等，有興趣的話可以去看看。
+
+
+

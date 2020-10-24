@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+      <title>
+        利用R的Blogdown套件建立個人部落格網站 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="前言此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 用R语言的blogdown&#43;hugo&#43;netlify&#43;github 建博客 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
+架設這個網站會需要用到：
+RRstudioR的blogdown套件GitGithubNetlify會採用這個架構來建立部落格網站，主要原因是因為R語言是我現在寫程式最主要的工具。在之前我有嘗試用Jekyll&#43;Github部署的方式來建立部落格網站，但發現如果要在Markdown中呈現R語言程式的執行結果，好像會有困難(?)。後來發現Rstudio有出 blogdown套件，所以就跳過來用blogdown套件來達成我想要的目標。
+在本機端建立部落格專案在參考的文章中，是先利用R專案(Project)的Git GUI的功能，來連結Github。再從這個專案資料夾中，創造另外一個R的Blogdown專案，負責處理部落格內容。但我發現在Rstudio內使用Git的GUI實在不是很順暢，比如說我想點選要Push的檔案上傳到Github，會時常卡住沒反應。網路上有人說Windows在這部份好像一直都有問題(?)，後來我就放棄，改採最一般的方法來處理。
+我的處理方式是，先在Github上建立好Repository，然後利用命令提示字元(cmd)，把在Github的專案Clone到本機端。之後在本機端的Repository資料夾，建立R的Blogdown專案。以下是我的步驟：
+首先在Github建立Repository，名稱就依自己喜好，能認得就好，我在這邊命名為「MyBlog」。
+在建立完Repository後，打開命令提示字元，利用git clone指令把Repository Clone到本機端。
+開啟RStudio，點選建立專案。
+選擇New Directory。
+選擇Website using blogdown，開啟Blogdown專案。
+接下來這邊要注意，因為我們要把部落格專案內容放到Github的資料夾，所以Directory name要和Repository的名稱是一樣的，路徑也要和Repository所在的路徑相同。
+另外此處也可以調整想要建立的主題，只要修改Hugo theme 就可以了。
+主題可到Hugo的主題網站查詢 https://themes.gohugo.io，挑選自己喜歡的主題，像我的主題是挑選 Cocoa。如果喜歡這個主題，只要點選Download，就會跳轉到該主題的Github頁面。
+只要把使用者和Repository名稱複製下來，貼到Hugo theme，就可以使用該主題。
+以Cocoa主題為例，Hugo theme這邊就要輸入nishanths/cocoa-hugo-theme。
+另外需要注意的是，不同的主題內的設置有可能會不一樣，因為Hugo並不是只有Rstudio能處理，開發主題的人並不一定會以Rstudio的Blogdown設定來配合設計。舉例來說，如果使用Cocoa主題，部落格的文章是讀取content/blog的資料夾。如果用Rstudio內的Addins的New Post來發表文章，則會放在content/post資料夾內，因此會發現部落格都不會讀到自己寫的文章，我自己後來是去改Cocoa主題內的程式碼來修正此問題。為了方便教學，這邊還是用原本的主題吧！設定如下：
+在確認設置都沒問題後，點選Create Project按鈕，這樣R的Blogdown專案就建構完成。Rstudio會重新開啟，這時候就會發現右下角的檔案目錄已經把Hugo需要的檔案都布置好啦！
+接下來只要在Console上，輸入blogdown::serve_site()，就可以產生出部落格網站。
+右下角的Viewer視窗就是網站的預覽，可以點選紅框內的圖案，就可以用瀏覽器觀看。
+以上就是在本機端建立部落格專案的流程。
+部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
+config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
+撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。
+Public這個資料夾是網站輸出的成果，執行blogdown::serve_site()時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。
+如果想要調整版面或者字形或字體大小等css相關的設定，就需要到themes資料夾內進行修正。
+更多的細節可以參考Blogdown作者的說明網站 blogdown: Creating Websites with R Markdown。"
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/create-my-website/" />
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="利用R的Blogdown套件建立個人部落格網站"/>
+<meta name="twitter:description" content="此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 [用R语言的blogdown&#43;hugo&#43;netlify&#43;github 建博客](https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/) 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。"/>
+
+
+
+<meta property="og:title" content="利用R的Blogdown套件建立個人部落格網站" />
+<meta property="og:description" content="此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 [用R语言的blogdown&#43;hugo&#43;netlify&#43;github 建博客](https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/) 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/create-my-website/" />
+<meta property="article:published_time" content="2018-03-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-03-03T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">利用R的Blogdown套件建立個人部落格網站</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2018-03-03
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/hugo/">#Hugo</a>&nbsp;
+        
+          <a href="/tags/github/">#Github</a>&nbsp;
+        
+          <a href="/tags/r/">#R</a>&nbsp;
+        
+          <a href="/tags/r-markdown/">#R Markdown</a>&nbsp;
+        
+          <a href="/tags/netlify/">#Netlify</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      
+
+
+<hr />
+<div id="前言" class="section level2">
+<h2>前言</h2>
+<p>此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 <a href="https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/">用R语言的blogdown+hugo+netlify+github 建博客</a> 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。</p>
+<p>架設這個網站會需要用到：</p>
+<ul>
+<li>R</li>
+<li>Rstudio</li>
+<li>R的blogdown套件</li>
+<li>Git</li>
+<li>Github</li>
+<li>Netlify</li>
+</ul>
+<p>會採用這個架構來建立部落格網站，主要原因是因為R語言是我現在寫程式最主要的工具。在之前我有嘗試用Jekyll+Github部署的方式來建立部落格網站，但發現如果要在Markdown中呈現R語言程式的執行結果，好像會有困難(?)。後來發現Rstudio有出 <a href="https://github.com/rstudio/blogdown">blogdown</a>套件，所以就跳過來用blogdown套件來達成我想要的目標。</p>
+<hr />
+</div>
+<div id="在本機端建立部落格專案" class="section level2">
+<h2>在本機端建立部落格專案</h2>
+<p>在參考的文章中，是先利用R專案(Project)的Git GUI的功能，來連結Github。再從這個專案資料夾中，創造另外一個R的Blogdown專案，負責處理部落格內容。但我發現在Rstudio內使用Git的GUI實在不是很順暢，比如說我想點選要Push的檔案上傳到Github，會時常卡住沒反應。網路上有人說Windows在這部份好像一直都有問題(?)，後來我就放棄，改採最一般的方法來處理。</p>
+<p>我的處理方式是，先在Github上建立好Repository，然後利用命令提示字元(cmd)，把在Github的專案Clone到本機端。之後在本機端的Repository資料夾，建立R的Blogdown專案。以下是我的步驟：</p>
+<p>首先在Github建立Repository，名稱就依自己喜好，能認得就好，我在這邊命名為「MyBlog」。</p>
+<p><img src="1.png" /></p>
+<p>在建立完Repository後，打開命令提示字元，利用<code>git clone</code>指令把Repository Clone到本機端。</p>
+<p><img src="2.png" /></p>
+<p>開啟RStudio，點選建立專案。</p>
+<p><img src="3.png" /></p>
+<p>選擇New Directory。</p>
+<p><img src="4.png" /></p>
+<p>選擇Website using blogdown，開啟Blogdown專案。</p>
+<p><img src="5.png" /></p>
+<p>接下來這邊要注意，因為我們要把部落格專案內容放到Github的資料夾，所以Directory name要和Repository的名稱是一樣的，路徑也要和Repository所在的路徑相同。</p>
+<p><img src="6.png" /></p>
+<p>另外此處也可以調整想要建立的主題，只要修改Hugo theme 就可以了。</p>
+<p>主題可到Hugo的主題網站查詢 <a href="https://themes.gohugo.io/">https://themes.gohugo.io</a>，挑選自己喜歡的主題，像我的主題是挑選 <a href="https://themes.gohugo.io/cocoa/">Cocoa</a>。如果喜歡這個主題，只要點選Download，就會跳轉到該主題的Github頁面。</p>
+<p><img src="7.png" /></p>
+<p>只要把使用者和Repository名稱複製下來，貼到Hugo theme，就可以使用該主題。</p>
+<p><img src="8.png" /></p>
+<p>以Cocoa主題為例，Hugo theme這邊就要輸入<code>nishanths/cocoa-hugo-theme</code>。</p>
+<p><img src="9.png" /></p>
+<p>另外需要注意的是，不同的主題內的設置有可能會不一樣，因為Hugo並不是只有Rstudio能處理，開發主題的人並不一定會以Rstudio的Blogdown設定來配合設計。舉例來說，如果使用Cocoa主題，部落格的文章是讀取<code>content/blog</code>的資料夾。如果用Rstudio內的Addins的New Post來發表文章，則會放在<code>content/post</code>資料夾內，因此會發現部落格都不會讀到自己寫的文章，我自己後來是去改Cocoa主題內的程式碼來修正此問題。為了方便教學，這邊還是用原本的主題吧！設定如下：</p>
+<p><img src="6.png" /></p>
+<p>在確認設置都沒問題後，點選Create Project按鈕，這樣R的Blogdown專案就建構完成。Rstudio會重新開啟，這時候就會發現右下角的檔案目錄已經把Hugo需要的檔案都布置好啦！</p>
+<p><img src="10.png" /></p>
+<p>接下來只要在Console上，輸入<code>blogdown::serve_site()</code>，就可以產生出部落格網站。</p>
+<p><img src="11.png" /></p>
+<p>右下角的Viewer視窗就是網站的預覽，可以點選紅框內的圖案，就可以用瀏覽器觀看。</p>
+<p><img src="12.png" /></p>
+<p>以上就是在本機端建立部落格專案的流程。</p>
+<hr />
+</div>
+<div id="部落格專案內容" class="section level2">
+<h2>部落格專案內容</h2>
+<p>在Blogdown這個專案的資料夾內，大概需要注意的是這4點：</p>
+<ol style="list-style-type: decimal">
+<li><p><code>config.toml</code>這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。</p></li>
+<li><p>撰寫的文章要放在<code>content/post</code>資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。</p></li>
+<li><p><code>Public</code>這個資料夾是網站輸出的成果，執行<code>blogdown::serve_site()</code>時會根據當前目錄內的檔案自動產生或者覆蓋，完全不用動到這個資料夾。</p></li>
+<li><p>如果想要調整版面或者字形或字體大小等css相關的設定，就需要到<code>themes</code>資料夾內進行修正。</p></li>
+</ol>
+<p>更多的細節可以參考Blogdown作者的說明網站 <a href="https://bookdown.org/yihui/blogdown/">blogdown: Creating Websites with R Markdown</a>。</p>
+<p>發文的部分，只要在Rstudio內點選Addins，再選擇New Post，會跳出設定視窗。</p>
+<p><img src="13.png" /></p>
+<p>點開之後，只要在Title上輸入自己的文章題目，再按Done，Blogdown會建立好Markdown的撰寫檔案。如果想要文章題目是中文，可以先在Title打英文，主要是方便自動產生英文檔名，之後到Markdown撰寫區修改即可。另外需要注意的是，Filename前面固定都是yyyy-mm-dd開頭，這個格式不能動到，另外檔名也不能有空白鍵，要用<code>-</code>來做為間隔。</p>
+<p><img src="14.png" /></p>
+<p>如果你想要用R的Markdown，在Format的部份要選擇R Markdown的選項，這樣就可以使用。這是我當初最想要的部分，這樣我就可以邊寫Markdown邊執行R程式碼秀出結果。</p>
+<p>如果你不太懂Markdown是在做什麼，可以參考這邊的資源：<a href="http://markdown.tw/">http://markdown.tw/</a>，如果想要了解R的Markdown，則可以參考<a href="http://r4ds.had.co.nz/r-markdown.html">R for Data Science</a>這本書的Markdown章節。</p>
+<p>接下來稍微撰寫一下Markdown檔案，然後儲存。要注意的是一定<strong>要將字碼存成utf-8檔</strong>，這樣中文字才會讀得到，我在研究的時候Debug這個問題花了一段時間。我把標題改為中文「我的部落格第一篇文章」，然後打一些字，並轉存檔案為utf-8字碼。</p>
+<p><img src="15.png" /></p>
+<p><img src="16.png" /></p>
+<p><img src="17.png" /></p>
+<p>如果你在操作上述步驟時，可以發現RStudio右下角Viewer視窗會隨著你的操作變動(如果沒有自動變動，可以透過存檔，然後重整Viewer視窗就會更新到最新畫面)。我想這算是Blogdown的優點吧，讓Markdown在編輯時都可以看目前網頁呈現的狀況，像我在這打這篇文章時，都會透過Viewer視窗來檢查我的文字排版，以及Markdown語法是否有出錯。</p>
+<p><img src="18.png" /></p>
+<p>另外可以到<code>content/post</code>資料夾內，剛寫好的文章存放在裡頭。此外要注意的是，如果你是使用R的markdown撰寫(副檔名為Rmd)，一樣也是會放到這個資料夾內，且<strong>不需要透過Knit轉成html檔案</strong>，Blogdown套件會自動處理，非常方便。</p>
+<hr />
+</div>
+<div id="將部落格放到網路上" class="section level2">
+<h2>將部落格放到網路上</h2>
+<p>在本機端撰寫好部落格文章後，接下來就是要把部落格放到網路上去。此處我們將檔案Push到Github，並透過Netlify網站來協助我們部署。</p>
+<p><img src="19.png" /></p>
+<p>接下來到<a href="https://app.netlify.com/signup">Netlify</a>網站，註冊帳號並登入，選擇與Github做連動。</p>
+<p><img src="20.png" /></p>
+<p><img src="21.png" /></p>
+<p>選擇Github連動後，接下來選擇Repository，此處我們的Repository是MyBlog。</p>
+<p><img src="22.png" /></p>
+<p>接下來此處的設定按圖片上的設置即可，主要是在Publish directory輸入<code>public</code>，讓Netlify知道網站是放在<code>public</code>資料夾。此處與我我Follow的那篇文章設定有不一樣，原本的文章在Build command那邊是輸入<code>Hugo</code>，但我實測發現這樣設定Netlify會一直部署失敗。後來我在Youtube找到教學影片<a href="https://www.youtube.com/watch?v=syWAKaj-4ck">Making a Website with Blogdown</a>，發現不用輸入就可以成功部署。輸入完後就可以點選Deploy site按鈕即可。</p>
+<p><img src="23.png" /></p>
+<p>接下來等一些時間，Netlify就會部署好網頁，就會得到一串網址，像我這邊的網址是<code>http://compassionate-mclean-4a9710.netlify.com</code>，其他人可以透過這個網址來觀看你的Blog。</p>
+<p><img src="24.png" /></p>
+<p>但其實這個網址是隨機產生的，並不好記。Netlify很貼心的提供更改網址的服務。只要點選第2步驟，然後再點選<code>Edit site name</code>，就可以設定自己喜歡且好記的網址。</p>
+<p><img src="25.png" /></p>
+<p>像我這邊就改為<a href="http://sytblog.netlify.com">http://sytblog.netlify.com</a>，這樣就好記多了！</p>
+<p><img src="26.png" /></p>
+<p>以上就是整個建站的過程。在設定好Github與Netlify的連結後，之後只要在本機端打好文章，然後用Git Push到Github上，Netlify網頁就會一併更新，非常方便。</p>
+</div>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+              <span class="button previous">
+                <a href="/post/web-crawler-fortune-china-500/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">爬蟲-財富中國500強股票排行榜資料</span>
+                </a>
+              </span>
+            
+            
+          </div>
+        </div>
+      
+    
+
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2020 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>

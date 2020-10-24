@@ -1,224 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Blog on Yen-Ting, Su Personal Website</title>
-    <link>/blog/</link>
-    <description>Recent content in Blog on Yen-Ting, Su Personal Website</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
-    <lastBuildDate>Tue, 22 Sep 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程</title>
-      <link>/blog/linux_ubuntu_configure/</link>
-      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/linux_ubuntu_configure/</guid>
-      <description>1. Putty安裝方式 下載頁面連結位置
-下載後點選putty.exe檔案即可進入連線畫面
-2. 切換終端機命令列為英文 將終端機命列列系統訊息由中文切為英文，因為這樣在處理Bug時會有比較多的資源可以參考。
-直接在圖形化介面進行修正，搜尋Settings -&amp;gt; Region &amp;amp; Language
-修改 Language 和 Formats選項，之後重新登入即可轉為英文環境
-3. SSH套件相關設定 開機時自動啟動SSH
-sudo systemctl enable ssh 為確保資安，將SSH的Port由22改為[新的Port號碼] 主要是修改sshd_config文件，將裡面的Port由22改為[新的Port號碼]
-sudo vi /etc/ssh/sshd_config 相關改法可看參考頁面
-防火牆記得設定允許Port [新的Port號碼] 連入
-sudo ufw allow [新的Port號碼] 另外為了資安設定，可以針對SHH Port加入IP白名單 寫法可參考頁面連結 如果有需要設定IP範圍，會用到網路遮罩寫法，對應的寫法可參考Wiki頁面說明
-4. 安裝R 指令參考頁面
-sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39; sudo apt update sudo apt install r-base 安裝好後在命令列直接輸入R即可進入R環境
-R 5. 安裝RStudio Server 指令參考頁面
-sudo apt-get install gdebi-core wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.1073-amd64.deb sudo gdebi rstudio-server-1.3.1073-amd64.deb 防火牆設定允許Port 8787 連入</description>
-    </item>
-    
-    <item>
-      <title>在Azure雲端平台建立CentOS虛擬機器，並安裝遠端桌面服務、R軟體及MySQL資料庫</title>
-      <link>/blog/azure-install-centos/</link>
-      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/azure-install-centos/</guid>
-      <description>前言 本篇文章將介紹如何在Microsoft Azure雲端平台上，建立CentOS作業系統的虛擬機器。並且能夠透過Windows遠端桌面連入進行控制，以及在CentOS作業系統上安裝R軟體和MySQL資料庫。
-CentOS為Linux系統之一，有興趣的人可參考維基介紹。
-參考來源部分，主要是參考賽門於iT邦幫忙網站發表的系列文章連線Microsoft Azure的CentOS 7虛擬機器，並透過Google尋找網路資源解決遇到的問題。
-另外這是我第一次碰Linux系統，本人非資訊背景出身。文章僅供參考，有發現錯誤或有問題的地方，歡迎底下留言指教，謝謝您！
- 在Azure建立CentOS虛擬機器 首先需要至Microsoft Azure先開設一個帳戶，目前提供微軟提供1個月6,300元的免費試用額度，讓使用者體驗。在申辦的過程中，會需要信用卡卡號，但不會幫你扣款，僅做驗證。
-帳戶辦完後，登入Azure網站，並點選入口網站，即可開始建立虛擬機器。建立虛擬機器的方式，可參考Microsoft Azure 虛擬機器完全攻略，裡面有詳細的影音操作說明，包含Windows及Linux作業系統建置方式。以下簡單說明建置步驟：
-在入口網站畫面左側點選虛擬機器選項：
-按下左上角的新增，新增一台虛擬機器。接下要選擇作業系統，在搜尋列上輸入centos，點選CentOS-based 7.4：
-進入確認畫面，直接點選建立：
-接下來要依序設定共4個步驟，第1個步驟選項部分：
- 名稱： 在Azure雲端平台上做虛擬機器辨識用的。 使用者名稱： 待會要登入虛擬機器時的帳號。 驗證類型： 可選SSH公開金鑰及單純用密碼形式。此處安全層級要高的話，應該選SSH公開金鑰會比較合適，但為方便此處還是選密碼。 資源群組： 方便管理多台虛擬機器使用，有時候一個專案可能需要開多台虛擬機器(例如分散式運算)，可以將多台虛擬機器劃分在同一個群組底下方便做管理。此處我們只用1台虛擬機器，所以資源群組的名稱就依個人喜好命名即可。 位置： 則是看虛擬機器想要架設在哪個地點，不同的地點收費會不一樣。  第2個步驟選項部分，則是挑選虛擬機器的規格，不同的規則會有不同的收費價錢，此處選擇Microsoft推薦的等級(即前面有星星的)：2顆CPU、記憶體8G及SSD硬碟16GB。
-Microsoft Azure有提供定價計算機，讓使用者可以計算虛擬機器在各個地點及配備所需要的金額。
-第3步驟部分，將公用輸入連接埠5個選項全部打開後，按下確定。
-第4步驟部分，是做最後確認，並且會預估此次開設虛擬機器每小時大概要花費的費用。確認無誤後，按下建立。
-按下建立後，會自動跳轉回儀表板，並且會出現正在部署的動態框，此處需要等待一段時間。等部署結束後，就可以準備開始連入虛擬機器。
-架設完後，點選動態框進去。
-此畫面下，可看到此台虛擬機器的IP及運作狀況。待會可透過IP連到這台虛擬機器進行溝通。
-如果此處是架設Windows作業系統，我們可以利用自己電腦的Windows遠端桌面服務，輸入IP及使用者帳密，即可快速連到該電腦進行操作。但因為此處我們是架設Linux系統，需要再安裝其他軟體，讓Linux系統能與Windows系統做連結。
-Windows遠端桌面連接CentOS虛擬機器方式 在Azure上架設好虛擬機器後，接下來我們要想辦法讓我們自己的電腦(Windows)能夠遠端連到CentOS作業系統，此處我們需要安裝3個軟體：
- GNOME： Linux的桌面環境軟體之一，安裝此軟體後，能讓Linux擁有像Windows的桌面環境。 VNC Server： 讓Linux作業系統能夠從遠端連入進行操控。 xrdp： 能使用Windows遠端桌面連線至Linux桌面環境。  下載putty 因為虛擬機器目前無桌面環境，需要透過Bash指令來安裝。首先先下載putty.exe，此軟體能讓我們用Bash的方式和CentOS溝通。
-putty.exe下載位置: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
-網站下載位置示意圖
-下載putty.exe後，打開輸入虛擬機器IP按確認即可使用：
-首次連入時，會出現此視窗，直接點選是即可：
-連入後，輸入帳號及密碼，即可與虛擬機器進行溝通：
-安裝EPEL EPEL(Extra Packages for Enterprise Linux)是由Fedora社群維護打造，提供多個新版本的套件庫供Linux系統使用。參考網站: https://fedoraproject.org/wiki/EPEL
-在putty輸入下列指令，即可安裝最新版本。
-sudo yum install https://dl.</description>
-    </item>
-    
-    <item>
-      <title>在網頁嵌入Gist程式碼教學</title>
-      <link>/blog/embed-gist-code-introduction/</link>
-      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/embed-gist-code-introduction/</guid>
-      <description>前言最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解HUGO的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做程式碼高亮)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做Gist的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行JavaScript程式碼即可，非常方便。除了上述好處，Gist可以依據副檔名，自動為程式碼上出漂亮的顏色。這樣我就不用再和HUGO奮戰，直接引Gist到Blog來就好。這篇文章將會簡單介紹如何使用Gist加入至Blog內。
-如何嵌入程式碼首先連至Gist(https://gist.github.com/)網站，然後以Github帳號登入。登入後選擇右上角的New gist選項，畫面如下：
-接下來把一個簡單的R程式複製貼上來，當然這邊是無法執行跑出結果的，所以我會先在R程式內先確認程式碼是可以跑的。程式碼貼好後記得輸入檔名，畫面如下：
-接下來要發佈這份程式碼，此處有兩個選項在畫面下方可以按，分別為Create secret gist及Create public gist。這兩個選項的差異是，選擇Create secret gist，這份程式碼不會被搜尋引擎找到，只有擁有連結的人才能進來看; 若選擇Create public gist，則其他人在用搜尋引擎搜尋時會被找到。此處我習慣點選Create secret gist按鈕，點選後畫面如下：
-出現上述畫面後，程式碼就已經發布成功了。再來就是要將這份程式碼，嵌在目前你正在看的網頁。畫面右上角有一個Embed的選項，後面有對應一串程式碼，這個程式碼就是JavaScript。只要將這行程式碼放在網頁或Markdown內，用瀏覽器讀取時，就會自動去Gist這邊抓我們剛打的程式碼。以此處為例，JavaScript嵌入程式碼為:
-&amp;lt;script src=&amp;quot;https://gist.github.com/SuYenTing/1aebd63541c4fb474a66eb3b6d66b865.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-然後我把這行程式碼直接輸入在Markdown內，就會引入程式碼：這樣看可能沒有感覺，我貼一下我的Markdown畫面給大家看，就會懂我的意思了！下圖是我在Markdown的畫面：
-按照上述步驟，可以發現透過Gist在網頁嵌入程式碼真的是件很簡單的事情！
-高亮嵌入程式碼之方法如果仔細觀察剛從Gist引入的程式碼，會發現程式碼並沒有高亮的感覺，全部都是黑色的字。沒錯，確實就是這樣，沒有高亮！原因是因為我們剛在取檔名時，忘記加上副檔名，所以Gist只會秀黑色的程式碼出來。接下來我做一個對照範例，若要新增新的程式碼，右上方有一個Edit按鈕，點下去即可再次編輯程式碼。
-進到編輯畫面後，再點畫面左下方的Add按鈕，新增一個程式碼區塊。第二個程式碼區塊和第一個程式碼區塊是一樣的，但差別是檔名部分，我後面多加一個副檔名.R。處理好後，點選右下方的Update secret gist。
-一樣引用JavaScript嵌入程式碼，呈現結果如下：
-從上面兩個區塊一比較，可以看出程式碼有明顯的差異吧。第二個區塊再加入副檔名.R後，程式碼瞬間「亮」了起來。Gist透過附檔名的方式，為不同的程式碼進行配色，像如果是HTML程式碼，副檔名.html加上去，就會以HTML程式碼格式來上色; 如果是Python程式碼，副檔名.py加上去，就會以Python程式碼格式來上色。
-此處還有一個問題是，如果我們直接嵌入JavaScript程式碼，會一次秀出兩個區塊程式碼，如果我只呈現一個區塊時，要怎麼做？舉例來說，我想要呈現這樣的排版：
-這是第一個區塊這是第二個區塊，區塊中間插入文字。解答是：若只要引用一個區塊時，在JavaScript嵌入程式碼的src網址加入指定參數file即可，架構為：
-&amp;lt;script src=&amp;quot;https://gist.github.com/SuYenTing/1aebd63541c4fb474a66eb3b6d66b865.js?file=程式碼區塊名稱&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-上面區隔兩塊的程式碼，在我的Markdown內的程式碼寫法為：
-結語以上是Gist嵌入網頁的簡單說明。另外要補充一點的是，因為這份文章是按部就班的寫，在文章高亮嵌入程式碼之方法部分有加入第二個區塊的程式碼，所以會導致最開始講解的如何嵌入程式碼部分，引用的JavaScript嵌入程式碼呈現的結果會不一樣，會從一個區塊變成兩個區塊。因此實際上我是有透過file來指定區塊。但為初學者方便學習，所以此處就不修改。以上就是Gist在網頁嵌入程式碼的教學，謝謝大家！
-</description>
-    </item>
-    
-    <item>
-      <title>利用eval函數計算多個移動平均線指標</title>
-      <link>/blog/use-eval-function-compute-ma/</link>
-      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/use-eval-function-compute-ma/</guid>
-      <description>前言我們通常會利用dplyr套件搭配TTR套件的SMA函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:
-但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
-這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。
-eval函數eval函數是R軟體的內建函數，主要是將一段文字以命令的方式讓程式去執行，以下我們做一個簡單的範例。假設說我們想要產生一個變數叫做a，並且指派數值1給a。
-上述的兩個不同方法，其結果都會讓變數a為1。由於eval函數將文字變成命令送到程式，因此我們可以透過修改字串的方式，並搭配迴圈，來計算不同天期的移動平均線。
-資料來源資料來源部分，我們使用tidyqunat套件，這個套件整合quantmode套件與tidyverse套件。利用此套件的tq_get函數至Yahoo Finance下載台股大盤股價資料，做為此次的範例資料集。
-以下為sockData的資料內容，我們只取出日期及收盤價資訊:
-## # A tibble: 2,573 x 2## date close## &amp;lt;date&amp;gt; &amp;lt;dbl&amp;gt;## 1 2008-01-02 8323.05## 2 2008-01-03 8184.20## 3 2008-01-04 8221.10## 4 2008-01-07 7883.37## 5 2008-01-08 7962.91## 6 2008-01-09 8085.06## 7 2008-01-10 8057.27## 8 2008-01-11 8029.31## 9 2008-01-14 8173.41## 10 2008-01-15 8428.84## # .</description>
-    </item>
-    
-    <item>
-      <title>Tidyquant套件介紹</title>
-      <link>/blog/tidyquant-package-introduction/</link>
-      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/tidyquant-package-introduction/</guid>
-      <description>前言 R語言在財務領域中，常用到的套件大概有下列幾個：
- xts/zoo: 處理時間序列之套件。 TTR: 計算金融資產技術指標之套件。 quantmod: 金融資產技術分析回測套件，可至Yahoo Finance或Google Finance下載歷史股價數據或其他金融相關數據。並且整合TTR套件，繪製出漂亮的技術分析圖析。 PerformanceAnalytics: 計算金融資產報酬績效指標之套件。  現在的R語言在資料科學的浪潮之下，資料數據格式已走向tidy data形式。tidyverse套件已是每位R使用者必學的套件，使用此套件讓資料整理的程式碼簡潔又快速，讓R語言的方便性邁向更高一層。然而在財務領域的套件，目前皆是以時間序列資料格式(xts)為基礎建構而成。意即要使用這些套件的函數時，需要先將資料先轉為xts格式，才能做財務分析。若要在tidyverse套件中使用這些財務領域套件的函數，會有許多限制，需要做額外的整理才能使用，非常不方便。
-針對這個痛點，R語言有人站出來解決這個問題，Matt Dancho和Davis Vaughan開發出tidyquant套件，為財務領域套件與tidyverse套件搭起一座橋梁，讓tidyverse套件能夠很輕易地使用財務領域套件。
-tidyquant套件的作者Matt Dancho寫出許多詳盡的說明範例檔案，可參考以下連結:
- Introduction to tidyquant Core Functions in tidyquant R Quantitative Analysis Package Integrations in tidyquant Scaling and Modeling with tidyquant Charting with tidyquant Performance Analysis with tidyquant  當然，本篇文章的說明也都是從以上的說明範例檔案來學習並寫出來的！差別在於我們是用中文說明及臺灣的股市價格資料來做範例，並只擷取重要部分，讓大家可以快速地掌握脈絡。
- 數據下載 做股市分析的第一步就是要取得股價資料，tidyquant套件的tq_get()函數整合quantmod套件的getSymbols()函數。透過tq_get()函數可以從網路上一次下載多檔股票資料，並且以tibble格式儲存資料，讓後續的資料處理更加方便。此處示範如何下載2017/06/01至2018/05/31，鴻海、台積電、中華電信及臺灣加權指數的歷史價格資料。在tq_get()函數內的引數為:
- x: 金融資產的代碼，需配合資料源。 get: 資料下載來源，此處我們設定參數為stock.price，從Yahoo Finance下載歷史股價資料。 from: 資料下載起始日。 to: 資料下載結束日。  tq_get()函數可下載的資料來源相當多，除了股價資料外，也有財務比率指標(Morningstar)、股利股息資料(Yahoo Finance)及總經資料(FRED)等，只要修改函數內的get參數即可取得。詳細內容可參考原作者的說明文件：Core Functions in tidyquant。</description>
-    </item>
-    
-    <item>
-      <title>R的平行運算</title>
-      <link>/blog/parallel-introduction/</link>
-      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/parallel-introduction/</guid>
-      <description>前言在做量化投資策略參數最佳化時，都會透過for迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件parallel，只要將要程式碼包裝成函數形式，就可以跑平行運算。
-接下來文章一開始會先用for迴圈做一個簡單的範例，再來會使用apply家族提升速度，最後用平行運算讓速度再往上提升。透過這個範例，可以看到如何使用平行運算及平行運算的速度。
-使用套件library(parallel) # 平行運算套件library(tidyverse) # 資料科學專用套件包For迴圈寫法我們做一個簡單的範例，產生1,000列的資料，每列為共包含兩個數，分別為該列的值及平方值。
-output &amp;lt;- NULL # 建立儲存表power &amp;lt;- 2 # 次方數ptm &amp;lt;- proc.time() # 啟動計時器for(ix in 1:1000){rowData &amp;lt;- tibble(num1 = ix, num2 = ix^power) output &amp;lt;- output %&amp;gt;% bind_rows(rowData)}forTime &amp;lt;- proc.time() - ptm # 結束計時器 執行完後，output會是：
-output## # A tibble: 1,000 x 2## num1 num2## &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt;## 1 1 1## 2 2 4## 3 3 9## 4 4 16## 5 5 25## 6 6 36## 7 7 49## 8 8 64## 9 9 81## 10 10 100## # .</description>
-    </item>
-    
-    <item>
-      <title>上市股票Beta估計</title>
-      <link>/blog/stock-beta/</link>
-      <pubDate>Sun, 25 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/stock-beta/</guid>
-      <description>前言最近在幫老師製作教學講義的案例，要用資本資產定價模型(Capital Asset Pricing Model, CAPM)，去估計2017年每支上市股票的\(\beta\)。這個問題在碩士班時就有用程式寫過，並沒有很難。但當時程式能力弱弱的，主要是用迴圈去一支一支計算。這次要寫這個程式有一些新的想法，之前看網路上的文章有用到apply家族可以一次估計多個模型的範例，因此透過這次的題目，可以把這個想法實作出來。
-資本資產定價模型(CAPM)資本資產定價模型(CAPM)是財務領域中的重要模型之一，主要用於解釋資本市場如何決定股票的報酬率。財金系的大二學生，在上財務管理或投資學時，一定會學到這個模型。此模型用一般無截距的最小平方法(Ordinary Least Squares, OLS)估計即可，模型如下：
-\[E(R_i)-R_f=\beta (E(R_m)-R_f)\]
-\(E(R_i)\)：股票\(i\)的期望報酬率
-\(E(R_i)-R_f\)：股票\(i\)的市場風險溢酬
-\(E(R_m)\)：市場的期望報酬率
-\(E(R_m)-R_f\)：市場風險溢酬
-\(R_f\)：無風險利率
-估計樣本的時間頻率一般會採用月頻，樣本數為近60個月。這個模型的重點是在看估計出來的\(\beta\)，\(\beta\)是衡量這支股票報酬率與市場報酬率之間的連動性。
-若\(\beta\)等於1，代表每當市場報酬率上升1%時，股票期望報酬也會跟著上升1%。
-若\(\beta\)等於1.2，代表每當市場報酬率上升1%時，股票期望報酬會上升1.2%
-若\(\beta\)等於0.5，代表每當市場報酬率上升1%時，股票期望報酬只會上升0.5%。
-詳細的模型說明可參考維基百科。
-資料來源資料是從TEJ資料庫取得，我們以2017年12月為估計時點，需要60個月的樣本，因此資料期間為2013年1月至2017年12月。市場月報酬率以報酬指數計算得出，股票報酬率以調整後價格計算，無風險利率採用臺灣銀行一年期定存利率月化。
-實作過程資料整理的部份此處略過，主要是透過tidyverse套件來整理資料，並確保每支股票在2013年1月至2017年12月之間，共有60筆完整樣本，若沒有則會被踢除。資料整理完後，欄位如下圖所示：
-library(tidyverse)# 讀取資料load(&amp;quot;./stock-beta/data.Rdata&amp;quot;)# 呈現資料前10筆內容head(data,10) ## # A tibble: 10 x 5## code name yearMonth monthRetDiffRf mktRetDiffRf## &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;## 1 1101 台泥 201301 0.02185934 0.007980063## 2 1101 台泥 201302 -0.</description>
-    </item>
-    
-    <item>
-      <title>爬蟲-財富中國500強股票排行榜資料</title>
-      <link>/blog/web-crawler-fortune-china-500/</link>
-      <pubDate>Sat, 10 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/web-crawler-fortune-china-500/</guid>
-      <description>前言最近學弟想要爬財富中國500強排行榜的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。先簡介一下財富中國500強排行榜是什麼，網站裡面介紹到：
-财富中文网于北京时间2017年7月31日发布了最新的《财富》中国500强排行榜。该榜单由《财富》（中文版）与中金公司财富管理部合作编制，考量了全球范围内最大的中国上市企业在过去一年的业绩和成就。
-看到這段介紹，我最好奇的是「過去一年的業績與成就」到底是怎麼量化的，但Google發現好像都沒有相關敘述，這個問題只好暫時擱著，先來抓資料!
-目標學弟這次想問的是要怎麼爬中國500強名單的股票代碼，目前網站上提供的中國500強名單只有列出中文公司名稱、營收及利潤資訊。
-如果要查詢股票的進階資訊，可以直接點選公司名稱跳轉到下一個網頁，裡面就會有存放股票的代碼資訊，就是我們想要的資料。
-爬取網頁流程首先試抓第1強的中國石油化工股份有限公司的股票代碼，這家公司有在4個交易所掛牌，所以有4個股票代碼。
-library(rvest)library(magrittr)# 爬取網頁網址(中國石油化工股份有限公司)url &amp;lt;- &amp;quot;http://www.fortunechina.com/china500/1/2017&amp;quot;# 爬取股票代碼code &amp;lt;- read_html(url, encoding = &amp;quot;UTF-8&amp;quot;) %&amp;gt;%html_nodes(xpath=&amp;quot;//div[@class=&amp;#39;thisyeardata&amp;#39;]/table//tr[3]/td[1]&amp;quot;) %&amp;gt;%html_text() %&amp;gt;%.[1] %&amp;gt;%gsub(&amp;quot;股票代码：&amp;quot;,&amp;quot;&amp;quot;, .) %&amp;gt;%gsub(&amp;quot;\\s+&amp;quot;,&amp;quot;&amp;quot;, .)發現資料其實還蠻好抓的，再來觀察網址，發現網址好像藏有規律。
-第1名的中國石油化工股份有限公司網址：
-http://www.fortunechina.com/china500/1/2017
-第2名的中國石油天然氣股份有限公司網址：
-http://www.fortunechina.com/china500/2/2017
-初步判定網址好像是以 china500/排名/2017 的規律來建構的。如果是這樣，只要迴圈數字1~500，透過字串組合就可以把500家公司的股票代碼全部抓下來。但是事情沒這麼簡單，當我直接輸入排名第500的網址 http://www.fortunechina.com/china500/500/2017，結果網頁出現的畫面是：
-網頁竟然查不出資料，代表我們推論的網址邏輯有錯誤。經過仔細檢查發現，發現網址是沒有規律的。第3名的中國建築股份有限公司，我們以為網址的排名竟然是9。
-http://www.fortunechina.com/china500/9/2017。
-這樣一來，我們就不能用迴圈數字1至500搭配字串組合網址來下載500強公司的代碼，只好找找看有沒有其他的方法。
-依照過往經驗，像這種表格式，然後可以點選表格內容跳轉到其他頁面的網站，網頁原始碼內都會藏有超連結。仔細看網頁原始碼，果然真的有！而且500強的連結都存放在裡面。
-接下來，我們的目標轉成去爬網頁原始碼內的500強連結，為方便確認資料內容，這邊連股票名稱一起爬下來。
-# 爬取網頁網址(財富中國500強排行榜)url &amp;lt;- &amp;quot;http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm&amp;quot;# 爬取500強公司名稱stockName &amp;lt;- read_html(url, encoding = &amp;quot;UTF-8&amp;quot;) %&amp;gt;%html_nodes(xpath=&amp;quot;//table[@id=&amp;#39;yytable&amp;#39;]//tr/td[3]&amp;quot;) %&amp;gt;%html_text()# 爬取500強連結link &amp;lt;- read_html(url, encoding = &amp;quot;UTF-8&amp;quot;) %&amp;gt;%html_nodes(xpath=&amp;quot;//table[@id=&amp;#39;yytable&amp;#39;]//tr/td[3]/a&amp;quot;) %&amp;gt;%html_attr(&amp;quot;href&amp;quot;)# 整理連結內容link &amp;lt;- link %&amp;gt;%gsub(&amp;quot;.</description>
-    </item>
-    
-    <item>
-      <title>利用R的Blogdown套件建立個人部落格網站</title>
-      <link>/blog/create-my-website/</link>
-      <pubDate>Sat, 03 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/create-my-website/</guid>
-      <description>前言此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 用R语言的blogdown+hugo+netlify+github 建博客 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
-架設這個網站會需要用到：
-RRstudioR的blogdown套件GitGithubNetlify會採用這個架構來建立部落格網站，主要原因是因為R語言是我現在寫程式最主要的工具。在之前我有嘗試用Jekyll+Github部署的方式來建立部落格網站，但發現如果要在Markdown中呈現R語言程式的執行結果，好像會有困難(?)。後來發現Rstudio有出 blogdown套件，所以就跳過來用blogdown套件來達成我想要的目標。
-在本機端建立部落格專案在參考的文章中，是先利用R專案(Project)的Git GUI的功能，來連結Github。再從這個專案資料夾中，創造另外一個R的Blogdown專案，負責處理部落格內容。但我發現在Rstudio內使用Git的GUI實在不是很順暢，比如說我想點選要Push的檔案上傳到Github，會時常卡住沒反應。網路上有人說Windows在這部份好像一直都有問題(?)，後來我就放棄，改採最一般的方法來處理。
-我的處理方式是，先在Github上建立好Repository，然後利用命令提示字元(cmd)，把在Github的專案Clone到本機端。之後在本機端的Repository資料夾，建立R的Blogdown專案。以下是我的步驟：
-首先在Github建立Repository，名稱就依自己喜好，能認得就好，我在這邊命名為「MyBlog」。
-在建立完Repository後，打開命令提示字元，利用git clone指令把Repository Clone到本機端。
-開啟RStudio，點選建立專案。
-選擇New Directory。
-選擇Website using blogdown，開啟Blogdown專案。
-接下來這邊要注意，因為我們要把部落格專案內容放到Github的資料夾，所以Directory name要和Repository的名稱是一樣的，路徑也要和Repository所在的路徑相同。
-另外此處也可以調整想要建立的主題，只要修改Hugo theme 就可以了。
-主題可到Hugo的主題網站查詢 https://themes.gohugo.io，挑選自己喜歡的主題，像我的主題是挑選 Cocoa。如果喜歡這個主題，只要點選Download，就會跳轉到該主題的Github頁面。
-只要把使用者和Repository名稱複製下來，貼到Hugo theme，就可以使用該主題。
-以Cocoa主題為例，Hugo theme這邊就要輸入nishanths/cocoa-hugo-theme。
-另外需要注意的是，不同的主題內的設置有可能會不一樣，因為Hugo並不是只有Rstudio能處理，開發主題的人並不一定會以Rstudio的Blogdown設定來配合設計。舉例來說，如果使用Cocoa主題，部落格的文章是讀取content/blog的資料夾。如果用Rstudio內的Addins的New Post來發表文章，則會放在content/post資料夾內，因此會發現部落格都不會讀到自己寫的文章，我自己後來是去改Cocoa主題內的程式碼來修正此問題。為了方便教學，這邊還是用原本的主題吧！設定如下：
-在確認設置都沒問題後，點選Create Project按鈕，這樣R的Blogdown專案就建構完成。Rstudio會重新開啟，這時候就會發現右下角的檔案目錄已經把Hugo需要的檔案都布置好啦！
-接下來只要在Console上，輸入blogdown::serve_site()，就可以產生出部落格網站。
-右下角的Viewer視窗就是網站的預覽，可以點選紅框內的圖案，就可以用瀏覽器觀看。
-以上就是在本機端建立部落格專案的流程。
-部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
-config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。</description>
-    </item>
-    
-  </channel>
-</rss>

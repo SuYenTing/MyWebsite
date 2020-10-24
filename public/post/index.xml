@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Hello Friend, I&#39;m Yestin!</title>
+    
+    
+    
+    <link>/post/</link>
+    <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Sep 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程</title>
+      <link>/post/linux_ubuntu_configure/</link>
+      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/linux_ubuntu_configure/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          老師近期用研究經費添購一台工作站，讓機器學習模型程式在訓練時能夠更加快速。這台工作站安裝Linux Ubuntu 18.04作業系統，在設定環境過程中難免還是採到坑，這篇內容是我建立相關環境的相關指令說明，紀錄起來以後有需要時可以查詢。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>以梯度下降法解線性迴歸係數</title>
+      <link>/post/linear-gradient-descent-method/</link>
+      <pubDate>Mon, 17 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/linear-gradient-descent-method/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          此篇文章說明如何用梯度下降(Gradient Descent)方法找出線性迴歸最佳參數解。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>在Azure雲端平台建立CentOS虛擬機器，並安裝遠端桌面服務、R軟體及MySQL資料庫</title>
+      <link>/post/azure-install-centos/</link>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/azure-install-centos/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          在產學合作案中，合作公司希望能夠將我們開發的程式放在CentOS作業系統中執行，畢竟若要商轉的話，Linux作業系統是免費的，可以很省錢。但我對Linux系統沒有很熟悉，之前上課時有稍微玩過沒有到很熟練。為了能夠測試程式是否能在CentOS中運作，我自己去Azure雲端平台嘗試建立一個虛擬機器來進行測試，這篇是我建立環境的流程筆記。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>在網頁嵌入Gist程式碼教學</title>
+      <link>/post/embed-gist-code-introduction/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/embed-gist-code-introduction/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解`HUGO`的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做**程式碼高亮**)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做`Gist`的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行`JavaScript`程式碼即可，非常方便。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>利用eval函數計算多個移動平均線指標</title>
+      <link>/post/use-eval-function-compute-ma/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/use-eval-function-compute-ma/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章主要介紹如何透過dplyr搭配eval函數來產生不同天期的移動平均線欄位。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>Tidyquant套件介紹</title>
+      <link>/post/tidyquant-package-introduction/</link>
+      <pubDate>Sun, 10 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tidyquant-package-introduction/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          此篇文章主要介紹R的`tidyquant`套件，此文章同時發表於[中山管院:商業大數據平台](https://bap.cm.nsysu.edu.tw/?page_id=1046)。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>R的平行運算</title>
+      <link>/post/parallel-introduction/</link>
+      <pubDate>Sat, 02 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/parallel-introduction/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          在做量化投資策略參數最佳化時，都會透過`for`迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件`parallel`，只要將要程式碼包裝成函數形式，就可以跑平行運算。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>上市股票Beta估計</title>
+      <link>/post/stock-beta/</link>
+      <pubDate>Sun, 25 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/stock-beta/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在幫老師製作教學講義的案例，要用資本資產定價模型(Capital Asset Pricing Model, CAPM)，去估計2017年每支上市股票的Beta。這個問題在碩士班時就有用程式寫過，並沒有很難。但當時程式能力弱弱的，主要是用迴圈去一支一支計算。這次要寫這個程式有一些新的想法，之前看網路上的文章有用到`apply`家族可以一次估計多個模型的範例，因此透過這次的題目，可以把這個想法實作出來。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>爬蟲-財富中國500強股票排行榜資料</title>
+      <link>/post/web-crawler-fortune-china-500/</link>
+      <pubDate>Sat, 10 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/web-crawler-fortune-china-500/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近學弟想要爬[財富中國500強排行榜](http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm)的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>利用R的Blogdown套件建立個人部落格網站</title>
+      <link>/post/create-my-website/</link>
+      <pubDate>Sat, 03 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/create-my-website/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 [用R语言的blogdown+hugo+netlify+github 建博客](https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/) 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>

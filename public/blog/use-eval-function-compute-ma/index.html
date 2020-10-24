@@ -1,305 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="chrome=1">
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer">
-<meta name="author" content="Yen-Ting, Su">
-<meta name="description" content="前言我們通常會利用dplyr套件搭配TTR套件的SMA函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:
-但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
-這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。
-eval函數eval函數是R軟體的內建函數，主要是將一段文字以命令的方式讓程式去執行，以下我們做一個簡單的範例。假設說我們想要產生一個變數叫做a，並且指派數值1給a。
-上述的兩個不同方法，其結果都會讓變數a為1。由於eval函數將文字變成命令送到程式，因此我們可以透過修改字串的方式，並搭配迴圈，來計算不同天期的移動平均線。
-資料來源資料來源部分，我們使用tidyqunat套件，這個套件整合quantmode套件與tidyverse套件。利用此套件的tq_get函數至Yahoo Finance下載台股大盤股價資料，做為此次的範例資料集。
-以下為sockData的資料內容，我們只取出日期及收盤價資訊:
-## # A tibble: 2,573 x 2## date close## &lt;date&gt; &lt;dbl&gt;## 1 2008-01-02 8323.05## 2 2008-01-03 8184.20## 3 2008-01-04 8221.10## 4 2008-01-07 7883.37## 5 2008-01-08 7962.91## 6 2008-01-09 8085.06## 7 2008-01-10 8057.27## 8 2008-01-11 8029.31## 9 2008-01-14 8173.41## 10 2008-01-15 8428.84## # .">
-
-<meta property="og:title" content="利用eval函數計算多個移動平均線指標" />
-<meta property="og:description" content="前言我們通常會利用dplyr套件搭配TTR套件的SMA函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:
-但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。
-這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。
-eval函數eval函數是R軟體的內建函數，主要是將一段文字以命令的方式讓程式去執行，以下我們做一個簡單的範例。假設說我們想要產生一個變數叫做a，並且指派數值1給a。
-上述的兩個不同方法，其結果都會讓變數a為1。由於eval函數將文字變成命令送到程式，因此我們可以透過修改字串的方式，並搭配迴圈，來計算不同天期的移動平均線。
-資料來源資料來源部分，我們使用tidyqunat套件，這個套件整合quantmode套件與tidyverse套件。利用此套件的tq_get函數至Yahoo Finance下載台股大盤股價資料，做為此次的範例資料集。
-以下為sockData的資料內容，我們只取出日期及收盤價資訊:
-## # A tibble: 2,573 x 2## date close## &lt;date&gt; &lt;dbl&gt;## 1 2008-01-02 8323.05## 2 2008-01-03 8184.20## 3 2008-01-04 8221.10## 4 2008-01-07 7883.37## 5 2008-01-08 7962.91## 6 2008-01-09 8085.06## 7 2008-01-10 8057.27## 8 2008-01-11 8029.31## 9 2008-01-14 8173.41## 10 2008-01-15 8428.84## # ." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/blog/use-eval-function-compute-ma/" />
-<meta property="article:published_time" content="2018-06-24T00:00:00+00:00" />
-<meta property="article:modified_time" content="2018-06-24T00:00:00+00:00" />
-
-
-<title>
-
-
-     利用eval函數計算多個移動平均線指標 
-
-</title>
-<link rel="canonical" href="/blog/use-eval-function-compute-ma/">
-
-
-
-
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:500">
-
-
-
-    
-    <link rel="stylesheet" href="/css/reset.css?t=2020-10-23%2007%3a47%3a36.3038188%20%2b0800%20CST%20m%3d%2b0.182163801">
-    <link rel="stylesheet" href="/css/pygments.css?t=2020-10-23%2007%3a47%3a36.3038188%20%2b0800%20CST%20m%3d%2b0.182163801">
-    <link rel="stylesheet" href="/css/main.css?t=2020-10-23%2007%3a47%3a36.3038188%20%2b0800%20CST%20m%3d%2b0.182163801">
-    
-        <link rel="stylesheet" href="/css/override.css?t=2020-10-23%2007%3a47%3a36.3038188%20%2b0800%20CST%20m%3d%2b0.182163801">
-    
-
-
-
-
-<link rel="shortcut icon"
-
-    href="/img/leaf.ico"
-
->
-
-
-
-
-
-
-
-
-</head>
-
-
-<body lang="en">
-
-<section class="header">
-    <div class="container">
-        <div class="content">
-            
-                
-                
-                
-                
-                
-                    
-                
-                    
-                
-                    
-                
-                
-                <a href="/"><img class="avatar" src="/img/profile.jpg" srcset="/img/profile.jpg 1x"></a>
-            
-            <a href="/"><div class="name">Yen-Ting, Su</div></a>
-            
-            <nav>
-                <ul>
-                    
-                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
-                    
-                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
-                    
-                </ul>
-            </nav>
-        </div>
-    </div>
-</section>
-
-<section class="icons">
-    <div class="container">
-        <div class="content">
-        
-            <a href="//github.com/SuYenTing" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
-        
-
-        
-
-        
-
-	
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
-            <a href="mailto:sn86056@gmail.com"><img class="icon" src="/img/email.svg" alt="email" /></a>
-        
-
-        
-
-        
-        </div>
-    </div>
-</section>
-
-
-<section class="main post non-narrow zero-top-spacing">
-    <div class="container">
-        <div class="content">
-            <div class="front-matter">
-                <div class="title-container">
-                    <div class="page-heading">
-
-    利用eval函數計算多個移動平均線指標
-
-</div>
-
-                    <div class="initials"><a href="/">ad</a></div>
-                </div>
-                <div class="meta">
-                    
-                    <div class="date" title='Sun Jun 24 2018 00:00:00 UTC'>Jun 24, 2018</div>
-                    
-                    
-		    <div class="reading-time"><div class="middot"></div>One minute read</div>
-                    
-                </div>
-            </div>
-            <div class="markdown">
-                
-
-
-<div class="section level2">
-<h2>前言</h2>
-<p>我們通常會利用<code>dplyr</code>套件搭配<code>TTR</code>套件的<code>SMA</code>函數來計算移動平均線指標。舉例來說，我們要計算5日、10日及20日移動平均線，則在R裡面的寫法為:</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-1.R"></script>
-<p>但上述的寫法有一個缺點，如果我們計算更多不同天期的移動平均線，例如10日、20日、30日…至100日移動平均線，這樣就需要寫10行的SMA函數才行。程式碼會變得很複雜，而且使用者還要一直複製貼上程式碼，並修改參數，這顯然是很麻煩的事情。</p>
-<p>這篇文章主要是來解決上述問題，我們可以透過eval函數來處理這個問題。</p>
-</div>
-<div id="eval" class="section level2">
-<h2>eval函數</h2>
-<p><code>eval</code>函數是R軟體的內建函數，主要是<strong>將一段文字以命令的方式讓程式去執行</strong>，以下我們做一個簡單的範例。假設說我們想要產生一個變數叫做a，並且指派數值1給a。</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-4.R"></script>
-<p>上述的兩個不同方法，其結果都會讓變數a為1。由於<code>eval</code>函數將文字變成命令送到程式，因此我們可以透過<strong>修改字串</strong>的方式，並搭配迴圈，來計算不同天期的移動平均線。</p>
-</div>
-<div class="section level2">
-<h2>資料來源</h2>
-<p>資料來源部分，我們使用<code>tidyqunat</code>套件，這個套件整合<code>quantmode</code>套件與<code>tidyverse</code>套件。利用此套件的<code>tq_get</code>函數至<a href="https://finance.yahoo.com/">Yahoo Finance</a>下載台股大盤股價資料，做為此次的範例資料集。</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-2.R"></script>
-<p>以下為<code>sockData</code>的資料內容，我們只取出日期及收盤價資訊:</p>
-<pre><code>## # A tibble: 2,573 x 2
-##          date   close
-##        &lt;date&gt;   &lt;dbl&gt;
-##  1 2008-01-02 8323.05
-##  2 2008-01-03 8184.20
-##  3 2008-01-04 8221.10
-##  4 2008-01-07 7883.37
-##  5 2008-01-08 7962.91
-##  6 2008-01-09 8085.06
-##  7 2008-01-10 8057.27
-##  8 2008-01-11 8029.31
-##  9 2008-01-14 8173.41
-## 10 2008-01-15 8428.84
-## # ... with 2,563 more rows</code></pre>
-</div>
-<div id="ma" class="section level2">
-<h2>快速計算MA</h2>
-<p>假設我們要計算5日、10日、20日、60日及90日移動平均線，則寫法為：</p>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma-3.R"></script>
-<p>可以看到<code>evalCommand</code>的文字內容，就是在執行<code>mutate</code>函數搭配<code>SMA</code>函數計算移動平均線指標。而<code>SMA</code>函數內的日數參數，則變為<code>for</code>迴圈的對象，因此每次<code>for</code>迴圈就會去新增一個新的移動平均線欄位。</p>
-<p>執行上述程式碼後，即會得到各天期的移動平均線:</p>
-<pre><code>## # A tibble: 2,573 x 7
-##          date   close      MA5     MA10  MA20  MA60  MA90
-##        &lt;date&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1 2008-01-02 8323.05       NA       NA    NA    NA    NA
-##  2 2008-01-03 8184.20       NA       NA    NA    NA    NA
-##  3 2008-01-04 8221.10       NA       NA    NA    NA    NA
-##  4 2008-01-07 7883.37       NA       NA    NA    NA    NA
-##  5 2008-01-08 7962.91 8114.926       NA    NA    NA    NA
-##  6 2008-01-09 8085.06 8067.328       NA    NA    NA    NA
-##  7 2008-01-10 8057.27 8041.942       NA    NA    NA    NA
-##  8 2008-01-11 8029.31 8003.584       NA    NA    NA    NA
-##  9 2008-01-14 8173.41 8061.592       NA    NA    NA    NA
-## 10 2008-01-15 8428.84 8154.778 8134.852    NA    NA    NA
-## # ... with 2,563 more rows</code></pre>
-<p>只要將想要計算的移動平均線日數放入<code>maDays</code>向量，透過<code>for</code>迴圈及<code>eval</code>函數運作就可解決我們的問題，不用寫太多相似的程式碼。</p>
-</div>
-<div class="section level2">
-<h2>範例完整程式碼</h2>
-<script src="https://gist.github.com/SuYenTing/401635f5198fc4542596dd11b65a5eb2.js?file=2018-06-24-use-eval-function-compute-ma.R"></script>
-</div>
-
-                <br>
-                
-                  <div class="tags">
-                    <strong>Tags:</strong>
-                  
-                    <a href="/tags/r">R</a>
-                  
-                  </div>
-                  <br />
-                
-                <p class="back-to-posts"><a href="/blog">Back to posts</a></p>
-            </div>
-            <br>
-            <div class="disqus">
-                <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "SuYenTing" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-            </div>
-            
-        </div>
-    </div>
-</section>
-
-
-
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
-  
-
-  <script type="text/javascript">
-    hljs.initHighlightingOnLoad();
-  </script>
-
-
-
-
-
-</body>
-</html>
-

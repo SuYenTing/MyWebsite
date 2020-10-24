@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on Yen-Ting, Su Personal Website</title>
+    <title>Linux on Hello Friend, I&#39;m Yestin!</title>
+    
+    
+    
     <link>/tags/linux/</link>
-    <description>Recent content in Linux on Yen-Ting, Su Personal Website</description>
+    <description>Recent content in Linux on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
+    <language>en-us</language>
     <lastBuildDate>Tue, 22 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/linux/index.xml" rel="self" type="application/rss+xml" />
@@ -13,24 +16,22 @@
     
     <item>
       <title>Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程</title>
-      <link>/blog/linux_ubuntu_configure/</link>
+      <link>/post/linux_ubuntu_configure/</link>
       <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/blog/linux_ubuntu_configure/</guid>
-      <description>1. Putty安裝方式 下載頁面連結位置
-下載後點選putty.exe檔案即可進入連線畫面
-2. 切換終端機命令列為英文 將終端機命列列系統訊息由中文切為英文，因為這樣在處理Bug時會有比較多的資源可以參考。
-直接在圖形化介面進行修正，搜尋Settings -&amp;gt; Region &amp;amp; Language
-修改 Language 和 Formats選項，之後重新登入即可轉為英文環境
-3. SSH套件相關設定 開機時自動啟動SSH
-sudo systemctl enable ssh 為確保資安，將SSH的Port由22改為[新的Port號碼] 主要是修改sshd_config文件，將裡面的Port由22改為[新的Port號碼]
-sudo vi /etc/ssh/sshd_config 相關改法可看參考頁面
-防火牆記得設定允許Port [新的Port號碼] 連入
-sudo ufw allow [新的Port號碼] 另外為了資安設定，可以針對SHH Port加入IP白名單 寫法可參考頁面連結 如果有需要設定IP範圍，會用到網路遮罩寫法，對應的寫法可參考Wiki頁面說明
-4. 安裝R 指令參考頁面
-sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39; sudo apt update sudo apt install r-base 安裝好後在命令列直接輸入R即可進入R環境
-R 5. 安裝RStudio Server 指令參考頁面
-sudo apt-get install gdebi-core wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.1073-amd64.deb sudo gdebi rstudio-server-1.3.1073-amd64.deb 防火牆設定允許Port 8787 連入</description>
+      <guid>/post/linux_ubuntu_configure/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          老師近期用研究經費添購一台工作站，讓機器學習模型程式在訓練時能夠更加快速。這台工作站安裝Linux Ubuntu 18.04作業系統，在設定環境過程中難免還是採到坑，這篇內容是我建立相關環境的相關指令說明，紀錄起來以後有需要時可以查詢。
+          
+        
+        </description>
     </item>
     
   </channel>

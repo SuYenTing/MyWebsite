@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+      <title>
+        爬蟲-財富中國500強股票排行榜資料 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="前言最近學弟想要爬財富中國500強排行榜的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。先簡介一下財富中國500強排行榜是什麼，網站裡面介紹到：
+财富中文网于北京时间2017年7月31日发布了最新的《财富》中国500强排行榜。该榜单由《财富》（中文版）与中金公司财富管理部合作编制，考量了全球范围内最大的中国上市企业在过去一年的业绩和成就。
+看到這段介紹，我最好奇的是「過去一年的業績與成就」到底是怎麼量化的，但Google發現好像都沒有相關敘述，這個問題只好暫時擱著，先來抓資料!
+目標學弟這次想問的是要怎麼爬中國500強名單的股票代碼，目前網站上提供的中國500強名單只有列出中文公司名稱、營收及利潤資訊。
+如果要查詢股票的進階資訊，可以直接點選公司名稱跳轉到下一個網頁，裡面就會有存放股票的代碼資訊，就是我們想要的資料。
+爬取網頁流程首先試抓第1強的中國石油化工股份有限公司的股票代碼，這家公司有在4個交易所掛牌，所以有4個股票代碼。
+library(rvest)library(magrittr)# 爬取網頁網址(中國石油化工股份有限公司)url &amp;lt;- &amp;quot;http://www.fortunechina.com/china500/1/2017&amp;quot;# 爬取股票代碼code &amp;lt;- read_html(url, encoding = &amp;quot;UTF-8&amp;quot;) %&amp;gt;%html_nodes(xpath=&amp;quot;//div[@class=&amp;#39;thisyeardata&amp;#39;]/table//tr[3]/td[1]&amp;quot;) %&amp;gt;%html_text() %&amp;gt;%.[1] %&amp;gt;%gsub(&amp;quot;股票代码：&amp;quot;,&amp;quot;&amp;quot;, .) %&amp;gt;%gsub(&amp;quot;\\s&#43;&amp;quot;,&amp;quot;&amp;quot;, .)發現資料其實還蠻好抓的，再來觀察網址，發現網址好像藏有規律。
+第1名的中國石油化工股份有限公司網址：
+http://www.fortunechina.com/china500/1/2017
+第2名的中國石油天然氣股份有限公司網址：
+http://www.fortunechina.com/china500/2/2017
+初步判定網址好像是以 china500/排名/2017 的規律來建構的。如果是這樣，只要迴圈數字1~500，透過字串組合就可以把500家公司的股票代碼全部抓下來。但是事情沒這麼簡單，當我直接輸入排名第500的網址 http://www.fortunechina.com/china500/500/2017，結果網頁出現的畫面是：
+網頁竟然查不出資料，代表我們推論的網址邏輯有錯誤。經過仔細檢查發現，發現網址是沒有規律的。第3名的中國建築股份有限公司，我們以為網址的排名竟然是9。
+http://www.fortunechina.com/china500/9/2017。
+這樣一來，我們就不能用迴圈數字1至500搭配字串組合網址來下載500強公司的代碼，只好找找看有沒有其他的方法。
+依照過往經驗，像這種表格式，然後可以點選表格內容跳轉到其他頁面的網站，網頁原始碼內都會藏有超連結。仔細看網頁原始碼，果然真的有！而且500強的連結都存放在裡面。
+接下來，我們的目標轉成去爬網頁原始碼內的500強連結，為方便確認資料內容，這邊連股票名稱一起爬下來。
+# 爬取網頁網址(財富中國500強排行榜)url &amp;lt;- &amp;quot;http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm&amp;quot;# 爬取500強公司名稱stockName &amp;lt;- read_html(url, encoding = &amp;quot;UTF-8&amp;quot;) %&amp;gt;%html_nodes(xpath=&amp;quot;//table[@id=&amp;#39;yytable&amp;#39;]//tr/td[3]&amp;quot;) %&amp;gt;%html_text()# 爬取500強連結link &amp;lt;- read_html(url, encoding = &amp;quot;UTF-8&amp;quot;) %&amp;gt;%html_nodes(xpath=&amp;quot;//table[@id=&amp;#39;yytable&amp;#39;]//tr/td[3]/a&amp;quot;) %&amp;gt;%html_attr(&amp;quot;href&amp;quot;)# 整理連結內容link &amp;lt;- link %&amp;gt;%gsub(&amp;quot;."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/web-crawler-fortune-china-500/" />
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="爬蟲-財富中國500強股票排行榜資料"/>
+<meta name="twitter:description" content="最近學弟想要爬[財富中國500強排行榜](http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm)的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。"/>
+
+
+
+<meta property="og:title" content="爬蟲-財富中國500強股票排行榜資料" />
+<meta property="og:description" content="最近學弟想要爬[財富中國500強排行榜](http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm)的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/web-crawler-fortune-china-500/" />
+<meta property="article:published_time" content="2018-03-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-03-10T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">爬蟲-財富中國500強股票排行榜資料</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2018-03-10
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/r/">#R</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      
+
+
+<div id="前言" class="section level2">
+<h2>前言</h2>
+<p>最近學弟想要爬<a href="http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm">財富中國500強排行榜</a>的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。先簡介一下財富中國500強排行榜是什麼，網站裡面介紹到：</p>
+<blockquote>
+<p>财富中文网于北京时间2017年7月31日发布了最新的《财富》中国500强排行榜。该榜单由《财富》（中文版）与中金公司财富管理部合作编制，考量了全球范围内最大的中国上市企业在过去一年的业绩和成就。</p>
+</blockquote>
+<p>看到這段介紹，我最好奇的是「過去一年的業績與成就」到底是怎麼量化的，但Google發現好像都沒有相關敘述，這個問題只好暫時擱著，先來抓資料!</p>
+<hr />
+</div>
+<div id="目標" class="section level2">
+<h2>目標</h2>
+<p>學弟這次想問的是要怎麼爬中國500強名單的股票代碼，目前網站上提供的中國500強名單只有列出中文公司名稱、營收及利潤資訊。</p>
+<p><img src="1.png" /></p>
+<p>如果要查詢股票的進階資訊，可以直接點選公司名稱跳轉到下一個網頁，裡面就會有存放股票的代碼資訊，就是我們想要的資料。</p>
+<p><img src="2.png" /></p>
+<hr />
+</div>
+<div id="爬取網頁流程" class="section level2">
+<h2>爬取網頁流程</h2>
+<p>首先試抓第1強的中國石油化工股份有限公司的股票代碼，這家公司有在4個交易所掛牌，所以有4個股票代碼。</p>
+<pre class="r"><code>library(rvest)
+library(magrittr)
+
+# 爬取網頁網址(中國石油化工股份有限公司)
+url &lt;- &quot;http://www.fortunechina.com/china500/1/2017&quot;
+
+# 爬取股票代碼
+code &lt;- read_html(url, encoding = &quot;UTF-8&quot;) %&gt;%
+  html_nodes(xpath=&quot;//div[@class=&#39;thisyeardata&#39;]/table//tr[3]/td[1]&quot;) %&gt;%
+  html_text() %&gt;%
+  .[1] %&gt;%
+  gsub(&quot;股票代码：&quot;,&quot;&quot;, .) %&gt;%
+  gsub(&quot;\\s+&quot;,&quot;&quot;, .)</code></pre>
+<p><img src="7.png" /></p>
+<p>發現資料其實還蠻好抓的，再來觀察網址，發現網址好像藏有規律。</p>
+<p>第1名的中國石油化工股份有限公司網址：</p>
+<p><a href="http://www.fortunechina.com/china500/1/2017">http://www.fortunechina.com/china500/1/2017</a></p>
+<p>第2名的中國石油天然氣股份有限公司網址：</p>
+<p><a href="http://www.fortunechina.com/china500/2/2017">http://www.fortunechina.com/china500/2/2017</a></p>
+<p>初步判定網址好像是以 <code>china500/排名/2017</code> 的規律來建構的。如果是這樣，只要迴圈數字1~500，透過字串組合就可以把500家公司的股票代碼全部抓下來。但是事情沒這麼簡單，當我直接輸入排名第500的網址 <code>http://www.fortunechina.com/china500/500/2017</code>，結果網頁出現的畫面是：</p>
+<p><img src="3.png" /></p>
+<p>網頁竟然查不出資料，代表我們推論的網址邏輯有錯誤。經過仔細檢查發現，發現網址是沒有規律的。第3名的中國建築股份有限公司，我們以為網址的排名竟然是9。</p>
+<p><a href="http://www.fortunechina.com/china500/9/2017">http://www.fortunechina.com/china500/9/2017</a>。</p>
+<p>這樣一來，我們就不能用迴圈數字1至500搭配字串組合網址來下載500強公司的代碼，只好找找看有沒有其他的方法。</p>
+<p>依照過往經驗，像這種表格式，然後可以點選表格內容跳轉到其他頁面的網站，網頁原始碼內都會藏有超連結。仔細看網頁原始碼，果然真的有！而且500強的連結都存放在裡面。</p>
+<p><img src="4.png" /></p>
+<p>接下來，我們的目標轉成去爬網頁原始碼內的500強連結，為方便確認資料內容，這邊連股票名稱一起爬下來。</p>
+<pre class="r"><code># 爬取網頁網址(財富中國500強排行榜)
+url &lt;- &quot;http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm&quot;
+
+# 爬取500強公司名稱
+stockName &lt;- read_html(url, encoding = &quot;UTF-8&quot;) %&gt;%
+  html_nodes(xpath=&quot;//table[@id=&#39;yytable&#39;]//tr/td[3]&quot;) %&gt;%
+  html_text()
+
+# 爬取500強連結
+link &lt;- read_html(url, encoding = &quot;UTF-8&quot;) %&gt;%
+  html_nodes(xpath=&quot;//table[@id=&#39;yytable&#39;]//tr/td[3]/a&quot;) %&gt;%
+  html_attr(&quot;href&quot;)
+
+# 整理連結內容
+link &lt;- link %&gt;%
+  gsub(&quot;../../../..&quot;,&quot;&quot;, .) %&gt;%
+  paste0(&quot;http://www.fortunechina.com/&quot;, .)
+
+# 組合資料
+stockData &lt;- cbind(stockName, link)</code></pre>
+<p><img src="5.png" /></p>
+<p>經過整理後，確實取得500強公司的連結，接下來只要迴圈這500強公司連結，就可以爬到每支股票的代碼。</p>
+<pre class="r"><code>stockCode &lt;- NULL
+for(ix in 1:length(link)){
+  
+  # 爬取網頁網址
+  url &lt;- link[ix]
+  
+  # 爬取股票代碼
+  code &lt;- read_html(url, encoding = &quot;UTF-8&quot;) %&gt;%
+    html_nodes(xpath=&quot;//div[@class=&#39;thisyeardata&#39;]/table//tr[3]/td[1]&quot;) %&gt;%
+    html_text() %&gt;%
+    .[1] %&gt;%
+    gsub(&quot;股票代码：&quot;,&quot;&quot;, .) %&gt;%
+    gsub(&quot;\\s+&quot;,&quot;&quot;, .)
+
+  # 儲存資訊
+  stockCode &lt;- c(stockCode, code)
+}
+
+# 組合資料 
+stockData &lt;- cbind(stockData, stockCode)</code></pre>
+<p>看一下爬取出來的成果，確實沒有問題，大功告成！</p>
+<p><img src="6.png" /></p>
+</div>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+              <span class="button previous">
+                <a href="/post/stock-beta/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">上市股票Beta估計</span>
+                </a>
+              </span>
+            
+            
+              <span class="button next">
+                <a href="/post/create-my-website/">
+                  <span class="button__text">利用R的Blogdown套件建立個人部落格網站</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2020 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Github on Yen-Ting, Su Personal Website</title>
+    <title>Github on Hello Friend, I&#39;m Yestin!</title>
+    
+    
+    
     <link>/tags/github/</link>
-    <description>Recent content in Github on Yen-Ting, Su Personal Website</description>
+    <description>Recent content in Github on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
+    <language>en-us</language>
     <lastBuildDate>Fri, 29 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/github/index.xml" rel="self" type="application/rss+xml" />
@@ -13,59 +16,42 @@
     
     <item>
       <title>在網頁嵌入Gist程式碼教學</title>
-      <link>/blog/embed-gist-code-introduction/</link>
+      <link>/post/embed-gist-code-introduction/</link>
       <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/embed-gist-code-introduction/</guid>
-      <description>前言最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解HUGO的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做程式碼高亮)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做Gist的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行JavaScript程式碼即可，非常方便。除了上述好處，Gist可以依據副檔名，自動為程式碼上出漂亮的顏色。這樣我就不用再和HUGO奮戰，直接引Gist到Blog來就好。這篇文章將會簡單介紹如何使用Gist加入至Blog內。
-如何嵌入程式碼首先連至Gist(https://gist.github.com/)網站，然後以Github帳號登入。登入後選擇右上角的New gist選項，畫面如下：
-接下來把一個簡單的R程式複製貼上來，當然這邊是無法執行跑出結果的，所以我會先在R程式內先確認程式碼是可以跑的。程式碼貼好後記得輸入檔名，畫面如下：
-接下來要發佈這份程式碼，此處有兩個選項在畫面下方可以按，分別為Create secret gist及Create public gist。這兩個選項的差異是，選擇Create secret gist，這份程式碼不會被搜尋引擎找到，只有擁有連結的人才能進來看; 若選擇Create public gist，則其他人在用搜尋引擎搜尋時會被找到。此處我習慣點選Create secret gist按鈕，點選後畫面如下：
-出現上述畫面後，程式碼就已經發布成功了。再來就是要將這份程式碼，嵌在目前你正在看的網頁。畫面右上角有一個Embed的選項，後面有對應一串程式碼，這個程式碼就是JavaScript。只要將這行程式碼放在網頁或Markdown內，用瀏覽器讀取時，就會自動去Gist這邊抓我們剛打的程式碼。以此處為例，JavaScript嵌入程式碼為:
-&amp;lt;script src=&amp;quot;https://gist.github.com/SuYenTing/1aebd63541c4fb474a66eb3b6d66b865.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-然後我把這行程式碼直接輸入在Markdown內，就會引入程式碼：這樣看可能沒有感覺，我貼一下我的Markdown畫面給大家看，就會懂我的意思了！下圖是我在Markdown的畫面：
-按照上述步驟，可以發現透過Gist在網頁嵌入程式碼真的是件很簡單的事情！
-高亮嵌入程式碼之方法如果仔細觀察剛從Gist引入的程式碼，會發現程式碼並沒有高亮的感覺，全部都是黑色的字。沒錯，確實就是這樣，沒有高亮！原因是因為我們剛在取檔名時，忘記加上副檔名，所以Gist只會秀黑色的程式碼出來。接下來我做一個對照範例，若要新增新的程式碼，右上方有一個Edit按鈕，點下去即可再次編輯程式碼。
-進到編輯畫面後，再點畫面左下方的Add按鈕，新增一個程式碼區塊。第二個程式碼區塊和第一個程式碼區塊是一樣的，但差別是檔名部分，我後面多加一個副檔名.R。處理好後，點選右下方的Update secret gist。
-一樣引用JavaScript嵌入程式碼，呈現結果如下：
-從上面兩個區塊一比較，可以看出程式碼有明顯的差異吧。第二個區塊再加入副檔名.R後，程式碼瞬間「亮」了起來。Gist透過附檔名的方式，為不同的程式碼進行配色，像如果是HTML程式碼，副檔名.html加上去，就會以HTML程式碼格式來上色; 如果是Python程式碼，副檔名.py加上去，就會以Python程式碼格式來上色。
-此處還有一個問題是，如果我們直接嵌入JavaScript程式碼，會一次秀出兩個區塊程式碼，如果我只呈現一個區塊時，要怎麼做？舉例來說，我想要呈現這樣的排版：
-這是第一個區塊這是第二個區塊，區塊中間插入文字。解答是：若只要引用一個區塊時，在JavaScript嵌入程式碼的src網址加入指定參數file即可，架構為：
-&amp;lt;script src=&amp;quot;https://gist.github.com/SuYenTing/1aebd63541c4fb474a66eb3b6d66b865.js?file=程式碼區塊名稱&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-上面區隔兩塊的程式碼，在我的Markdown內的程式碼寫法為：
-結語以上是Gist嵌入網頁的簡單說明。另外要補充一點的是，因為這份文章是按部就班的寫，在文章高亮嵌入程式碼之方法部分有加入第二個區塊的程式碼，所以會導致最開始講解的如何嵌入程式碼部分，引用的JavaScript嵌入程式碼呈現的結果會不一樣，會從一個區塊變成兩個區塊。因此實際上我是有透過file來指定區塊。但為初學者方便學習，所以此處就不修改。以上就是Gist在網頁嵌入程式碼的教學，謝謝大家！
-</description>
+      <guid>/post/embed-gist-code-introduction/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在逛別人的程式技術網站時，會發現他們的範例程式碼都特別漂亮。雖然我很努力去理解`HUGO`的語法，想辦法去調整自己Blog程式碼的顯現方式(後來GOOGLE發現這有專有名詞，叫做**程式碼高亮**)，但怎麼調都還是醜醜的。後來發現Github有提供一個叫做`Gist`的服務，可以把程式碼上傳上去，並且提供嵌入網頁的功能，只需要加入一行`JavaScript`程式碼即可，非常方便。
+          
+        
+        </description>
     </item>
     
     <item>
       <title>利用R的Blogdown套件建立個人部落格網站</title>
-      <link>/blog/create-my-website/</link>
+      <link>/post/create-my-website/</link>
       <pubDate>Sat, 03 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>/blog/create-my-website/</guid>
-      <description>前言此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 用R语言的blogdown+hugo+netlify+github 建博客 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
-架設這個網站會需要用到：
-RRstudioR的blogdown套件GitGithubNetlify會採用這個架構來建立部落格網站，主要原因是因為R語言是我現在寫程式最主要的工具。在之前我有嘗試用Jekyll+Github部署的方式來建立部落格網站，但發現如果要在Markdown中呈現R語言程式的執行結果，好像會有困難(?)。後來發現Rstudio有出 blogdown套件，所以就跳過來用blogdown套件來達成我想要的目標。
-在本機端建立部落格專案在參考的文章中，是先利用R專案(Project)的Git GUI的功能，來連結Github。再從這個專案資料夾中，創造另外一個R的Blogdown專案，負責處理部落格內容。但我發現在Rstudio內使用Git的GUI實在不是很順暢，比如說我想點選要Push的檔案上傳到Github，會時常卡住沒反應。網路上有人說Windows在這部份好像一直都有問題(?)，後來我就放棄，改採最一般的方法來處理。
-我的處理方式是，先在Github上建立好Repository，然後利用命令提示字元(cmd)，把在Github的專案Clone到本機端。之後在本機端的Repository資料夾，建立R的Blogdown專案。以下是我的步驟：
-首先在Github建立Repository，名稱就依自己喜好，能認得就好，我在這邊命名為「MyBlog」。
-在建立完Repository後，打開命令提示字元，利用git clone指令把Repository Clone到本機端。
-開啟RStudio，點選建立專案。
-選擇New Directory。
-選擇Website using blogdown，開啟Blogdown專案。
-接下來這邊要注意，因為我們要把部落格專案內容放到Github的資料夾，所以Directory name要和Repository的名稱是一樣的，路徑也要和Repository所在的路徑相同。
-另外此處也可以調整想要建立的主題，只要修改Hugo theme 就可以了。
-主題可到Hugo的主題網站查詢 https://themes.gohugo.io，挑選自己喜歡的主題，像我的主題是挑選 Cocoa。如果喜歡這個主題，只要點選Download，就會跳轉到該主題的Github頁面。
-只要把使用者和Repository名稱複製下來，貼到Hugo theme，就可以使用該主題。
-以Cocoa主題為例，Hugo theme這邊就要輸入nishanths/cocoa-hugo-theme。
-另外需要注意的是，不同的主題內的設置有可能會不一樣，因為Hugo並不是只有Rstudio能處理，開發主題的人並不一定會以Rstudio的Blogdown設定來配合設計。舉例來說，如果使用Cocoa主題，部落格的文章是讀取content/blog的資料夾。如果用Rstudio內的Addins的New Post來發表文章，則會放在content/post資料夾內，因此會發現部落格都不會讀到自己寫的文章，我自己後來是去改Cocoa主題內的程式碼來修正此問題。為了方便教學，這邊還是用原本的主題吧！設定如下：
-在確認設置都沒問題後，點選Create Project按鈕，這樣R的Blogdown專案就建構完成。Rstudio會重新開啟，這時候就會發現右下角的檔案目錄已經把Hugo需要的檔案都布置好啦！
-接下來只要在Console上，輸入blogdown::serve_site()，就可以產生出部落格網站。
-右下角的Viewer視窗就是網站的預覽，可以點選紅框內的圖案，就可以用瀏覽器觀看。
-以上就是在本機端建立部落格專案的流程。
-部落格專案內容在Blogdown這個專案的資料夾內，大概需要注意的是這4點：
-config.toml這個檔案是主題作者提供的客製化參數，也是我們主要修改的部分，譬如更改聯絡資訊、網站圖片、網站標題等，都在這邊進行修正。
-撰寫的文章要放在content/post資料夾內(但這邊要看各主題的配置，有些可能不是放在post內)。</description>
+      <guid>/post/create-my-website/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 [用R语言的blogdown+hugo+netlify+github 建博客](https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/) 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
+          
+        
+        </description>
     </item>
     
   </channel>
