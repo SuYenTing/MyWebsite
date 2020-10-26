@@ -153,11 +153,11 @@
   <div class="posts">
     
     <div class="post on-list">
-      <h1 class="post-title"><a href="/post/use-eval-function-compute-ma/">利用eval函數計算多個移動平均線指標</a></h1>
+      <h1 class="post-title"><a href="/post/create-my-website/">利用R的Blogdown套件建立個人部落格網站</a></h1>
       <div class="post-meta">
         
           <span class="post-date">
-            2018-06-24
+            2018-03-03
           </span>
 
           
@@ -173,7 +173,15 @@
       
         <span class="post-tags">
           
+            <a href="/tags/hugo/">#Hugo</a>&nbsp;
+          
+            <a href="/tags/github/">#Github</a>&nbsp;
+          
             <a href="/tags/r/">#R</a>&nbsp;
+          
+            <a href="/tags/r-markdown/">#R Markdown</a>&nbsp;
+          
+            <a href="/tags/netlify/">#Netlify</a>&nbsp;
           
         </span>
       
@@ -182,163 +190,11 @@
 
       <div class="post-content">
         
-          本篇文章主要介紹如何透過dplyr搭配eval函數來產生不同天期的移動平均線欄位。
+          此次的文章主要是記錄我的個人部落格網站是如何建立出來的，我主要是Follow這篇文章 <a href="https://cosx.org/2018/01/build-blog-with-blogdown-hugo-netlify-github/">用R语言的blogdown+hugo+netlify+github 建博客</a> 來架設。不過在按部就班的過程中有遇到一些問題，所以我這邊會在講述我順利架設的流程，提供給大家參考。有些地方我可能不會講得很清楚，可以和我Follow的文章搭配一起看。
         
       </div>
       
-        <div><a class="read-more button" href="/post/use-eval-function-compute-ma/">Read more →</a></div>
-      
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/tidyquant-package-introduction/">Tidyquant套件介紹</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2018-06-10
-          </span>
-
-          
-        
-
-        
-          <span class="post-author">— Written by Yen-Ting, Su</span>
-        
-
-        
-      </div>
-
-      
-        <span class="post-tags">
-          
-            <a href="/tags/r/">#R</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          此篇文章主要介紹R的<code>tidyquant</code>套件，此文章同時發表於<a href="https://bap.cm.nsysu.edu.tw/?page_id=1046">中山管院:商業大數據平台</a>。
-        
-      </div>
-      
-        <div><a class="read-more button" href="/post/tidyquant-package-introduction/">Read more →</a></div>
-      
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/parallel-introduction/">R的平行運算</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2018-06-02
-          </span>
-
-          
-        
-
-        
-          <span class="post-author">— Written by Yen-Ting, Su</span>
-        
-
-        
-      </div>
-
-      
-        <span class="post-tags">
-          
-            <a href="/tags/r/">#R</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          在做量化投資策略參數最佳化時，都會透過<code>for</code>迴圈的寫法來處理，但是如果策略很複雜時，每次迴圈跑得速度都會很慢。由於R程式是用單個執行緒在跑，因此要克服執行時間很久的問題，最簡單的方法就是在電腦上開很多個R程式一起跑。這樣就會用很多個執行緒在計算，此方法類似平行運算的概念，但這樣做實在是很麻煩。為解決這個問題，R程式裡面有一個套件<code>parallel</code>，只要將要程式碼包裝成函數形式，就可以跑平行運算。
-        
-      </div>
-      
-        <div><a class="read-more button" href="/post/parallel-introduction/">Read more →</a></div>
-      
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/stock-beta/">上市股票Beta估計</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2018-03-25
-          </span>
-
-          
-        
-
-        
-          <span class="post-author">— Written by Yen-Ting, Su</span>
-        
-
-        
-      </div>
-
-      
-        <span class="post-tags">
-          
-            <a href="/tags/r/">#R</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          最近在幫老師製作教學講義的案例，要用資本資產定價模型(Capital Asset Pricing Model, CAPM)，去估計2017年每支上市股票的Beta。這個問題在碩士班時就有用程式寫過，並沒有很難。但當時程式能力弱弱的，主要是用迴圈去一支一支計算。這次要寫這個程式有一些新的想法，之前看網路上的文章有用到<code>apply</code>家族可以一次估計多個模型的範例，因此透過這次的題目，可以把這個想法實作出來。
-        
-      </div>
-      
-        <div><a class="read-more button" href="/post/stock-beta/">Read more →</a></div>
-      
-    </div>
-    
-    <div class="post on-list">
-      <h1 class="post-title"><a href="/post/web-crawler-fortune-china-500/">爬蟲-財富中國500強股票排行榜資料</a></h1>
-      <div class="post-meta">
-        
-          <span class="post-date">
-            2018-03-10
-          </span>
-
-          
-        
-
-        
-          <span class="post-author">— Written by Yen-Ting, Su</span>
-        
-
-        
-      </div>
-
-      
-        <span class="post-tags">
-          
-            <a href="/tags/r/">#R</a>&nbsp;
-          
-        </span>
-      
-
-      
-
-      <div class="post-content">
-        
-          最近學弟想要爬<a href="http://www.fortunechina.com/fortune500/c/2017-07/31/content_287415.htm">財富中國500強排行榜</a>的網頁資料，但遇到一些困難來詢問我。研究一下網站，發現能力所及能夠處理這個問題，爬得過程也蠻有趣的，因此在這邊分享爬法。
-        
-      </div>
-      
-        <div><a class="read-more button" href="/post/web-crawler-fortune-china-500/">Read more →</a></div>
+        <div><a class="read-more button" href="/post/create-my-website/">Read more →</a></div>
       
     </div>
     
@@ -346,19 +202,12 @@
   <div class="pagination__buttons">
     
       <span class="button previous">
-        <a href="/">
+        <a href="/page/2/">
           <span class="button__icon">←</span>
           <span class="button__text">Newer posts</span>
         </a>
       </span>
     
-    
-      <span class="button next">
-        <a href="/page/3/">
-          <span class="button__text">Older posts</span>
-          <span class="button__icon">→</span>
-        </a>
-      </span>
     
   </div>
 </div>

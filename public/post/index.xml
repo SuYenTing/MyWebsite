@@ -9,10 +9,30 @@
     <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 26 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL基本介紹</title>
+      <link>/post/mysql-tutorial/</link>
+      <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/mysql-tutorial/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          此文章是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約25人左右。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程</title>
