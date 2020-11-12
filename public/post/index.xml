@@ -9,10 +9,30 @@
     <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 26 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Shiny基本介紹</title>
+      <link>/post/shiny/</link>
+      <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/shiny/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          此文章是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約15人左右。文章內主要示範如何建立一個可以繪製美股技術分析圖形的Shiny程式。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>MySQL基本介紹</title>
