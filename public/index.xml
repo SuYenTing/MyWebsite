@@ -9,10 +9,30 @@
     <description>Recent content on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 12 Nov 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Dec 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VirtualBox:實體主機以SSH連線至虛擬主機</title>
+      <link>/post/virtualbox/</link>
+      <pubDate>Thu, 24 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/virtualbox/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Shiny基本介紹</title>
@@ -70,7 +90,8 @@
         
           嗨, 您好! 歡迎您來到我的Blog 我是蘇彥庭(Yestin)，台南人。
 大學念暨大經濟系，碩士念中山財管所，曾去上海復旦大學金融系交換及在當地企業實習。
-目前在中山大學財管系擔任教授的研究助理，研究機器學習如何應用於財務投資上。
+之前工作是在中山財管系擔任教授的研究助理，研究機器學習如何應用於財務投資上。
+目前則是在Tibame的AI/Big Data資料分析師養成班進修中。
 我喜歡寫程式做分析，這個Blog是紀錄自己學習的歷程，很開心能夠與您分享。
           
         

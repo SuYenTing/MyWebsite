@@ -9,10 +9,30 @@
     <description>Recent content in Programming on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 12 Nov 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Dec 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/programming/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VirtualBox:實體主機以SSH連線至虛擬主機</title>
+      <link>/post/virtualbox/</link>
+      <pubDate>Thu, 24 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/virtualbox/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Shiny基本介紹</title>
