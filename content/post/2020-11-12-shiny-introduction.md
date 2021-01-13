@@ -2,12 +2,12 @@
 title: Shiny基本介紹
 author: Yen-Ting, Su
 date: '2020-11-12'
-slug: Shiny
+slug: shiny-introduction
 categories:
   - Programming
 tags:
   - Shiny
-description: "此文章是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約15人左右。文章內主要示範如何建立一個可以繪製美股技術分析圖形的Shiny程式。"
+description: "此篇文章主要示範如何建立一個可以繪製美股技術分析圖形的Shiny程式。這是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約15人左右。"
 ---
 
 # 一、參考資料

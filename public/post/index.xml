@@ -9,17 +9,17 @@
     <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>VirtualBox:實體主機以SSH連線至虛擬主機</title>
-      <link>/post/virtualbox/</link>
-      <pubDate>Thu, 24 Dec 2020 00:00:00 +0000</pubDate>
+      <title>將Python程式放在Linux背景執行</title>
+      <link>/post/run-python-in-linux-background/</link>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/virtualbox/</guid>
+      <guid>/post/run-python-in-linux-background/</guid>
       <description>
         
           
@@ -28,7 +28,67 @@
         
         
         
-          最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。
+          本篇文章說明如何在Linux作業系統的Shell背景執行Python程式，而且在使用者離線或登出時不會中斷。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>快速啟動及連線MongoDB方法</title>
+      <link>/post/start-connect-mongodb/</link>
+      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/start-connect-mongodb/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近開始學MongoDB，因為每次執行MongoDB都要在Windows的命令提示字元打一些程式碼，所以想說寫個簡單的batch檔案及設定環境變數來解決這個麻煩的事情。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>Python連線MySQL方法說明</title>
+      <link>/post/python-connect-to-mysql/</link>
+      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/python-connect-to-mysql/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫，將以mysql-connector-python套件來進行實作。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>VirtualBox:實體主機以SSH連線至虛擬主機</title>
+      <link>/post/virtualbox-ssh/</link>
+      <pubDate>Thu, 24 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/virtualbox-ssh/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。本篇文章將一步一步帶領進行操作。
           
         
         </description>
@@ -36,10 +96,10 @@
     
     <item>
       <title>Shiny基本介紹</title>
-      <link>/post/shiny/</link>
+      <link>/post/shiny-introduction/</link>
       <pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/shiny/</guid>
+      <guid>/post/shiny-introduction/</guid>
       <description>
         
           
@@ -48,7 +108,7 @@
         
         
         
-          此文章是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約15人左右。文章內主要示範如何建立一個可以繪製美股技術分析圖形的Shiny程式。
+          此篇文章主要示範如何建立一個可以繪製美股技術分析圖形的Shiny程式。這是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約15人左右。
           
         
         </description>
@@ -68,7 +128,7 @@
         
         
         
-          此文章是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約25人左右。
+          此篇文章為MySQL基本介紹，這是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約25人左右。
           
         
         </description>
@@ -76,10 +136,10 @@
     
     <item>
       <title>Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程</title>
-      <link>/post/linux_ubuntu_configure/</link>
+      <link>/post/linux-ubuntu-configure/</link>
       <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/linux_ubuntu_configure/</guid>
+      <guid>/post/linux-ubuntu-configure/</guid>
       <description>
         
           

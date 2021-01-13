@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Hello Friend, I&#39;m Yestin!</title>
+    
+    
+    
+    <link>/tags/python/</link>
+    <description>Recent content in Python on Hello Friend, I&#39;m Yestin!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>將Python程式放在Linux背景執行</title>
+      <link>/post/run-python-in-linux-background/</link>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/run-python-in-linux-background/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章說明如何在Linux作業系統的Shell背景執行Python程式，而且在使用者離線或登出時不會中斷。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>Python連線MySQL方法說明</title>
+      <link>/post/python-connect-to-mysql/</link>
+      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/python-connect-to-mysql/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫，將以mysql-connector-python套件來進行實作。
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>

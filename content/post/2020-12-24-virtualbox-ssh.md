@@ -2,12 +2,12 @@
 title: VirtualBox:實體主機以SSH連線至虛擬主機
 author: Yen-Ting, Su
 date: '2020-12-24'
-slug: VirtualBox
+slug: virtualbox-ssh
 categories:
   - Programming
 tags:
   - VirtualBox
-description: "最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。"
+description: "最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。本篇文章將一步一步帶領進行操作。"
 ---
 
 最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。

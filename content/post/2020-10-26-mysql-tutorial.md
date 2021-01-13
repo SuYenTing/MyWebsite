@@ -2,12 +2,12 @@
 title: MySQL基本介紹
 author: Yen-Ting, Su
 date: '2020-10-26'
-slug: MySQL Tutorial
+slug: mysql-tutorial
 categories:
   - Programming
 tags:
   - MySQL
-description: "此文章是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約25人左右。"
+description: "此篇文章為MySQL基本介紹，這是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約25人左右。"
 ---
 
 ![](class.jpg)

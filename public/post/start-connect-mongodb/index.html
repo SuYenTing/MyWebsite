@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        快速啟動及連線MongoDB方法 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="補習班最近開始上MongoDB課程，因為每次上課時都要打一些程式碼來執行MongoDB，所以想說寫個簡單的batch檔案及環境變數設定來解決這個麻煩的事情。
+1. 啟用MongoDB資料庫的Server端 打開文字檔，輸入以下字串：
+cd C:\Users\User\mongodb-win32-x86_64-windows-4.4.2\bin mongod --dbpath C:\Users\User\mongodb_data # 格式說明 # cd [mongod.exe資料夾路徑] # mongod --dbpath [MongoDB資料庫位置] 接下來另存新檔，檔名為&amp;quot;start_mongodb.bat&amp;quot;，加上雙引號及bat附檔名代表強制存為批次檔。(檔名也可以取自己喜歡的)
+執行此批次檔即可自動啟動MongoDB資料庫的Server。 2. 連線MongoDB資料庫 在資料夾的本機點右鍵選內容。
+選進階系統設定 -&amp;gt; 環境變數 -&amp;gt; Path -&amp;gt; 編輯。
+在編輯環境變數內，點選新增，輸入mongo.exe資料夾路徑。
+輸入完之後按確認。
+在執行MongoDB Server的情況下，打開命令提示字元，輸入mongo即可連入MongoDB。
+3. 姚大哥提供更快的做法 補習班有位姚大哥在我分享這篇文章後，提供更好的做法給我參考，受益良多。
+以下為姚大哥提供的batch的程式碼，直接將啟動MongoDB Server和連線整合在一起，我有稍微改寫一下程式碼。將下面的程式碼貼入文字檔中，另存為bat副檔名即可使用。
+@echo off set mongo_path=&amp;quot;C:\Users\User\mongodb-win32-x86_64-windows-4.4.2\bin&amp;quot; set mongo_db=&amp;quot;C:\Users\User\mongodb_data&amp;quot; start cmd /k &amp;quot;cd %mongo_path% &amp;amp;&amp;amp; mongod --dbpath %mongo_db%&amp;quot; timeout /t 3 start cmd /k &amp;quot;cd %mongo_path% &amp;amp;&amp;amp; mongo&amp;quot; 程式碼說明：
+:: 「::」在表示這行為註解，或者可輸入rem :: @echo off 表示關閉回顯，開頭加入此行後，執行的命令就不會呈現在命令提示字元上 @echo off :: 設定mongodb的程式路徑(此行依據自己的路徑自行修改) set mongo_path=&amp;quot;C:\Users\User\mongodb-win32-x86_64-windows-4."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/start-connect-mongodb/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="快速啟動及連線MongoDB方法"/>
+<meta name="twitter:description" content="最近開始學MongoDB，因為每次執行MongoDB都要在Windows的命令提示字元打一些程式碼，所以想說寫個簡單的batch檔案及設定環境變數來解決這個麻煩的事情。"/>
+
+
+
+<meta property="og:title" content="快速啟動及連線MongoDB方法" />
+<meta property="og:description" content="最近開始學MongoDB，因為每次執行MongoDB都要在Windows的命令提示字元打一些程式碼，所以想說寫個簡單的batch檔案及設定環境變數來解決這個麻煩的事情。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/start-connect-mongodb/" />
+<meta property="article:published_time" content="2021-01-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-12T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">快速啟動及連線MongoDB方法</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-01-12
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/mongodb/">#MongoDB</a>&nbsp;
+        
+          <a href="/tags/batch/">#Batch</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>補習班最近開始上MongoDB課程，因為每次上課時都要打一些程式碼來執行MongoDB，所以想說寫個簡單的batch檔案及環境變數設定來解決這個麻煩的事情。</p>
+<h1 id="1-啟用mongodb資料庫的server端">1. 啟用MongoDB資料庫的Server端</h1>
+<p>打開文字檔，輸入以下字串：</p>
+<pre><code class="language-bash=" data-lang="bash=">cd C:\Users\User\mongodb-win32-x86_64-windows-4.4.2\bin
+mongod --dbpath  C:\Users\User\mongodb_data
+
+# 格式說明
+# cd [mongod.exe資料夾路徑]
+# mongod --dbpath [MongoDB資料庫位置]
+</code></pre><p><img src="https://i.imgur.com/Cx7ty87.png" alt=""></p>
+<p>接下來另存新檔，檔名為<code>&quot;start_mongodb.bat&quot;</code>，加上雙引號及bat附檔名代表強制存為批次檔。(檔名也可以取自己喜歡的)</p>
+<p><img src="https://i.imgur.com/3CA44uf.png" alt=""></p>
+<p>執行此批次檔即可自動啟動MongoDB資料庫的Server。
+<img src="https://i.imgur.com/nFoUqCc.png" alt=""></p>
+<h1 id="2-連線mongodb資料庫">2. 連線MongoDB資料庫</h1>
+<p>在資料夾的<strong>本機</strong>點右鍵選<strong>內容</strong>。</p>
+<p><img src="https://i.imgur.com/S2Gfxo3.png" alt=""></p>
+<p>選<strong>進階系統設定</strong> -&gt; <strong>環境變數</strong> -&gt; <strong>Path</strong> -&gt; <strong>編輯</strong>。</p>
+<p><img src="https://i.imgur.com/9Gp06L5.png" alt=""></p>
+<p>在編輯環境變數內，點選<strong>新增</strong>，輸入<strong>mongo.exe資料夾路徑</strong>。</p>
+<p><img src="https://i.imgur.com/F37CEzn.png" alt=""></p>
+<p>輸入完之後按確認。</p>
+<p>在執行MongoDB Server的情況下，打開<strong>命令提示字元</strong>，輸入<code>mongo</code>即可連入MongoDB。</p>
+<p><img src="https://i.imgur.com/EPhxJmW.png" alt=""></p>
+<h1 id="3-姚大哥提供更快的做法">3. 姚大哥提供更快的做法</h1>
+<p>補習班有位姚大哥在我分享這篇文章後，提供更好的做法給我參考，受益良多。</p>
+<p>以下為姚大哥提供的batch的程式碼，直接將啟動MongoDB Server和連線整合在一起，我有稍微改寫一下程式碼。將下面的程式碼貼入文字檔中，另存為bat副檔名即可使用。</p>
+<pre><code class="language-bash=" data-lang="bash=">@echo off 
+
+set mongo_path=&quot;C:\Users\User\mongodb-win32-x86_64-windows-4.4.2\bin&quot;
+
+set mongo_db=&quot;C:\Users\User\mongodb_data&quot;
+
+start cmd /k &quot;cd %mongo_path% &amp;&amp; mongod --dbpath %mongo_db%&quot;
+
+timeout /t 3
+
+start cmd /k &quot;cd %mongo_path% &amp;&amp; mongo&quot;
+</code></pre><p>程式碼說明：</p>
+<pre><code class="language-bash=" data-lang="bash=">:: 「::」在表示這行為註解，或者可輸入rem
+:: @echo off 表示關閉回顯，開頭加入此行後，執行的命令就不會呈現在命令提示字元上
+@echo off 
+
+:: 設定mongodb的程式路徑(此行依據自己的路徑自行修改)
+set mongo_path=&quot;C:\Users\User\mongodb-win32-x86_64-windows-4.4.2\bin&quot;
+
+:: 設定mongodb的資料庫位置(此行依據自己的路徑自行修改)
+set mongo_db=&quot;C:\Users\User\mongodb_data&quot;
+
+:: start cmd 表示啟動命令提示字元，後面的 /k 表示執行後面的指令後不關閉視窗
+:: cd 為更換路徑
+:: %mongo_path% 為變數，表示mongodb的程式路徑
+:: &amp;&amp; 表示接續執行命令
+:: mongod 為建立mongodb server
+:: --dbpath 為mongodb的資料庫位置參數
+:: %mongo_path% 為變數，表示mongodb的資料庫位置
+:: 綜合上述，此行程式碼即為打開命令提示字元，更換至mongodb的程式路徑，建立mongodb server
+start cmd /k &quot;cd %mongo_path% &amp;&amp; mongod --dbpath %mongo_db%&quot;
+
+:: 暫停3秒，此處暫停是因為要等待server建立好後才執行連線
+timeout /t 3
+
+:: 執行連線mongodb，先切換至mongodb的程式路徑後，執行mongo指令
+start cmd /k &quot;cd %mongo_path% &amp;&amp; mongo&quot;
+</code></pre>
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+              <span class="button previous">
+                <a href="/post/run-python-in-linux-background/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">將Python程式放在Linux背景執行</span>
+                </a>
+              </span>
+            
+            
+              <span class="button next">
+                <a href="/post/python-connect-to-mysql/">
+                  <span class="button__text">Python連線MySQL方法說明</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+  </body>
+</html>

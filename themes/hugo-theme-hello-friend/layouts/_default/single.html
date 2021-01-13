@@ -89,7 +89,8 @@
         </div>
       {{ end }}
     {{ end }}
-
+    <hr>
+    {{ template "_internal/disqus.html" . }}
     {{ if not (eq .Params.Comments "false") }}
       {{ if or (eq .Type $.Site.Params.contentTypeName) (.Params.Comments) }}
         {{ partial "comments.html" . }}

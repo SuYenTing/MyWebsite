@@ -2,6 +2,8 @@ baseurl = "/"
 languageCode = "en-us"
 theme = "hugo-theme-hello-friend"
 paginate = 5
+googleAnalytics = "G-L50G2LV7Q6"
+disqusShortname = "suyenting"
 
 [params]
   # dir name of your blog content (default is `content/posts`)
@@ -46,3 +48,9 @@ paginate = 5
       #  identifier = "showcase"
       #  name = "Showcase"
       #  url = "/showcase"
+      
+[sitemap]
+  changefreq = "monthly"
+  filename = "sitemap.xml"
+  priority = 0.5
+

@@ -2,15 +2,6 @@
 <html lang="{{ $.Site.Language }}">
   <head>
     
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-L50G2LV7Q6');
-    </script>
-    
     {{ block "title" . }}
       <title>
         {{ if .IsHome }}{{ $.Site.Title }}{{ with $.Site.Params.Subtitle }} —

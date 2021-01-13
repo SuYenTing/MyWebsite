@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        Python連線MySQL方法說明 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫。
+Step1. 安裝mysql-connector-python套件 在專案虛擬環境的終端機上，執行pip安裝語句：
+pip install mysql-connector-python mysql-connector-python套件為MySQL官方針對Python出的，只需要pip裝完後即可連線至MySQL Server，不需要在電腦上安裝其他東西。
+ GitHub: mysql-connector-python套件。  Step2. Python程式碼查詢MySQL範例 連線至MySQL資料庫程式碼參考自w3Schools頁面。
+此處以連線到本地端的MySQL資料庫為例，Python的程式碼為：
+# 載入套件 import mysql.connector # 建立MySQL連線 conn = mysql.connector.connect( host=&#39;localhost&#39;, # 連線主機名稱 user=&#39;user&#39;, # 登入帳號 password=&#39;@MySQLPassword&#39;, # 登入密碼 ) cursor = conn.cursor() # 使用資料庫 cursor.execute(&amp;quot;USE world;&amp;quot;) # 查詢資料 cursor.execute(&amp;quot;SELECT * FROM city&amp;quot;) # 將查詢資料傳至Python result = cursor.fetchall() # 印出查詢結果 for x in result: print(x) # 關閉資料庫連線 conn.close()  說明    資料庫與密碼記得要改成自己資料庫的設定。"
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/python-connect-to-mysql/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python連線MySQL方法說明"/>
+<meta name="twitter:description" content="本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫，將以mysql-connector-python套件來進行實作。"/>
+
+
+
+<meta property="og:title" content="Python連線MySQL方法說明" />
+<meta property="og:description" content="本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫，將以mysql-connector-python套件來進行實作。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/python-connect-to-mysql/" />
+<meta property="article:published_time" content="2021-01-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-11T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Python連線MySQL方法說明</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-01-11
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/python/">#Python</a>&nbsp;
+        
+          <a href="/tags/mysql/">#MySQL</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫。</p>
+<h2 id="step1-安裝mysql-connector-python套件">Step1. 安裝mysql-connector-python套件</h2>
+<p>在專案虛擬環境的終端機上，執行pip安裝語句：</p>
+<pre><code class="language-python=" data-lang="python=">pip install mysql-connector-python
+</code></pre><p><img src="https://i.imgur.com/7Ry2TqZ.png" alt=""></p>
+<p>mysql-connector-python套件為MySQL官方針對Python出的，只需要pip裝完後即可連線至MySQL Server，不需要在電腦上安裝其他東西。</p>
+<ul>
+<li><a href="https://github.com/mysql/mysql-connector-python">GitHub: mysql-connector-python套件</a>。</li>
+</ul>
+<h2 id="step2-python程式碼查詢mysql範例">Step2. Python程式碼查詢MySQL範例</h2>
+<p>連線至MySQL資料庫程式碼參考自<a href="https://www.w3schools.com/python/python_mysql_select.asp">w3Schools頁面</a>。</p>
+<p>此處以連線到本地端的MySQL資料庫為例，Python的程式碼為：</p>
+<pre><code class="language-python=" data-lang="python="># 載入套件
+import mysql.connector
+
+# 建立MySQL連線
+conn = mysql.connector.connect(
+    host='localhost',           # 連線主機名稱
+    user='user',                # 登入帳號
+    password='@MySQLPassword',  # 登入密碼
+)
+cursor = conn.cursor()
+
+# 使用資料庫
+cursor.execute(&quot;USE world;&quot;)
+
+# 查詢資料
+cursor.execute(&quot;SELECT * FROM city&quot;)
+
+# 將查詢資料傳至Python
+result = cursor.fetchall()
+
+# 印出查詢結果
+for x in result:
+    print(x)
+
+# 關閉資料庫連線
+conn.close()
+</code></pre><ul>
+<li><strong>說明</strong></li>
+</ul>
+<ol>
+<li>
+<p>資料庫與密碼記得要改成自己資料庫的設定。</p>
+</li>
+<li>
+<p>cursor.execute()內接的是MySQL程式碼，除了本範例提供的select語句外，其他指令如insert、update、delete等，也可直接在Python內輸入MySQL語句使用。</p>
+</li>
+<li>
+<p>在Python內操作MySQL的程式碼可參考此篇文章：<a href="https://officeguide.cc/python-mysql-mariadb-database-connector-tutorial-examples/">[Python 使用 MySQL Connector 操作 MySQL/MariaDB 資料庫教學與範例]</a></p>
+</li>
+</ol>
+<h2 id="補充其他資料庫連線套件">補充：其他資料庫連線套件</h2>
+<ul>
+<li>
+<p>Python連線Oracle可參考：<a href="https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html">Oracle官方文件說明</a></p>
+</li>
+<li>
+<p>Python連線MS-SQL可參考：<a href="https://pymssql.readthedocs.io/en/stable/pymssql_examples.html">pymssql套件說明</a></p>
+</li>
+</ul>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+              <span class="button previous">
+                <a href="/post/start-connect-mongodb/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">快速啟動及連線MongoDB方法</span>
+                </a>
+              </span>
+            
+            
+              <span class="button next">
+                <a href="/post/virtualbox-ssh/">
+                  <span class="button__text">VirtualBox:實體主機以SSH連線至虛擬主機</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+  </body>
+</html>

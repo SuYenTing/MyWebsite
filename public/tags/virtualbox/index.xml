@@ -16,10 +16,10 @@
     
     <item>
       <title>VirtualBox:實體主機以SSH連線至虛擬主機</title>
-      <link>/post/virtualbox/</link>
+      <link>/post/virtualbox-ssh/</link>
       <pubDate>Thu, 24 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/virtualbox/</guid>
+      <guid>/post/virtualbox-ssh/</guid>
       <description>
         
           
@@ -28,7 +28,7 @@
         
         
         
-          最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。
+          最近在學習如何架設CentOS虛擬主機在Windows上，因為在虛擬主機內用terminal輸入指令還是比較麻煩，所以想透過SSH方式，直接在Windows主機上進行虛擬主機的操作。本篇文章將一步一步帶領進行操作。
           
         
         </description>

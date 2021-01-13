@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MongoDB on Hello Friend, I&#39;m Yestin!</title>
+    
+    
+    
+    <link>/tags/mongodb/</link>
+    <description>Recent content in MongoDB on Hello Friend, I&#39;m Yestin!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 12 Jan 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/mongodb/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>快速啟動及連線MongoDB方法</title>
+      <link>/post/start-connect-mongodb/</link>
+      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/start-connect-mongodb/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近開始學MongoDB，因為每次執行MongoDB都要在Windows的命令提示字元打一些程式碼，所以想說寫個簡單的batch檔案及設定環境變數來解決這個麻煩的事情。
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>

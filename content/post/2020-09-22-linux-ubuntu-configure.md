@@ -2,7 +2,7 @@
 title: Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程
 author: Yen-Ting, Su
 date: '2020-09-22'
-slug: Linux_Ubuntu_configure
+slug: linux-ubuntu-configure
 categories:
   - Programming
 tags:

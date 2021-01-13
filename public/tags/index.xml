@@ -9,10 +9,110 @@
     <description>Recent content in Tags on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux</title>
+      <link>/tags/linux/</link>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/linux/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>/tags/python/</link>
+      <pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/python/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>Batch</title>
+      <link>/tags/batch/</link>
+      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/batch/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>MongoDB</title>
+      <link>/tags/mongodb/</link>
+      <pubDate>Tue, 12 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/mongodb/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>MySQL</title>
+      <link>/tags/mysql/</link>
+      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/mysql/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>VirtualBox</title>
@@ -55,51 +155,11 @@
     </item>
     
     <item>
-      <title>MySQL</title>
-      <link>/tags/mysql/</link>
-      <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/mysql/</guid>
-      <description>
-        
-          
-          
-          
-        
-        
-        
-          
-          
-        
-        </description>
-    </item>
-    
-    <item>
       <title>GPU</title>
       <link>/tags/gpu/</link>
       <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/gpu/</guid>
-      <description>
-        
-          
-          
-          
-        
-        
-        
-          
-          
-        
-        </description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
-      <link>/tags/linux/</link>
-      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/linux/</guid>
       <description>
         
           

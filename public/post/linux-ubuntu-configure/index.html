@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="老師近期用研究經費添購一台工作站，讓機器學習模型程式在訓練時能夠更加快速。這台工作站安裝Linux Ubuntu 18.04作業系統，在設定環境過程中難免還是採到坑，這篇內容是我建立相關環境的相關指令說明，紀錄起來以後有需要時可以查詢。
+1. Putty安裝方式 下載頁面連結位置
+下載後點選putty.exe檔案即可進入連線畫面
+2. 切換終端機命令列為英文 將終端機命列列系統訊息由中文切為英文，因為這樣在處理Bug時會有比較多的資源可以參考。
+直接在圖形化介面進行修正，搜尋Settings -&amp;gt; Region &amp;amp; Language
+修改 Language 和 Formats選項，之後重新登入即可轉為英文環境
+3. SSH套件相關設定 開機時自動啟動SSH
+sudo systemctl enable ssh為確保資安，將SSH的Port由22改為[新的Port號碼] 主要是修改sshd_config文件，將裡面的Port由22改為[新的Port號碼]
+sudo vi /etc/ssh/sshd_config相關改法可看參考頁面
+防火牆記得設定允許Port [新的Port號碼] 連入
+sudo ufw allow [新的Port號碼]另外為了資安設定，可以針對SHH Port加入IP白名單 寫法可參考頁面連結 如果有需要設定IP範圍，會用到網路遮罩寫法，對應的寫法可參考Wiki頁面說明
+4. 安裝R 指令參考頁面
+sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39;sudo apt updatesudo apt install r-base安裝好後在命令列直接輸入R即可進入R環境
+R5. 安裝RStudio Server 指令參考頁面
+sudo apt-get install gdebi-corewget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.1073-amd64.debsudo gdebi rstudio-server-1."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/linux-ubuntu-configure/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程"/>
+<meta name="twitter:description" content="老師近期用研究經費添購一台工作站，讓機器學習模型程式在訓練時能夠更加快速。這台工作站安裝Linux Ubuntu 18.04作業系統，在設定環境過程中難免還是採到坑，這篇內容是我建立相關環境的相關指令說明，紀錄起來以後有需要時可以查詢。"/>
+
+
+
+<meta property="og:title" content="Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程" />
+<meta property="og:description" content="老師近期用研究經費添購一台工作站，讓機器學習模型程式在訓練時能夠更加快速。這台工作站安裝Linux Ubuntu 18.04作業系統，在設定環境過程中難免還是採到坑，這篇內容是我建立相關環境的相關指令說明，紀錄起來以後有需要時可以查詢。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/linux-ubuntu-configure/" />
+<meta property="article:published_time" content="2020-09-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-09-22T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Linux(Ubuntu 18.04)建立R及GPU環境相關設定流程</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2020-09-22
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/linux/">#Linux</a>&nbsp;
+        
+          <a href="/tags/ubuntu/">#Ubuntu</a>&nbsp;
+        
+          <a href="/tags/r/">#R</a>&nbsp;
+        
+          <a href="/tags/gpu/">#GPU</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>老師近期用研究經費添購一台工作站，讓機器學習模型程式在訓練時能夠更加快速。這台工作站安裝Linux Ubuntu 18.04作業系統，在設定環境過程中難免還是採到坑，這篇內容是我建立相關環境的相關指令說明，紀錄起來以後有需要時可以查詢。</p>
+<h3 id="1-putty安裝方式">1. Putty安裝方式</h3>
+<p><a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">下載頁面連結位置</a></p>
+<p><img src="https://i.imgur.com/tWZ743O.png" alt=""></p>
+<p>下載後點選putty.exe檔案即可進入連線畫面</p>
+<p><img src="https://i.imgur.com/6PIgJsA.png" alt=""></p>
+<h3 id="2-切換終端機命令列為英文">2. 切換終端機命令列為英文</h3>
+<p>將終端機命列列系統訊息由中文切為英文，因為這樣在處理Bug時會有比較多的資源可以參考。</p>
+<p>直接在圖形化介面進行修正，搜尋Settings -&gt; Region &amp; Language</p>
+<p>修改 Language 和 Formats選項，之後重新登入即可轉為英文環境</p>
+<h3 id="3-ssh套件相關設定">3. SSH套件相關設定</h3>
+<p>開機時自動啟動SSH</p>
+<pre><code class="language-linux" data-lang="linux">sudo systemctl enable ssh
+</code></pre><p>為確保資安，將SSH的Port由22改為[新的Port號碼]
+主要是修改sshd_config文件，將裡面的Port由22改為[新的Port號碼]</p>
+<pre><code class="language-linux" data-lang="linux">sudo vi /etc/ssh/sshd_config
+</code></pre><p>相關改法可看<a href="https://coder.tw/?p=5020">參考頁面</a></p>
+<p>防火牆記得設定允許Port [新的Port號碼] 連入</p>
+<pre><code class="language-linux" data-lang="linux">sudo ufw allow [新的Port號碼]
+</code></pre><p>另外為了資安設定，可以針對SHH Port加入IP白名單
+寫法可參考<a href="https://noob.tw/ufw/">頁面連結</a>
+如果有需要設定IP範圍，會用到網路遮罩寫法，對應的寫法可參考<a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#IPv4_CIDR_blocks">Wiki頁面說明</a></p>
+<h3 id="4-安裝r">4. 安裝R</h3>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04">指令參考頁面</a></p>
+<pre><code class="language-linux" data-lang="linux">sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
+sudo apt update
+sudo apt install r-base
+</code></pre><p>安裝好後在命令列直接輸入<code>R</code>即可進入R環境</p>
+<pre><code class="language-linux" data-lang="linux">R
+</code></pre><h3 id="5-安裝rstudio-server">5. 安裝RStudio Server</h3>
+<p><a href="https://rstudio.com/products/rstudio/download-server/debian-ubuntu/">指令參考頁面</a></p>
+<pre><code class="language-linux" data-lang="linux">sudo apt-get install gdebi-core
+wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.1073-amd64.deb
+sudo gdebi rstudio-server-1.3.1073-amd64.deb
+</code></pre><p>防火牆設定允許Port 8787 連入</p>
+<pre><code class="language-linux" data-lang="linux">sudo ufw allow 8787
+</code></pre><p>設定開機時自動啟動RStudio Server</p>
+<pre><code class="language-linux" data-lang="linux">sudo systemctl enable rstudio-server
+</code></pre><h3 id="6-rstudio-server維護相關指令">6. Rstudio Server維護相關指令</h3>
+<p>請參考<a href="https://support.rstudio.com/hc/en-us/articles/200532327-Managing-the-Server">頁面連結</a></p>
+<h3 id="7-建立使用者">7. 建立使用者</h3>
+<pre><code class="language-linux" data-lang="linux">sudo adduser [使用者名稱]
+</code></pre><p>若要改變密碼，先以SSH登入該使用者，之後輸入<code>passwd</code>，依照系統提示進行密碼修改</p>
+<pre><code class="language-linux" data-lang="linux">passwd
+</code></pre><h3 id="8-安裝linux套件">8. 安裝Linux套件</h3>
+<p>依據R套件需求，安裝Linux相關套件</p>
+<pre><code class="language-linux" data-lang="linux">sudo apt install libssl-dev
+sudo apt install libxml2-dev
+sudo apt install libcurl4-openssl-dev
+</code></pre><h3 id="9-重開機指令">9. 重開機指令</h3>
+<pre><code class="language-linux" data-lang="linux">sudo systemctl reboot
+</code></pre><h3 id="10-安裝nvidia顯卡驅動cudacudnn配合tensorflow需求">10. 安裝NVIDIA顯卡驅動、CUDA、CuDNN(配合Tensorflow需求)</h3>
+<p>由於Tensorflow套件會隨時更新其硬體需求條件，所以必須要先至官網確認其硬體環境要求。<a href="https://www.tensorflow.org/install/gpu?hl=zh-tw">點此連結</a></p>
+<p><img src="https://i.imgur.com/gz94JPA.png" alt=""></p>
+<p>官網有提供Ubuntu18.04版本的安裝指令，但實測發現裝CUDA10.1時會出問題。
+經過查詢發現NVIDIA驅動必須要裝450版本才不會出問題(官網的程式碼是裝430版本)。</p>
+<p>目前Tensorflow在Github的<a href="https://github.com/tensorflow/docs/blob/master/site/en/install/gpu.md">安裝指引</a>上已更新NVIDIA驅動要裝450版本，但官網沒有。</p>
+<p>首先安裝NVIDIA顯示卡驅動450版本，參考此頁面(<a href="https://medium.com/@jackfrisht/install-nvidia-driver-via-ppa-in-ubuntu-18-04-fc9a8c4658b9">https://medium.com/@jackfrisht/install-nvidia-driver-via-ppa-in-ubuntu-18-04-fc9a8c4658b9</a>)</p>
+<pre><code class="language-linux" data-lang="linux"># 新增PPA套件庫
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+sudo apt install ubuntu-drivers-common
+
+# 查看可安裝的版本
+ubuntu-drivers devices
+
+# 安裝NVIDA驅動450版本
+sudo apt install nvidia-driver-450 
+
+# 重新啟動
+sudo reboot
+</code></pre><p>輸入顯卡查詢指令判斷是否有正常運作，經查詢後確定GPU有成功抓到。</p>
+<pre><code class="language-linux" data-lang="linux">nvidia-smi
+</code></pre><p>成功畫面如下:</p>
+<p><img src="https://i.imgur.com/9ErTXHe.png" alt=""></p>
+<p>接下來安裝Cuda10.1及CuDnn7.6.5</p>
+<pre><code class="language-linux" data-lang="linux"># Install development and runtime libraries (~4GB)
+sudo apt-get install --no-install-recommends \
+    cuda-10-1 \
+    libcudnn7=7.6.5.32-1+cuda10.1  \
+    libcudnn7-dev=7.6.5.32-1+cuda10.1
+    
+# 重新開機
+sudo reboot
+</code></pre><p>安裝好後，需要在環境變數中加入CUDA路徑:</p>
+<pre><code class="language-linux" data-lang="linux"># 打開.bashrc檔案
+sudo nano ~/.bashrc
+
+# 將下列兩行貼到.bashrc文件最後面並儲存然後退出
+export PATH=/usr/local/cuda/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda/64:$LD_LIBRARY_PATH
+
+# 更新.bashrc檔案
+source ~/.bashrc
+
+# 查詢CUDA版本
+nvcc -V
+</code></pre><p>成功畫面如下:
+<img src="https://i.imgur.com/y5pwyVB.png" alt=""></p>
+<p>接下來再安裝Tensor RT:</p>
+<pre><code class="language-linux" data-lang="linux">sudo apt-get install -y --no-install-recommends libnvinfer6=6.0.1-1+cuda10.1 \
+    libnvinfer-dev=6.0.1-1+cuda10.1 \
+    libnvinfer-plugin6=6.0.1-1+cuda10.1
+</code></pre><p>執行後若沒錯誤即安裝完成。</p>
+<hr>
+<p>此區域尚未設定完成，需要確認該電腦是否有裝SLI橋接器才能進行。</p>
+<pre><code class="language-linux" data-lang="linux">若有兩張顯卡要進行SLI串接，則執行以下指令:
+sudo nvidia-xconfig
+sudo nvidia-xconfig --multigpu=on
+sudo nvidia-xconfig --sli=On
+</code></pre><hr>
+<h4 id="補充說明-顯示卡安裝過程可能發生gcc版本不一致解決方法如下">補充說明: 顯示卡安裝過程可能發生gcc版本不一致，解決方法如下:</h4>
+<p>首先查詢gcc版本指令</p>
+<pre><code class="language-linux" data-lang="linux">gcc --version
+</code></pre><p>CUDA10.1對應的gcc版本為7，若版本不一致則安裝gcc7版，並調整gcc7版優先權</p>
+<p><a href="https://archerfmy.github.io/2017/04/12/How-to-switch-your-gcc-g-version-in-ubuntu/">參考頁面</a></p>
+<pre><code class="language-linux" data-lang="linux"># 安裝gcc-7
+sudo apt-get install gcc-7 g++-7
+
+# 修改優先權限(此處系統有gcc9和gcc7版本 設定將gcc7版本優先權高於gcc9版本)
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 50
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 40
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 40
+
+# 確認是否為gcc7版
+gcc --version
+</code></pre><p>之後重新執行CUDA安裝即可。</p>
+<h3 id="11-安裝anaconda">11. 安裝Anaconda</h3>
+<p>至<a href="https://www.anaconda.com/products/individual">Anaconda官網</a>尋找下載連結</p>
+<p>安裝流程說明<a href="https://medium.com/@maniac.tw/%E5%AE%89%E8%A3%9D-anaconda-tensorflow-2bbc6e220fa4">參考頁面</a></p>
+<pre><code class="language-linux" data-lang="linux"># 下載檔案
+wget https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh
+
+# 執行安裝
+bash Anaconda3-2020.07-Linux-x86_64.sh
+
+# 依照系統提示安裝並加入環境變數(PATH)
+
+# 更新.bashrc檔案
+source ~/.bashrc
+</code></pre><h3 id="12-安裝python虛擬環境測試tensorflow">12. 安裝Python虛擬環境測試Tensorflow</h3>
+<pre><code class="language-linux" data-lang="linux"># 建立虛擬環境
+conda create --name &quot;r-reticulate&quot; python=3.6
+
+# 進入虛擬環境
+conda activate &quot;r-reticulate&quot;
+
+# 安裝相關套件
+# 首先升級pip
+pip install --upgrade pip
+
+# 安裝tensorflow
+pip install tensorflow
+
+# 安裝keras
+pip install keras
+
+# 虛擬環境內執行Python
+python
+
+# 在Python測試tensorflow2.0是否能正常運行
+import tensorflow as tf
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+print('GPU', tf.test.is_gpu_available())
+a = tf.constant(2.0)
+b = tf.constant(4.0)
+print(a + b)
+</code></pre><h3 id="13-安裝r-keras">13. 安裝R Keras</h3>
+<p>首先打開R Studio Server</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#75715e"># 安裝套件</span>
+<span style="color:#a6e22e">install.packages</span>(<span style="color:#e6db74">&#34;keras&#34;</span>)
+</code></pre></div><p>安裝好後，執行範例程式碼，<a href="https://github.com/rstudio/keras/blob/master/vignettes/examples/mnist_mlp.R">點選此連結</a>到RStudio的keras套件之Github頁面複製程式碼在R中執行。</p>
+<p>成功執行的畫面
+<img src="https://i.imgur.com/nkm8s8G.png" alt=""></p>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+              <span class="button previous">
+                <a href="/post/mysql-tutorial/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">MySQL基本介紹</span>
+                </a>
+              </span>
+            
+            
+              <span class="button next">
+                <a href="/post/linear-gradient-descent-method/">
+                  <span class="button__text">以梯度下降法解線性迴歸係數</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+  </body>
+</html>
