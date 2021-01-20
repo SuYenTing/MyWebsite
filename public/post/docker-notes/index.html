@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        Docker課程補充筆記 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="這是我在tibame學習Docker課程的補充筆記，本堂課由周廷諺老師授課。不得不說老師上課講解的非常好，除了講解Docker的指令外，也講解DevOps及雲端的觀念，讓我們對於資訊業產品在運作的過程中有更清楚的認識。之前有曾經稍微玩過Docker，但對於Docker還是懵懵懂懂，今日上完課後感覺有種任督二脈被打通的感覺！
+這堂課在環境建置部分，是在Windows10作業系統下，以VMware架設Linux CentOS7虛擬環境，並在虛擬環境上執行Docker部署。由於老師已經在他的講義中提供程式碼，所以這篇文章就沒有另外列出來。本篇文章主要是整理老師上課補充且講義未紀錄到的部份。
+一、課前準備   周廷諺老師上課講義連結
+  Docker課程論壇-AI / Big Data 資料分析師 - 超實用作業區
+  Docker Hub
+  VMware下載位置連結 點選Windows 適用的 Workstation 16 Pro按鈕下載
+  CentOS7映像檔下載連結 選擇CentOS-7-x86_64-DVD-2009.iso檔案
+  新聞補充：DDoS勒索不成，駭客最後讓一家靠雲端的公司關門大吉：Code Spaces的血淋淋教訓！
+   二、DevOps 圖片來源文章：DevOps is a culture, not a role!
+ 三、雲原生(Cloud-Native) 圖片來源文章：Cloud Native Applications — The Why, The What &amp;amp; The How.
+ 四、CI/CD CI/CD：維基百科
+ CI (Continuous Integration) 持續整合 CD (Continuous Deployment) 持續部署  概念參考文章：CI/CD (持續性整合 / 部署) - 因為懶，所以更要 CI/CD！概念講解！"
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/docker-notes/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker課程補充筆記"/>
+<meta name="twitter:description" content="這是我在tibame學習Docker課程的補充筆記，本堂課由周廷諺老師授課。不得不說老師上課講解的非常好，除了講解Docker的指令外，也講解DevOps及雲端的觀念，讓我們對於資訊業產品在運作的過程中有更清楚的認識。之前有曾經稍微玩過Docker，但對於Docker還是懵懵懂懂，今日上完課後感覺有種任督二脈被打通的感覺！"/>
+
+
+
+<meta property="og:title" content="Docker課程補充筆記" />
+<meta property="og:description" content="這是我在tibame學習Docker課程的補充筆記，本堂課由周廷諺老師授課。不得不說老師上課講解的非常好，除了講解Docker的指令外，也講解DevOps及雲端的觀念，讓我們對於資訊業產品在運作的過程中有更清楚的認識。之前有曾經稍微玩過Docker，但對於Docker還是懵懵懂懂，今日上完課後感覺有種任督二脈被打通的感覺！" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/docker-notes/" />
+<meta property="article:published_time" content="2021-01-19T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-19T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Docker課程補充筆記</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-01-19
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/docker/">#Docker</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>這是我在tibame學習Docker課程的補充筆記，本堂課由周廷諺老師授課。不得不說老師上課講解的非常好，除了講解Docker的指令外，也講解DevOps及雲端的觀念，讓我們對於資訊業產品在運作的過程中有更清楚的認識。之前有曾經稍微玩過Docker，但對於Docker還是懵懵懂懂，今日上完課後感覺有種任督二脈被打通的感覺！</p>
+<p>這堂課在環境建置部分，是在Windows10作業系統下，以VMware架設Linux CentOS7虛擬環境，並在虛擬環境上執行Docker部署。由於老師已經在他的講義中提供程式碼，所以這篇文章就沒有另外列出來。本篇文章主要是整理老師上課補充且講義未紀錄到的部份。</p>
+<h2 id="一課前準備">一、課前準備</h2>
+<ul>
+<li>
+<p><a href="https://docs.google.com/document/d/1L5I7TuhAvHuXqAuW7fhmpIpcWBNfdVL61kefiCwzTJU/edit">周廷諺老師上課講義連結</a></p>
+</li>
+<li>
+<p><a href="https://2311.cxcxc.info/viewforum.php?f=20">Docker課程論壇-AI / Big Data 資料分析師 - 超實用作業區</a></p>
+</li>
+<li>
+<p><a href="https://hub.docker.com/">Docker Hub</a></p>
+</li>
+<li>
+<p><a href="https://www.vmware.com/tw/products/workstation-pro/workstation-pro-evaluation.html">VMware下載位置連結</a>
+點選<code>Windows 適用的 Workstation 16 Pro</code>按鈕下載</p>
+</li>
+<li>
+<p><a href="http://centos.cs.nctu.edu.tw/7.9.2009/isos/x86_64/">CentOS7映像檔下載連結</a>
+選擇<code>CentOS-7-x86_64-DVD-2009.iso</code>檔案</p>
+</li>
+<li>
+<p>新聞補充：<a href="https://www.ithome.com.tw/news/88797">DDoS勒索不成，駭客最後讓一家靠雲端的公司關門大吉：Code Spaces的血淋淋教訓！</a></p>
+</li>
+</ul>
+<hr>
+<h2 id="二devops">二、DevOps</h2>
+<p><img src="https://i.imgur.com/8Ef8RFY.png" alt=""></p>
+<p>圖片來源文章：<a href="https://neonrocket.medium.com/devops-is-a-culture-not-a-role-be1bed149b0">DevOps is a culture, not a role!</a></p>
+<hr>
+<h2 id="三雲原生cloud-native">三、雲原生(Cloud-Native)</h2>
+<p><img src="https://i.imgur.com/QZOZJnS.png" alt=""></p>
+<p>圖片來源文章：<a href="https://medium.com/velotio-perspectives/cloud-native-applications-the-why-the-what-the-how-9b2d31897496">Cloud Native Applications — The Why, The What &amp; The How.</a></p>
+<hr>
+<h2 id="四cicd">四、CI/CD</h2>
+<p><a href="https://zh.wikipedia.org/wiki/CI/CD">CI/CD：維基百科</a></p>
+<ul>
+<li>CI (Continuous Integration) 持續整合</li>
+<li>CD (Continuous Deployment) 持續部署</li>
+</ul>
+<p>概念參考文章：<a href="https://blog.kennycoder.io/2020/04/07/CI-CD-%E6%8C%81%E7%BA%8C%E6%80%A7%E6%95%B4%E5%90%88-%E9%83%A8%E7%BD%B2-%E5%9B%A0%E7%82%BA%E6%87%B6%EF%BC%8C%E6%89%80%E4%BB%A5%E6%9B%B4%E8%A6%81CI-CD%EF%BC%81%E6%A6%82%E5%BF%B5%E8%AC%9B%E8%A7%A3%EF%BC%81/">CI/CD (持續性整合 / 部署) - 因為懶，所以更要 CI/CD！概念講解！</a></p>
+<hr>
+<h2 id="五vmware-station網路介接模式">五、VMware Station網路介接模式</h2>
+<p><img src="https://i.imgur.com/7Kerz29.png" alt="">
+圖片來自VMware建立虛擬環境設定</p>
+<ul>
+<li>
+<p>Bridge
+手動設定IP，但是可讓VM的網路跟實體主機一樣</p>
+</li>
+<li>
+<p>NAT
+透過DHCP自動取得IP，快速上網模式不需太多設定</p>
+</li>
+<li>
+<p>Host-only
+只有自己的主機才能夠連上</p>
+</li>
+</ul>
+<p>對網路設定有興趣，可以參考TCP/IP相關文章：
+<a href="http://linux.vbird.org/linux_server/0110network_basic.php">鳥哥的 Linux 私房菜-第二章、基礎網路概念</a></p>
+<hr>
+<h2 id="六網路時間協定ntp">六、網路時間協定(NTP)</h2>
+<p>參考文章：</p>
+<ul>
+<li>
+<p><a href="https://zh.wikipedia.org/wiki/%E7%B6%B2%E8%B7%AF%E6%99%82%E9%96%93%E5%8D%94%E5%AE%9A">網路時間協定：維基百科</a></p>
+</li>
+<li>
+<p><a href="http://linux.vbird.org/linux_server/0440ntp.php">鳥哥的 Linux 私房菜-第十五章、時間伺服器： NTP 伺服器</a></p>
+</li>
+</ul>
+<hr>
+<h2 id="七linux-init指令">七、Linux init指令</h2>
+<p>以下指令在terminal上直接輸入即可執行：</p>
+<ul>
+<li>init 0: 停機</li>
+<li>init 1: 單使用者形式,只root進行維護</li>
+<li>init 2: 多使用者,不能使用net file system</li>
+<li>init 3: 完全多使用者</li>
+<li>init 5: 圖形化</li>
+<li>init 4: 安全模式</li>
+<li>init 6: 重啟</li>
+</ul>
+<p>指令參考頁面：<a href="https://www.itread01.com/p/175241.html">linux啟動級別的含義(init 0-6)</a></p>
+<hr>
+<h2 id="八虛擬環境複製">八、虛擬環境複製</h2>
+<p>記得虛擬機器要先關機才進行複製</p>
+<p><img src="https://i.imgur.com/USlxEFs.png" alt=""></p>
+<p><img src="https://i.imgur.com/sxqS8Gp.png" alt=""></p>
+<p><img src="https://i.imgur.com/BIo2ujV.png" alt=""></p>
+<p><img src="https://i.imgur.com/sVnSLzk.png" alt=""></p>
+<p><img src="https://i.imgur.com/5MfsoJZ.png" alt=""></p>
+<p><img src="https://i.imgur.com/jnh8CXS.png" alt=""></p>
+<p><img src="https://i.imgur.com/qSAIdJM.png" alt=""></p>
+<hr>
+<h2 id="九將虛擬機器放置在背景運行">九、將虛擬機器放置在背景運行</h2>
+<p><img src="https://i.imgur.com/L59myzm.png" alt=""></p>
+<hr>
+<h2 id="十mobaxterm連線方式">十、MobaXterm連線方式</h2>
+<p><img src="https://i.imgur.com/0bRlIjt.png" alt=""></p>
+<p><img src="https://i.imgur.com/JhqpggB.png" alt=""></p>
+<hr>
+<h2 id="十一讓sudo指令不用輸入密碼做法">十一、讓sudo指令不用輸入密碼做法</h2>
+<p>在terminal上輸入指令：</p>
+<pre><code>sudo visudo
+</code></pre><p>會打開vi文件：</p>
+<p>107行註解掉，110行加入註解</p>
+<p><img src="https://i.imgur.com/1fZ0en6.png" alt=""></p>
+<p>接下來輸入<code>:x</code>儲存vi文件並離開，這樣即設定完成</p>
+<p>之後該名具有管理權限的使用者在Linux上輸入<code>sudo</code>指令時就不用再輸入密碼。</p>
+<hr>
+<h2 id="十二aws雲端服務介紹">十二、AWS雲端服務介紹</h2>
+<p>AWS官方說明：</p>
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/tw/cloud9/">AWS Cloud9：用來撰寫、執行和偵錯程式碼的雲端 IDE</a></p>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/tw/lambda/">AWS Lambda-無伺服器運算：執行程式碼更輕鬆，不必考慮伺服器選項。只需為使用的運算時間支付費用。</a></p>
+</li>
+</ul>
+<p>無伺服器運算應用範例：<a href="https://www.ithome.com.tw/news/112431">無伺服器案例介紹：可口可樂的Serverless之旅</a></p>
+<hr>
+<h2 id="十三docker-run的--link參數不要使用官方建議">十三、docker run的&ndash;link參數不要使用(官方建議)</h2>
+<p>參考來源：<a href="https://docs.docker.com/network/links/">Docker官方手冊-Legacy container links</a></p>
+<p><img src="https://i.imgur.com/6ECNIGn.png" alt=""></p>
+<p>&ndash;link是Docker的舊功能，且有安全性的問題，未來可能會被棄用</p>
+<p>可改用&ndash;network參數取代</p>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+            
+              <span class="button next">
+                <a href="/post/run-python-in-linux-background/">
+                  <span class="button__text">將Python程式放在Linux背景執行</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>

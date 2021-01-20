@@ -9,10 +9,30 @@
     <description>Recent content in Programming on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/programming/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker課程補充筆記</title>
+      <link>/post/docker-notes/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/docker-notes/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這是我在tibame學習Docker課程的補充筆記，本堂課由周廷諺老師授課。不得不說老師上課講解的非常好，除了講解Docker的指令外，也講解DevOps及雲端的觀念，讓我們對於資訊業產品在運作的過程中有更清楚的認識。之前有曾經稍微玩過Docker，但對於Docker還是懵懵懂懂，今日上完課後感覺有種任督二脈被打通的感覺！
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>將Python程式放在Linux背景執行</title>
