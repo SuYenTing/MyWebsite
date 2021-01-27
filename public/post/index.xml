@@ -9,10 +9,30 @@
     <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 27 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker課程補充筆記2</title>
+      <link>/post/docker-notes2/</link>
+      <pubDate>Wed, 27 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/docker-notes2/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這是我在tibame學習Docker課程的第二份補充筆記，主要是將老師在上課提到的名詞，蒐集網路上的相關資訊進行閱讀並消化整理出來。希望透過這份筆記，未來在工作時能夠知道別人在說什麼資訊語言，並能讓自己以資訊語言進行溝通。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Docker課程補充筆記</title>
