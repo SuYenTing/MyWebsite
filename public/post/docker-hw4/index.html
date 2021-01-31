@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        Docker作業四筆記 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="此作業完整的程式碼有放在我的Github上。
+一、作業內容 以下為老師作業的題目：
+ 製作一個Line機器人，用戶上傳照片，會將照片搜集回本地的專案資料夾內
+ 老師上課有示範如何以docker-compose建立Line機器人，其建構的容器共有3個，分別為MariaDB、Jupyter及Ngrok，此示範的檔案有放在Github：aeon33system/docker_Advanced_ngrok。
+這份作業參考老師提供的範例架構進行修改，在資料庫部分改為MySQL，Flask從Jupyter改為直接以Python執行，Ngrok則維持和範例相同的做法。
+Line機器人在原本的範例中只會做訊息回應，此作業將加上照片蒐集功能。除此之外，也會撰寫程式碼，將使用者傳送的訊息或照片檔案位置紀錄在資料庫內。
+二、作業執行環境說明  採用VMware Workstation 16 Pro建立虛擬機器 主體作業系統：Windows 10 客體作業系統：CentOS7  Docker部署在虛擬機CentOS7作業系統上，部署前資料夾架構如下：
+. ├── app.py ├── docker-compose.yml ├── dockerfile-flask ├── get_ngrok_url.sh ├── image ├── mysql-init.sql ├── requirements.txt └── secretFile.txt  檔案簡介：  app.py：為Flask程式碼，主要負責Line機器人對使用者傳的訊息及照片進行對應處理 docker-compose.yml：為Docker部署的yaml檔案 dockerfile-flask：部署Python容器時要使用的Dockerfile，在docker-compose.yml檔案內會引用到 get_ngrok_url.sh：此為bash檔案，在Ngrok部署好後執行，可取得Ngrok容器內的公開網址 image：此為資料夾，主要存放使用者傳給Line機器人的照片檔案 mysql-init.sql：部署MySQL容器時初始化資料庫所要執行的語句，主要為建立資料庫和資料表，用於儲存使用者傳的訊息和照片 requirements.txt：此為app.py所需要的套件，在dockerfile-flask檔案內會用到 secretFile.txt：儲存Line機器人的token和SQL資料庫的連線資訊，在app.py內會讀取使用    三、編寫docker-compose.yml 1. MySQL MySQL的yaml寫法主要參考Docker Hub官方說明頁面，並另外撰寫mysql-init.sql檔案，讓Docker在起始部署時，能夠建立待會要儲存文字內容和圖片存放位置的資料庫和資料表。
+ docker-compose.yml檔案中的MySQL內容如下：  version: &amp;quot;3.1&amp;quot; services: db: image: mysql container_name: chatbot_db restart: always ports: - &amp;quot;3306:3306&amp;quot; environment: - MYSQL_ROOT_PASSWORD=123456 volumes: - ."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/docker-hw4/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker作業四筆記"/>
+<meta name="twitter:description" content="這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署Line機器人，使用到MySQL、Python(Flask)和Ngrok三個容器。這個Line機器人可以記錄使用者傳輸的訊息，以及儲存使用者上傳的照片檔案。"/>
+
+
+
+<meta property="og:title" content="Docker作業四筆記" />
+<meta property="og:description" content="這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署Line機器人，使用到MySQL、Python(Flask)和Ngrok三個容器。這個Line機器人可以記錄使用者傳輸的訊息，以及儲存使用者上傳的照片檔案。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/docker-hw4/" />
+<meta property="article:published_time" content="2021-01-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-31T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Docker作業四筆記</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-01-31
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/docker/">#Docker</a>&nbsp;
+        
+          <a href="/tags/mysql/">#MySQL</a>&nbsp;
+        
+          <a href="/tags/jupyter-notebook/">#Jupyter Notebook</a>&nbsp;
+        
+          <a href="/tags/python/">#Python</a>&nbsp;
+        
+          <a href="/tags/ngrok/">#Ngrok</a>&nbsp;
+        
+          <a href="/tags/linebot/">#LineBot</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>此作業完整的程式碼有放在我的<a href="https://github.com/SuYenTing/Docker_hw/tree/main/hw4">Github</a>上。</p>
+<h2 id="一作業內容">一、作業內容</h2>
+<p>以下為老師作業的題目：</p>
+<blockquote>
+<p>製作一個Line機器人，用戶上傳照片，會將照片搜集回本地的專案資料夾內</p>
+</blockquote>
+<p>老師上課有示範如何以docker-compose建立Line機器人，其建構的容器共有3個，分別為MariaDB、Jupyter及Ngrok，此示範的檔案有放在<a href="https://github.com/aeon33system/docker_Advanced_ngrok/tree/master/lab4">Github：aeon33system/docker_Advanced_ngrok</a>。</p>
+<p>這份作業參考老師提供的範例架構進行修改，在資料庫部分改為MySQL，Flask從Jupyter改為直接以Python執行，Ngrok則維持和範例相同的做法。</p>
+<p>Line機器人在原本的範例中只會做訊息回應，此作業將加上照片蒐集功能。除此之外，也會撰寫程式碼，將使用者傳送的訊息或照片檔案位置紀錄在資料庫內。</p>
+<h2 id="二作業執行環境說明">二、作業執行環境說明</h2>
+<ul>
+<li>採用VMware Workstation 16 Pro建立虛擬機器</li>
+<li>主體作業系統：Windows 10</li>
+<li>客體作業系統：CentOS7</li>
+</ul>
+<p>Docker部署在虛擬機CentOS7作業系統上，部署前資料夾架構如下：</p>
+<pre><code class="language-bash=" data-lang="bash=">.
+├── app.py
+├── docker-compose.yml
+├── dockerfile-flask
+├── get_ngrok_url.sh
+├── image
+├── mysql-init.sql
+├── requirements.txt
+└── secretFile.txt
+</code></pre><ul>
+<li>檔案簡介：
+<ul>
+<li>app.py：為Flask程式碼，主要負責Line機器人對使用者傳的訊息及照片進行對應處理</li>
+<li>docker-compose.yml：為Docker部署的yaml檔案</li>
+<li>dockerfile-flask：部署Python容器時要使用的Dockerfile，在docker-compose.yml檔案內會引用到</li>
+<li>get_ngrok_url.sh：此為bash檔案，在Ngrok部署好後執行，可取得Ngrok容器內的公開網址</li>
+<li>image：此為資料夾，主要存放使用者傳給Line機器人的照片檔案</li>
+<li>mysql-init.sql：部署MySQL容器時初始化資料庫所要執行的語句，主要為建立資料庫和資料表，用於儲存使用者傳的訊息和照片</li>
+<li>requirements.txt：此為app.py所需要的套件，在dockerfile-flask檔案內會用到</li>
+<li>secretFile.txt：儲存Line機器人的token和SQL資料庫的連線資訊，在app.py內會讀取使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="三編寫docker-composeyml">三、編寫docker-compose.yml</h2>
+<h3 id="1-mysql">1. MySQL</h3>
+<p>MySQL的yaml寫法主要參考<a href="https://hub.docker.com/_/mysql">Docker Hub官方說明頁面</a>，並另外撰寫mysql-init.sql檔案，讓Docker在起始部署時，能夠建立待會要儲存文字內容和圖片存放位置的資料庫和資料表。</p>
+<ul>
+<li>docker-compose.yml檔案中的MySQL內容如下：</li>
+</ul>
+<pre><code class="language-yaml=" data-lang="yaml=">version: &quot;3.1&quot;
+services:
+
+  db:
+    image: mysql
+    container_name: chatbot_db
+    restart: always
+    ports:
+      - &quot;3306:3306&quot;
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - ./mysql-init.sql:/docker-entrypoint-initdb.d/mysql-init.sql
+      - ./mysql_data:/var/lib/mysql
+</code></pre><ul>
+<li>
+<p>說明：</p>
+<ul>
+<li><code>MYSQL_ROOT_PASSWORD=123456</code>為資料庫root帳號的密碼，此處可自行修改。</li>
+</ul>
+</li>
+<li>
+<p>mysql-init.sql檔案如下，為MySQL程式碼：</p>
+</li>
+</ul>
+<pre><code class="language-sql=" data-lang="sql="># 建立資料庫
+CREATE SCHEMA  if not exists `linebot`;
+
+# 建立儲存圖片的資料表
+CREATE TABLE if not exists `linebot`.`upload_fig` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `time` DATETIME NULL,
+  `file_path` TEXT NULL COMMENT '圖片存放路徑',
+  PRIMARY KEY (`id`))
+COMMENT = '上傳圖片資料表';
+
+# 建立儲存訊息的資料表
+CREATE TABLE if not exists `linebot`.`msg` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `time` DATETIME NULL,
+  `msg` TEXT NULL COMMENT '使用者輸入訊息',
+  PRIMARY KEY (`id`))
+COMMENT = '使用者輸入訊息資料表';
+</code></pre><h3 id="2-pythonflask">2. Python(Flask)</h3>
+<p>Python部署的部分參考<a href="https://docs.docker.com/compose/gettingstarted/">Docker官方文件範例</a>，此部分除了撰寫docker-compose.yml外，另外撰寫dockerfile。</p>
+<ul>
+<li>docker-compose.yml檔案中的Python內容如下：</li>
+</ul>
+<pre><code class="language-yaml=" data-lang="yaml=">version: &quot;3.1&quot;
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: dockerfile-flask
+    container_name: chatbot_web
+    restart: always
+    ports:
+      - &quot;5000:5000&quot;
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+    environment:
+      FLASK_ENV: development
+</code></pre><ul>
+<li>dockerfile-flask內容如下：</li>
+</ul>
+<pre><code class="language-dockerfile=" data-lang="dockerfile=">FROM python:3.7-alpine
+WORKDIR /code
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+EXPOSE 5000
+COPY . .
+CMD [&quot;flask&quot;, &quot;run&quot;]
+</code></pre><ul>
+<li>
+<p>說明：</p>
+<ul>
+<li><code>FROM python:3.7-alpine</code>：要使用的Docker Image</li>
+<li><code>WORKDIR /code</code>：容器內執行Python的路徑</li>
+<li><code>ENV FLASK_APP=app.py</code>：代表說待會要執行的flask主程式檔名是app.py檔案</li>
+<li><code>ENV FLASK_RUN_HOST=0.0.0.0</code>：代表FLASK要讓其他人都可以連入</li>
+<li><code>COPY requirements.txt requirements.txt</code>：將requirement.txt檔案放到容器內，requirement.txt檔案是執行app.py所需要的套件</li>
+<li><code>RUN pip install -r requirements.txt</code>：指依據requirement.txt內的套件名稱進行安裝</li>
+</ul>
+</li>
+<li>
+<p>requirement.txt檔案內容，為Python所需安裝套件的清單：</p>
+</li>
+</ul>
+<pre><code class="language-python=" data-lang="python=">flask
+requests 
+line-bot-sdk 
+mysql-connector-python
+</code></pre><h3 id="3-ngrok">3. Ngrok</h3>
+<p>Ngrok直接沿用老師的範例寫法。</p>
+<ul>
+<li>docker-compose.yml檔案中的Ngrok內容如下：</li>
+</ul>
+<pre><code class="language-yaml=" data-lang="yaml=">version: &quot;3.1&quot;
+services:
+
+  ngrok:
+    image: wernight/ngrok
+    container_name: chatbot_ngrok
+    tty: true
+    stdin_open: true
+    restart: always
+    ports:
+      - &quot;4040:4040&quot;
+    depends_on:
+      - web
+    command: ngrok http chatbot_web:5000 -region ap
+</code></pre><h2 id="四撰寫flask檔案">四、撰寫Flask檔案</h2>
+<p>app.py檔案為Python架構Flask的程式碼，以下將針對此檔案程式碼依序說明：</p>
+<p>首先載入相關套件：</p>
+<pre><code class="language-python=" data-lang="python="># 載入相關套件
+from flask import Flask, request, abort
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageMessage
+from datetime import datetime
+import json
+import mysql.connector
+</code></pre><p>接下來利用<code>json.load</code>函數將secretFile.txt讀進來。secretFile.txt裡面放置Line機器人需要的channelAccessToken和channelSecret，以及MySQL的相關連線資訊。</p>
+<pre><code class="language-python=" data-lang="python="># 讀取linebot和mysql連線資訊
+secretFile = json.load(open('secretFile.txt', 'r'))
+</code></pre><p>secretFile.txt的檔案內容如下：</p>
+<pre><code class="language-json=" data-lang="json=">{
+  &quot;channelAccessToken&quot;:&quot;[您的channelAccessToken]&quot;,
+  &quot;channelSecret&quot;:&quot;[您的channelSecret]&quot;,
+  &quot;host&quot;:&quot;chatbot_db&quot;,
+  &quot;port&quot;:3306, 
+  &quot;user&quot;:&quot;root&quot;,
+  &quot;passwd&quot;:&quot;123456&quot;
+}
+</code></pre><p>其中，Line機器人的channelAccessToken和channelSecret需要從<a href="https://developers.line.biz/zh-hant/">Line Developer</a>網站申請取得。</p>
+<p>接下來為建立Flask：</p>
+<pre><code class="language-python=" data-lang="python="># 建立Flask
+app = Flask(__name__)
+</code></pre><p>以下開始撰寫Line機器人的處理邏輯，此處參考<a href="https://github.com/line/line-bot-sdk-python">Github：line
+/line-bot-sdk-python</a>說明。</p>
+<p>取得Line機器人驗證資訊：</p>
+<pre><code class="language-python=" data-lang="python="># 讀取LineBot驗證資訊
+line_bot_api = LineBotApi(secretFile['channelAccessToken'])
+handler = WebhookHandler(secretFile['channelSecret'])
+</code></pre><p>Line機器人接收使用者訊息部分：</p>
+<pre><code class="language-python=" data-lang="python="># linebot接收訊息
+@app.route(&quot;/&quot;, methods=['POST'])
+def callback():
+    # get X-Line-Signature header value: 驗證訊息來源
+    signature = request.headers['X-Line-Signature']
+
+    # get request body as text: 讀取訊息內容
+    body = request.get_data(as_text=True)
+    app.logger.info(&quot;Request body: &quot; + body)
+
+    # handle webhook body
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        print(&quot;Invalid signature. Please check your channel access token/channel secret.&quot;)
+        abort(400)
+
+    return 'OK'
+</code></pre><p>Line機器人接收使用者文字訊息後對應動作，此處在接受文字訊息後，除了回應「收到您的訊息囉!」外，也會將使用者的訊息記錄到資料庫中：</p>
+<pre><code class="language-python=" data-lang="python="># linebot處理文字訊息
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    # linebot回傳訊息
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text='收到您的訊息囉!'))
+
+    # 將文字資訊紀錄至資料庫
+    conn = mysql.connector.connect(
+        host=secretFile['host'],  # 連線主機名稱
+        user=secretFile['user'],  # 登入帳號
+        password=secretFile['passwd'])  # 登入密碼
+    cursor = conn.cursor()
+    query = 'INSERT INTO linebot.msg (time, msg) VALUES (%s, %s)'
+    value = (datetime.now().strftime(&quot;%Y-%m-%d %H:%M:%S&quot;), event.message.text)
+    cursor.execute(query, value)
+    conn.commit()
+    conn.close()
+</code></pre><p>Line機器人接收使用者照片訊息後對應動作，在接受照片訊息後，將使用者傳的圖片放到image資料後，回應「收到您上傳的照片囉!」，並將圖片儲存的名稱紀錄至資料庫內：</p>
+<pre><code class="language-python=" data-lang="python="># linebot處理照片訊息
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_image_message(event):
+    # 使用者傳送的照片
+    message_content = line_bot_api.get_message_content(event.message.id)
+
+    # 照片儲存名稱
+    fileName = event.message.id + '.jpg'
+
+    # 儲存照片
+    with open('./image/' + fileName, 'wb')as f:
+        for chunk in message_content.iter_content():
+            f.write(chunk)
+
+    # linebot回傳訊息
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text='收到您上傳的照片囉!'))
+
+    # 將照片路徑資訊紀錄至資料庫
+    conn = mysql.connector.connect(
+        host=secretFile['host'],  # 連線主機名稱
+        user=secretFile['user'],  # 登入帳號
+        password=secretFile['passwd'])  # 登入密碼
+    cursor = conn.cursor()
+    query = 'INSERT INTO linebot.upload_fig (time, file_path) VALUES (%s, %s)'
+    value = (datetime.now().strftime(&quot;%Y-%m-%d %H:%M:%S&quot;), fileName)
+    cursor.execute(query, value)
+    conn.commit()
+    conn.close()
+</code></pre><p>開始啟動Flask：</p>
+<pre><code class="language-python=" data-lang="python="># 開始運作Flask
+if __name__ == &quot;__main__&quot;:
+    app.run(host='0.0.0.0')
+</code></pre><h2 id="五執行部署">五、執行部署</h2>
+<p>執行部署前資料夾內容如下：</p>
+<pre><code class="language-bash=" data-lang="bash=">.
+├── app.py
+├── docker-compose.yml
+├── dockerfile-flask
+├── get_ngrok_url.sh
+├── image
+├── mysql-init.sql
+├── requirements.txt
+└── secretFile.txt
+</code></pre><p>執行請記得至secretFile.txt輸入自己Line機器人的<code>channelAccessToken</code>和<code>channelSecret</code>，輸入位置如下：
+<img src="https://i.imgur.com/qKVZb4z.png" alt=""></p>
+<p>在當前資料夾路徑上，輸入docker-compose指令開始部署：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker-compose up -d
+</code></pre></div><p>啟用後以docker指令檢查容器運作狀況：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker-compose ps -a
+</code></pre></div><p><img src="https://i.imgur.com/qEeCKuU.png" alt=""></p>
+<p>接下來執行<code>get_ngrok_url.sh</code>檔案，此檔案是去Ngrok的容器內取得公開網址：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bash get_ngrok_url.sh
+</code></pre></div><p>執行後畫面後會印出Ngrok的公開網址：
+<img src="https://i.imgur.com/VuDVmGe.png" alt=""></p>
+<p>將此公開網址貼到Line Developer Messaging API的Webhook settings內：</p>
+<p><img src="https://i.imgur.com/MDwE4v5.png" alt=""></p>
+<p>(備註：如果公開網址不是https，可以自行修改為https，一樣可以連線。)</p>
+<p>設定好後，接下來即可透過Line機器人進行測試：</p>
+<p><img src="https://i.imgur.com/KXud8MT.png" alt=""></p>
+<p>為確認資料庫內是否有收到資料，可透過MySQL Workbench來連線查詢：</p>
+<p>查詢輸入訊息：
+<img src="https://i.imgur.com/5GntN1p.png" alt=""></p>
+<p>查詢儲存的圖片資訊：
+<img src="https://i.imgur.com/GCuHeFQ.png" alt=""></p>
+<p>用戶上傳的照片部分，也存到本地端：</p>
+<p><img src="https://i.imgur.com/vdBShfO.png" alt=""></p>
+<h2 id="六心得">六、心得</h2>
+<p>由於老師提供Line機器人的範例是在Jupyter Notebook上手動執行Flask，我想說這部分應該可以改為Python容器，直接部署節省手動操作的部分。</p>
+<p>首先我在Jupyter環境把Line機器人的程式碼撰寫完，並測試程式碼沒問題後，開始將Jupyter容器改為Python容器，看能不能直接在Python容器上執行Flask。</p>
+<p>然而轉換到Python容器的過程並不是很順利，<a href="https://hub.docker.com/_/python">官網</a>只提供<code>docker run</code>與<code>docker build</code>的寫法，關於docker-compose部署Python的文件並沒有說明，所以只能靠google搜尋並自己嘗試撰寫，但一直部署失敗。後來我發現Docker官網有提供<a href="https://docs.docker.com/compose/gettingstarted/">部署Flask的簡單範例</a>，先做一個簡單的Flask部署，慢慢增加所需要的設定與功能，最後成功測試出來。</p>
+<p>會做這份作業是為自己未來的專題及工作先行準備，目前國內在Line機器人這塊市場需求還是很大，許多職缺都要求要會Line機器人。透過這份作業，可以了解Line機器人運作的框架以及架設方式，對於docker-compose的功能也更加熟悉。</p>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+            
+              <span class="button next">
+                <a href="/post/docker-hw1/">
+                  <span class="button__text">Docker作業一筆記</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>

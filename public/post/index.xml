@@ -9,10 +9,50 @@
     <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker作業四筆記</title>
+      <link>/post/docker-hw4/</link>
+      <pubDate>Sun, 31 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/docker-hw4/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署Line機器人，使用到MySQL、Python(Flask)和Ngrok三個容器。這個Line機器人可以記錄使用者傳輸的訊息，以及儲存使用者上傳的照片檔案。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>Docker作業一筆記</title>
+      <link>/post/docker-hw1/</link>
+      <pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/docker-hw1/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Docker課程補充筆記2</title>

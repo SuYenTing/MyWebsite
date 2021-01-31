@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>MySQL on Hello Friend, I&#39;m Yestin!</title>
+    <title>Jupyter Notebook on Hello Friend, I&#39;m Yestin!</title>
     
     
     
-    <link>/tags/mysql/</link>
-    <description>Recent content in MySQL on Hello Friend, I&#39;m Yestin!</description>
+    <link>/tags/jupyter-notebook/</link>
+    <description>Recent content in Jupyter Notebook on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 31 Jan 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/jupyter-notebook/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -35,11 +35,11 @@
     </item>
     
     <item>
-      <title>Python連線MySQL方法說明</title>
-      <link>/post/python-connect-to-mysql/</link>
-      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      <title>Docker作業一筆記</title>
+      <link>/post/docker-hw1/</link>
+      <pubDate>Fri, 29 Jan 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/python-connect-to-mysql/</guid>
+      <guid>/post/docker-hw1/</guid>
       <description>
         
           
@@ -48,27 +48,7 @@
         
         
         
-          本篇文章是紀錄如何用Python程式碼來連線MySQL資料庫，將以mysql-connector-python套件來進行實作。
-          
-        
-        </description>
-    </item>
-    
-    <item>
-      <title>MySQL基本介紹</title>
-      <link>/post/mysql-tutorial/</link>
-      <pubDate>Mon, 26 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/post/mysql-tutorial/</guid>
-      <description>
-        
-          
-          
-          
-        
-        
-        
-          此篇文章為MySQL基本介紹，這是我在中山財管為學弟妹上課的講義，該課程共有3小時的時間，參與人數約25人左右。
+          這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。
           
         
         </description>

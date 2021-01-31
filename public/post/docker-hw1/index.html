@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        Docker作業一筆記 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="此作業完整的程式碼有放在Github上。
+一、作業內容 以下為老師作業的題目：
+   透過任一IDE啟動一個pipenv的專案資料夾，並在pipfile內安裝pymongo套件。
+  建置docker-compose.yml，裡面需有mongo資料庫，且帶有ports，volume, container_name 及官方所必須的Environment。
+  編寫一個app.py，裡面需要對mongo的collection（資料表）的document（文件），進行CRUD等核心操作。
+   為能夠做更多Docker練習，此處我將第一點的Python環境，由本機端改為在docker-compose.yml內以Jupyter Notebook建立。
+二、作業執行環境說明  採用VMware Workstation 16 Pro建立虛擬機器 主體作業系統：Windows 10 客體作業系統：CentOS7  Docker部署在虛擬機CentOS7作業系統上。
+三、編寫docker-compose.yml 1. MongoDB 首先我到Docker Hub內尋找有沒有MongoDB的Image，經查詢官方有提供MongoDB的Image(點我連結)。
+官方文件的docker-compose.yml範例如下：
+# Use root/example as user/password credentials version: &#39;3.1&#39; services: mongo: image: mongo restart: always environment: MONGO_INITDB_ROOT_USERNAME: root MONGO_INITDB_ROOT_PASSWORD: example mongo-express: image: mongo-express restart: always ports: - 8081:8081 environment: ME_CONFIG_MONGODB_ADMINUSERNAME: root ME_CONFIG_MONGODB_ADMINPASSWORD: example 若按官方提供的文件，會多安裝mongo-express，這個軟體是讓使用者可透過前端畫面來操作mongoDB資料庫，但這邊我們不需要，所以我將官方的docker-compose.yml修改如下："
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/docker-hw1/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker作業一筆記"/>
+<meta name="twitter:description" content="這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。"/>
+
+
+
+<meta property="og:title" content="Docker作業一筆記" />
+<meta property="og:description" content="這是我在tibame學習Docker課程做的作業，本篇作業筆記說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/docker-hw1/" />
+<meta property="article:published_time" content="2021-01-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-29T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Docker作業一筆記</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-01-29
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/docker/">#Docker</a>&nbsp;
+        
+          <a href="/tags/mongodb/">#MongoDB</a>&nbsp;
+        
+          <a href="/tags/jupyter-notebook/">#Jupyter Notebook</a>&nbsp;
+        
+          <a href="/tags/python/">#Python</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>此作業完整的程式碼有放在<a href="https://github.com/SuYenTing/Docker_hw/tree/main/hw1">Github</a>上。</p>
+<h2 id="一作業內容">一、作業內容</h2>
+<p>以下為老師作業的題目：</p>
+<blockquote>
+<ol>
+<li>
+<p>透過任一IDE啟動一個pipenv的專案資料夾，並在pipfile內安裝pymongo套件。</p>
+</li>
+<li>
+<p>建置docker-compose.yml，裡面需有mongo資料庫，且帶有ports，volume, container_name 及官方所必須的Environment。</p>
+</li>
+<li>
+<p>編寫一個app.py，裡面需要對mongo的collection（資料表）的document（文件），進行CRUD等核心操作。</p>
+</li>
+</ol>
+</blockquote>
+<p>為能夠做更多Docker練習，此處我將第一點的Python環境，由本機端改為在docker-compose.yml內以Jupyter Notebook建立。</p>
+<h2 id="二作業執行環境說明">二、作業執行環境說明</h2>
+<ul>
+<li>採用VMware Workstation 16 Pro建立虛擬機器</li>
+<li>主體作業系統：Windows 10</li>
+<li>客體作業系統：CentOS7</li>
+</ul>
+<p>Docker部署在虛擬機CentOS7作業系統上。</p>
+<h2 id="三編寫docker-composeyml">三、編寫docker-compose.yml</h2>
+<h3 id="1-mongodb">1. MongoDB</h3>
+<p>首先我到<a href="https://hub.docker.com/">Docker Hub</a>內尋找有沒有MongoDB的Image，經查詢官方有提供MongoDB的Image(<a href="https://hub.docker.com/_/mongo">點我連結</a>)。</p>
+<p>官方文件的docker-compose.yml範例如下：</p>
+<pre><code class="language-yaml=" data-lang="yaml="># Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+</code></pre><p>若按官方提供的文件，會多安裝mongo-express，這個軟體是讓使用者可透過前端畫面來操作mongoDB資料庫，但這邊我們不需要，所以我將官方的docker-compose.yml修改如下：</p>
+<pre><code class="language-yaml=" data-lang="yaml=">version: '3.1'
+services:
+  mongo:
+    image: mongo
+    container_name: mongo 
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_db:/data/db
+</code></pre><p>主要修改有：</p>
+<ol>
+<li>拿掉mongo-express的部分</li>
+<li>增加port設定</li>
+<li>增加volume設定
+<ul>
+<li><code>./mongo_db:/data/db</code>：主要是儲存mongoDB的資料庫，參考自官網的Where to Store Data章節說明</li>
+</ul>
+</li>
+</ol>
+<p>在environment部分，<code>MONGO_INITDB_ROOT_USERNAME</code>為root的帳號，<code>MONGO_INITDB_ROOT_PASSWORD</code>為root的密碼。</p>
+<p>上述的docker-compose.yml即可建立mongoDB且可順利連線。</p>
+<p>但此處我不想要直接以root權限來連接資料庫，想要建立其他帳號讓Python連線，並且我想讓建立帳號這件事情，讓Docker在部署時可以直接幫我設置好。參考官網的Initializing a fresh instance章節說明，要先撰寫程式腳本<code>.js</code>或<code>.sh</code>檔案，放到容器內的<code>docker-entrypoint-initdb.d</code>資料夾底下，這樣Docker在部署時即會按照腳本進行相關設定。</p>
+<p>此處我撰寫的js腳本內容新增一個user叫做user1，對world資料庫具有讀寫權限：</p>
+<pre><code class="language-javascript=" data-lang="javascript=">db.createUser(
+        {
+            user: 'user1',
+            pwd: 'user1pw',
+            roles: [{
+                    role: 'readWrite',
+                    db: 'world'
+                }
+            ]
+        }
+);
+</code></pre><p>MongoDB創立使用者的roles設定寫法可參考MongoDB官網說明手冊(<a href="https://docs.mongodb.com/manual/reference/method/db.createUser/#examples">點此連結</a>)。</p>
+<p>而在docker-compose.yml內，需要在environment部分多設定一個環境變數<code>MONGO_INITDB_DATABASE: user1</code>，並且在volumes部分將剛寫好的js檔案放到容器內。</p>
+<pre><code class="language-yaml=" data-lang="yaml=">version: '3.1'
+services:
+  mongo:
+    image: mongo
+    container_name: mongo 
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: world
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./mongo_db:/data/db
+</code></pre><p>設定好後執行，即可在剛部署好的MongoDB內，直接在<code>world</code>資料庫底下，使用user1帳號登入。</p>
+<ul>
+<li>
+<p>其他參考資料：</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/42912755/how-to-create-a-db-for-mongodb-container-on-start-up/42917632#42917632">stackoverflow: How to create a DB for MongoDB container on start up?</a></li>
+</ul>
+</li>
+<li>
+<p>踩到的坑：</p>
+<ul>
+<li>在測試不同的腳本前，需要先把<code>volumes</code>在本地端建立的資料庫資料夾(以我這邊的設定為例是<code>mongo_db</code>)刪除，否則mongoDB會直接沿用資料庫資料夾的內容直接啟用，意即忽略初始化腳本，直接沿用舊的設定。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-jupyter-notebookpython">2. Jupyter Notebook(Python)</h3>
+<p>Jupyter Notebook的docker-compose.yml則參考自老師上課講義，此處為節省篇幅只先將Jupyter的部分列出來：</p>
+<pre><code class="language-yaml=" data-lang="yaml=">version: '3.1'
+services:
+  jupyter:
+    build:
+      context: ./dockerfile
+      dockerfile: dockerfile-jupyter
+    container_name: jupyter
+    restart: always
+    tty: true
+    stdin_open: true
+    depends_on:
+      - mongo
+    ports:
+      - 8888:8888
+    volumes:
+      - ./code:/home/jovyan/work
+    command: start.sh jupyter notebook --NotebookApp.token=''
+</code></pre><p>此處是用dockerfile客製化映像檔，主要是安裝<code>pymongo</code>套件，dockerfile-jupyter的內容如下：</p>
+<pre><code class="language-dockerfile=" data-lang="dockerfile=">FROM jupyter/base-notebook
+RUN pip install pymongo
+</code></pre><ul>
+<li>踩到的坑：</li>
+</ul>
+<p>在volumes設定部分，我是將本機端的code資料夾映射到容器內的/home/jovyan/work資料夾。如果本機端沒有先建立好code資料夾，則在執行Jupyter時，於work資料夾內新增python檔案時，會發生下圖的錯誤：</p>
+<p><img src="https://i.imgur.com/bRMHzHY.png" alt=""></p>
+<p>這是因為如果Jupyter若偵測不到本地端有code資料夾，便會以root身份建立，導致非root使用者無法寫入此資料夾。解法有兩個：一個是直接對該資料夾調整擁有者(<code>chown</code>指令)，第二個是在<code>docker-compose</code>前先行建立好資料夾，這樣資料夾的擁有者就會是使用者的。</p>
+<h3 id="3-部署架構彙整">3. 部署架構彙整</h3>
+<ul>
+<li>Docker部署前資料夾內容：
+<img src="https://i.imgur.com/z2Tvb9B.png" alt=""></li>
+</ul>
+<p>其中code資料夾底下有一個<code>main.ipynb</code>檔案，這是待會要在Jupyter內用Python操作MongoDB的程式碼。</p>
+<ul>
+<li>完整的docker-compose.yml：</li>
+</ul>
+<pre><code class="language-yaml=" data-lang="yaml=">version: '3.1'
+services:
+  mongo:
+    image: mongo
+    container_name: mongo 
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: world
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./mongo_db:/data/db
+      
+  jupyter:
+    build:
+      context: ./dockerfile
+      dockerfile: dockerfile-jupyter
+    container_name: jupyter
+    restart: always
+    tty: true
+    stdin_open: true
+    depends_on:
+      - mongo
+    ports:
+      - 8888:8888
+    volumes:
+      - ./code:/home/jovyan/work
+    command: start.sh jupyter notebook --NotebookApp.token=''
+</code></pre><h3 id="4-開始執行部署">4. 開始執行部署</h3>
+<p>在docker-compose.yml檔案路徑下，執行linux指令：</p>
+<pre><code class="language-bash=" data-lang="bash="># 啟動docker-compose開始部署
+docker-compose up -d
+
+# 執行後 查詢docker運行狀況
+docker ps -a
+</code></pre><p>執行成功的畫面如下圖所示：</p>
+<p><img src="https://i.imgur.com/M4E0aJJ.png" alt=""></p>
+<h2 id="四jupyter內執行mongodb的crud操作">四、Jupyter內執行MongoDB的CRUD操作</h2>
+<p>Docker於虛擬機部署好後，接下來在主體作業系統(Windows環境)，輸入虛擬機IP及Port連入Jupyter Notebook。</p>
+<p>接下來進入到work資料夾內，打開<code>main.py</code>檔案，即可開始測試<code>pymongo套件</code>。</p>
+<p><img src="https://i.imgur.com/Z0SIZYy.png" alt=""></p>
+<h3 id="1-建立連線">1. 建立連線</h3>
+<p>由於在部署時已有安裝pymongo套件，此處就不需要在進行安裝，可以直接載入套件。</p>
+<p>另外在登入帳號時，不是用root帳號，而是在docker部署時，自動幫我們讀取mongoDB初始化腳本(<code>mongo-init.js</code>)建立好的user1帳號。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 讀取套件</span>
+<span style="color:#f92672">from</span> pymongo <span style="color:#f92672">import</span> MongoClient
+
+<span style="color:#75715e"># 連線相關設定</span>
+host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mongo&#39;</span>
+port <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;27017&#39;</span>
+user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;user1&#39;</span>
+passwd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;user1pw&#39;</span>
+dbName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;world&#39;</span>
+
+<span style="color:#75715e"># 建立mongoDB連線</span>
+client <span style="color:#f92672">=</span> MongoClient(<span style="color:#e6db74">&#39;mongodb://&#39;</span> <span style="color:#f92672">+</span> user <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;:&#39;</span> <span style="color:#f92672">+</span> passwd <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;@&#39;</span> <span style="color:#f92672">+</span> host <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;:&#39;</span> <span style="color:#f92672">+</span> port <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;/&#39;</span> <span style="color:#f92672">+</span> dbName)
+
+<span style="color:#75715e"># 連入資料庫</span>
+db <span style="color:#f92672">=</span> client[<span style="color:#e6db74">&#39;world&#39;</span>]
+collection <span style="color:#f92672">=</span> db[<span style="color:#e6db74">&#39;people&#39;</span>]
+</code></pre></div><h3 id="2-insert新增">2. Insert(新增)</h3>
+<pre><code class="language-python=" data-lang="python="># 匯入資料(單筆匯入寫法)
+for i in range(100):
+    doc = {&quot;age&quot;: i, &quot;name&quot;: &quot;user_&quot; + str(i)}
+    collection.insert_one(doc)
+
+# 匯入資料(多筆匯入寫法)
+docs = list()
+for i in range(100):
+    docs.append({&quot;age&quot;: i, &quot;name&quot;: &quot;user_&quot; + str(i)})
+collection.insert_many(docs)
+
+# 查詢資料表總資料數
+collection.estimated_document_count()
+</code></pre><h3 id="3-select查詢">3. Select(查詢)</h3>
+<pre><code class="language-python=" data-lang="python="># 查詢資料
+docs = collection.find({&quot;age&quot;: {&quot;$gt&quot;:95}})
+for doc in docs:
+    print(doc)
+</code></pre><h3 id="4-update修改">4. Update(修改)</h3>
+<pre><code class="language-python=" data-lang="python="># 修改資料
+targetDocs = {&quot;age&quot;: 0}
+newValues = {&quot;$set&quot;: {&quot;age&quot;: 100}}
+result = collection.update_many(targetDocs, newValues)
+print(result.modified_count, &quot; documents updated.&quot;)
+
+# 確認是否有修改成功
+docs = collection.find({&quot;age&quot;: 100})
+for doc in docs:
+    print(doc)
+</code></pre><h3 id="5-delete刪除">5. Delete(刪除)</h3>
+<pre><code class="language-python=" data-lang="python="># 刪除指定資料
+collection.delete_many({&quot;age&quot;:{&quot;$gt&quot;:95}})
+
+# 確認是否有刪除
+collection.count_documents({&quot;age&quot;:{&quot;$gt&quot;:95}})
+
+# 刪除所有資料
+collection.drop()
+
+# 確認是否有刪除
+collection.estimated_document_count()
+</code></pre><h3 id="6-指令參考來源">6. 指令參考來源</h3>
+<p>pymongo套件的操作指令主要參考兩個來源：</p>
+<ol>
+<li><a href="https://www.w3schools.com/python/python_mongodb_getstarted.asp">w3schools-Python MongoDB</a></li>
+<li><a href="https://pymongo.readthedocs.io/en/stable/tutorial.html">pymongo套件官方手冊</a></li>
+</ol>
+<h2 id="五心得">五、心得</h2>
+<p>本篇作業筆記說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。</p>
+<p>這次的作業讓我對於Docker的部署流程更加熟悉，了解docker-compse.yml的撰寫方式和架構，也學習到一些要注意的細節。</p>
+<p>在MongoDB部分，藉此作業熟悉基本的「增刪改查」操作。且上課時老師並未說明如何建立使用者帳號以及權限的設定，這部分是靠自己去Google學習，並應用到Docker內。</p>
+<p>這份作業進行很多次的測試，在每次測試錯誤的結果中去找出解法，每找出一次錯誤的解決方式，就感覺自己功力又更進一步。程式要進步果然是要從實作中學習最快！</p>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+              <span class="button previous">
+                <a href="/post/docker-hw4/">
+                  <span class="button__icon">←</span>
+                  <span class="button__text">Docker作業四筆記</span>
+                </a>
+              </span>
+            
+            
+              <span class="button next">
+                <a href="/post/docker-notes2/">
+                  <span class="button__text">Docker課程補充筆記2</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>
