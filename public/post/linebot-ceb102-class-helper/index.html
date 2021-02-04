@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        LineBot-課程小幫手 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="一、 前言 我在Tibame中壢上AI/Big Data資料分析師養成班，最近有學習到如何應用Docker架設Line機器人，以下是我實作的兩個作業：
+ Docker作業一筆記：說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。 Docker作業四筆記：說明如何以docker-compose部署Line機器人，使用到MySQL、Python(Flask)和Ngrok三個容器。這個Line機器人可以記錄使用者傳輸的訊息，以及儲存使用者上傳的照片檔案。  因為我對Line機器人還蠻有興趣的，且透過作業已掌握到基本的作法，所以想說來開發一些應用功能，解決一些生活實際遇到問題，順便鍛鍊自己的實作能力。
+本次實作的的程式碼有放到GitHub上，但因為有一些是比較私人的資訊(例如資料庫帳密等)，這部份會拿掉，但我會留下輸入的格式提供參考。
+二、 要解決的問題 目前在Tibame中壢上AI/Big Data資料分析師養成班，有遇到4個比較麻煩的事情：
+  因為中心請業界的講師授課，所以課表的時間不是固定的，有時候課程會調來調去，需要定期查看課程表來確認哪時候要上課。 課程時段分為早、中、晚，每個時段上課前需要打開手機的APP打卡，代表有出席課程，但同學們很常會忘記。 每天上課都會輪流安排一位同學寫教學日誌，可是同學們很容易忘記現在要輪到誰。 中心有很多線上表單(例如課表、課程滿意度調查、教學日誌等)，但每次找表單時都要花時間搜尋，有沒有辦法能夠更快的取得表單。   為解決上述問題，我決定來製作一個Line機器人，能夠有以下功能：
+  在每晚查看明天是否有課程，若有課程則推播訊息到群組，提醒同學明日要來上課。 每個時段上課前10分鐘，推播訊息到群組提醒同學記得要打卡，和提醒今日要負責撰寫教學日誌的同學。 使用者可向Line機器人詢問，取得需要的線上表單連結。   接下來我將依序說明，我是如何建立Line機器人來解決以上問題。
+三、 資料清洗與整理 為能夠讓Line機器人解決問題，此處我設計兩張資料表，第一張表示課程資料表，讓程式能夠知道什麼時候要上課，進而做對應的訊息處理。第二張是Line機器人要讀的對話關鍵字，只要Line機器人讀到線上表單的關鍵字時，可以立即回應訊息給使用者，讓使用者能夠拿到線上表單的連結。
+1. 課程資料表 為能夠讓程式定時推播課程資訊，首要的任務是要先把課表進行資料清洗，讓程式能夠方便讀取並進行對應處理。
+中心的課表放在Google試算表，以連結分享給學員。課表內容大概像下面這樣：
+可以看到若這個課表不符合資料正規化的要求，若直接給程式讀取做處理會有問題，勢必要先進行清洗整理。我透過Python將這個資料整理成像以下的資料表：
+   日期 期間 課程名稱     2021-02-01 上午 Data Mining - 陳老師   2021-02-01 下午 Data Mining - 陳老師   2021-02-06 下午 PyETL - 施老師   2021-02-06 夜間 PyETL - 施老師   2021-02-08 夜間 夜間課輔 - 蔡老師    整理成這個資料表後，程式在處理上就會變得很方便。"
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/linebot-ceb102-class-helper/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="LineBot-課程小幫手"/>
+<meta name="twitter:description" content="這個是我自己獨力製作的小專案，主要是透過Docker部署一個Line機器人，這個Line機器人可以主動推播訊息提醒學生上課時間，使用者也可以與機器人進行互動，輸入關鍵字查詢教學相關表單。"/>
+
+
+
+<meta property="og:title" content="LineBot-課程小幫手" />
+<meta property="og:description" content="這個是我自己獨力製作的小專案，主要是透過Docker部署一個Line機器人，這個Line機器人可以主動推播訊息提醒學生上課時間，使用者也可以與機器人進行互動，輸入關鍵字查詢教學相關表單。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/linebot-ceb102-class-helper/" />
+<meta property="article:published_time" content="2021-02-04T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-02-04T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">LineBot-課程小幫手</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-02-04
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/docker/">#Docker</a>&nbsp;
+        
+          <a href="/tags/mysql/">#MySQL</a>&nbsp;
+        
+          <a href="/tags/python/">#Python</a>&nbsp;
+        
+          <a href="/tags/ngrok/">#Ngrok</a>&nbsp;
+        
+          <a href="/tags/linebot/">#LineBot</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <h2 id="一-前言">一、 前言</h2>
+<p>我在Tibame中壢上AI/Big Data資料分析師養成班，最近有學習到如何應用Docker架設Line機器人，以下是我實作的兩個作業：</p>
+<ul>
+<li><a href="https://suyenting.github.io/post/docker-hw1/">Docker作業一筆記</a>：說明如何以docker-compose部署MongoDB與Jupyter，並在Jupyter內以Python程式碼對MongoDB進行「增刪改查」。</li>
+<li><a href="https://suyenting.github.io/post/docker-hw4/">Docker作業四筆記</a>：說明如何以docker-compose部署Line機器人，使用到MySQL、Python(Flask)和Ngrok三個容器。這個Line機器人可以記錄使用者傳輸的訊息，以及儲存使用者上傳的照片檔案。</li>
+</ul>
+<p>因為我對Line機器人還蠻有興趣的，且透過作業已掌握到基本的作法，所以想說來開發一些應用功能，解決一些生活實際遇到問題，順便鍛鍊自己的實作能力。</p>
+<p>本次實作的的程式碼有放到<a href="https://github.com/SuYenTing/linebot-ceb102">GitHub</a>上，但因為有一些是比較私人的資訊(例如資料庫帳密等)，這部份會拿掉，但我會留下輸入的格式提供參考。</p>
+<h2 id="二-要解決的問題">二、 要解決的問題</h2>
+<p>目前在Tibame中壢上AI/Big Data資料分析師養成班，有遇到4個比較麻煩的事情：</p>
+<blockquote>
+<ol>
+<li>因為中心請業界的講師授課，所以課表的時間不是固定的，有時候課程會調來調去，需要定期查看課程表來確認哪時候要上課。</li>
+<li>課程時段分為早、中、晚，每個時段上課前需要打開手機的APP打卡，代表有出席課程，但同學們很常會忘記。</li>
+<li>每天上課都會輪流安排一位同學寫教學日誌，可是同學們很容易忘記現在要輪到誰。</li>
+<li>中心有很多線上表單(例如課表、課程滿意度調查、教學日誌等)，但每次找表單時都要花時間搜尋，有沒有辦法能夠更快的取得表單。</li>
+</ol>
+</blockquote>
+<p>為解決上述問題，我決定來製作一個Line機器人，能夠有以下功能：</p>
+<blockquote>
+<ol>
+<li>在每晚查看明天是否有課程，若有課程則推播訊息到群組，提醒同學明日要來上課。</li>
+<li>每個時段上課前10分鐘，推播訊息到群組提醒同學記得要打卡，和提醒今日要負責撰寫教學日誌的同學。</li>
+<li>使用者可向Line機器人詢問，取得需要的線上表單連結。</li>
+</ol>
+</blockquote>
+<p>接下來我將依序說明，我是如何建立Line機器人來解決以上問題。</p>
+<h2 id="三-資料清洗與整理">三、 資料清洗與整理</h2>
+<p>為能夠讓Line機器人解決問題，此處我設計兩張資料表，第一張表示課程資料表，讓程式能夠知道什麼時候要上課，進而做對應的訊息處理。第二張是Line機器人要讀的對話關鍵字，只要Line機器人讀到線上表單的關鍵字時，可以立即回應訊息給使用者，讓使用者能夠拿到線上表單的連結。</p>
+<h3 id="1-課程資料表">1. 課程資料表</h3>
+<p>為能夠讓程式定時推播課程資訊，首要的任務是要先把課表進行資料清洗，讓程式能夠方便讀取並進行對應處理。</p>
+<p>中心的課表放在Google試算表，以連結分享給學員。課表內容大概像下面這樣：</p>
+<p><img src="https://i.imgur.com/WZAemp2.png" alt=""></p>
+<p>可以看到若這個課表不符合資料正規化的要求，若直接給程式讀取做處理會有問題，勢必要先進行清洗整理。我透過Python將這個資料整理成像以下的資料表：</p>
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>期間</th>
+<th>課程名稱</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2021-02-01</td>
+<td>上午</td>
+<td>Data Mining - 陳老師</td>
+</tr>
+<tr>
+<td>2021-02-01</td>
+<td>下午</td>
+<td>Data Mining - 陳老師</td>
+</tr>
+<tr>
+<td>2021-02-06</td>
+<td>下午</td>
+<td>PyETL - 施老師</td>
+</tr>
+<tr>
+<td>2021-02-06</td>
+<td>夜間</td>
+<td>PyETL - 施老師</td>
+</tr>
+<tr>
+<td>2021-02-08</td>
+<td>夜間</td>
+<td>夜間課輔 - 蔡老師</td>
+</tr>
+</tbody>
+</table>
+<p>整理成這個資料表後，程式在處理上就會變得很方便。</p>
+<p>註：此處本來我是想要採用爬蟲自動下載Google試算表檔案擷取資料，這樣可以定時排程進行更新。Google有提供和Python的連接方式(<a href="https://developers.google.com/sheets/api/quickstart/python">參考文檔連結</a>)，但因為表單的權限不是我的，所以沒辦法這樣做，這邊需要再研究一下。</p>
+<p>除了課程表整理完後，還要加入該堂課負責撰寫教學日誌的同學，中心的規則是每日就一位同學負責撰寫，不管當日有幾堂課。此處依據學員名單，透過迴圈的方式輪流安排到各課程上。但比較麻煩的是，課表上有些課程並不需要撰寫教學日誌，例如「專題輔導」或「夜間課輔」等，所以迴圈時還需要考慮這些例外情況。最後整理的資料表如下：</p>
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>期間</th>
+<th>課程名稱</th>
+<th>教學日誌負責人</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2021-02-01</td>
+<td>上午</td>
+<td>Data Mining - 陳老師</td>
+<td>A同學</td>
+</tr>
+<tr>
+<td>2021-02-01</td>
+<td>下午</td>
+<td>Data Mining - 陳老師</td>
+<td>A同學</td>
+</tr>
+<tr>
+<td>2021-02-06</td>
+<td>下午</td>
+<td>PyETL - 施老師</td>
+<td>B同學</td>
+</tr>
+<tr>
+<td>2021-02-06</td>
+<td>夜間</td>
+<td>PyETL - 施老師</td>
+<td>B同學</td>
+</tr>
+<tr>
+<td>2021-02-08</td>
+<td>夜間</td>
+<td>夜間課輔 - 蔡老師</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+<p>完整的課程資料表整理程式碼可參考<a href="https://github.com/SuYenTing/linebot-ceb102/blob/main/app/curriculumToSQL.py">GitHub程式碼</a>。</p>
+<h3 id="2-line關鍵字對應訊息">2. Line關鍵字對應訊息</h3>
+<p>為能夠讓Line機器人與使用者進行互動，此處設計關鍵字對應訊息表，當Line機器人比對到關鍵字時，能夠馬上回答對應訊息。(希望有朝一日能開發出AI聊天機器人!)</p>
+<p>此處的關鍵字包含有：課程資訊表、教學日誌、筆記、課程滿意度調查表、出缺勤統計表及教室預約登記表，但由於每個關鍵字可能會有「簡稱」的狀況，所以此處我也加入使用者可能輸入的簡稱。為減少要輸入字詞，此處我採用json的格式來建立關鍵字及對應訊息資料：</p>
+<pre><code class="language-json=" data-lang="json=">{
+	&quot;課程資訊表&quot;: {
+		&quot;keyword&quot;: [&quot;課程資訊表&quot;, &quot;課程表&quot;, &quot;課表&quot;],
+		&quot;msg&quot;: &quot;您要的課程資訊表連結來囉! \n https://docs.google.com/...&quot;
+	},
+
+	&quot;教學日誌&quot;: {
+		&quot;keyword&quot;: [&quot;教學日誌&quot;, &quot;教學日記&quot;],
+		&quot;msg&quot;: &quot;您要的教學日誌連結來囉! \n https://docs.google.com/...&quot;
+	},
+
+	&quot;筆記&quot;: {
+		&quot;keyword&quot;: [&quot;筆記&quot;],
+		&quot;msg&quot;: &quot;您要的筆記連結來囉! \n https://drive.google.com/...&quot;
+	},
+
+	&quot;課程滿意度調查表&quot;: {
+		&quot;keyword&quot;: [&quot;課程滿意度調查表&quot;, &quot;課程滿意度&quot;, &quot;滿意度&quot;],
+		&quot;msg&quot;: &quot;您要的課程滿意度調查表連結來囉! \n https://docs.google.com/...&quot;
+	},
+
+	&quot;出缺勤統計表&quot;: {
+		&quot;keyword&quot;: [&quot;出缺勤統計表&quot;, &quot;出缺勤&quot;],
+		&quot;msg&quot;: &quot;您要的出缺勤統計表連結來囉! \n https://docs.google.com/...&quot;
+	},
+
+	&quot;教室預約登記表&quot;: {
+		&quot;keyword&quot;: [&quot;教室預約登記表&quot;, &quot;教室預約&quot;, &quot;教室&quot;, &quot;預約&quot;],
+		&quot;msg&quot;: &quot;您要的教室預約登記表連結來囉! \n https://docs.google.com/...&quot;
+	}
+}
+</code></pre><p>接下來透過Python的pandas套件，可將此json檔案轉換成資料表，以下列出重要的程式碼，完整的程式碼可參考<a href="https://github.com/SuYenTing/linebot-ceb102/blob/main/app/keywordToSQL.py">GitHub程式碼</a>。</p>
+<pre><code class="language-python=" data-lang="python="># read linebot keyword table
+keywordTable = pd.read_json('linebot_keyword.json', orient='index')
+keywordTable = keywordTable.explode('keyword')
+keywordTable['method'] = keywordTable.index
+keywordTable = keywordTable[['method', 'keyword', 'msg']]
+</code></pre><p>上面的程式碼執行完後，資料表格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>表單名稱</th>
+<th>關鍵字</th>
+<th>對應訊息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>課程資訊表</td>
+<td>課程資訊表</td>
+<td>您要的課程資訊表連結來囉! <a href="https://docs.google.com/..">https://docs.google.com/..</a>.</td>
+</tr>
+<tr>
+<td>課程資訊表</td>
+<td>課程表</td>
+<td>您要的課程資訊表連結來囉! <a href="https://docs.google.com/..">https://docs.google.com/..</a>.</td>
+</tr>
+<tr>
+<td>課程資訊表</td>
+<td>課程表</td>
+<td>您要的課程資訊表連結來囉! <a href="https://docs.google.com/..">https://docs.google.com/..</a>.</td>
+</tr>
+<tr>
+<td>教學日誌</td>
+<td>教學日誌</td>
+<td>您要的教學日誌連結來囉! <a href="https://docs.google.com/..">https://docs.google.com/..</a>.</td>
+</tr>
+<tr>
+<td>教學日誌</td>
+<td>教學日記</td>
+<td>您要的教學日誌連結來囉! <a href="https://docs.google.com/..">https://docs.google.com/..</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>在使用者輸入訊息後，後台可以從訊息中比對有沒有關鍵字在這個表上，如果有則輸出對應訊息給使用者。</p>
+<h2 id="四-line機器人邏輯處理">四、 Line機器人邏輯處理</h2>
+<p>Line機器人部分，主要是用Python的Flask搭建，並搭配Line的<a href="https://github.com/line/line-bot-sdk-python">line-bot-sdk-python</a>套件撰寫。本章節分別說明「推播提醒訊息」與「關鍵字回應」重要的程式碼部分。完整的程式碼可參考<a href="https://github.com/SuYenTing/linebot-ceb102/blob/main/app/main.py">GitHub程式碼</a>。</p>
+<h3 id="1-推播提醒訊息">1. 推播提醒訊息</h3>
+<p>為能夠定時推播提醒訊息，此處透過<a href="https://pypi.org/project/Flask-APScheduler/">flask_apscheduler</a>套件來進行排程管理。</p>
+<p>關於flask_apscheduler這個套件，我主要是參考<a href="https://www.itread01.com/content/1545089771.html">python3+flask 開發web(九)——flask_apscheduler定時任務框架</a>文章，從裡面的程式碼提取進行改寫。</p>
+<p>為達成前述所說的Line機器人功能：</p>
+<blockquote>
+<ol>
+<li>在每晚查看明天是否有課程，若有課程則推播訊息到群組，提醒同學明日要來上課。</li>
+<li>每個時段上課前10分鐘，推播訊息到群組提醒同學記得要打卡，和提醒今日要負責撰寫教學日誌的同學。</li>
+</ol>
+</blockquote>
+<p>在Config這個類別下加入排程，我共加入了4個排程。</p>
+<pre><code class="language-python=" data-lang="python="># 排程任務
+class Config(object):
+    JOBS = [{'id':'morning', 'func':'__main__:RemindClass', 'args':('上午',), 'trigger':'cron', 'hour':8, 'minute':50},
+            {'id':'afternoon', 'func':'__main__:RemindClass', 'args':('下午',), 'trigger':'cron', 'hour':13, 'minute':20},
+            {'id':'night', 'func':'__main__:RemindClass', 'args':('夜間',), 'trigger':'cron', 'hour':18, 'minute':20},
+            {'id':'tmrClass', 'func':'__main__:RemindTmrClass', 'trigger':'cron', 'hour':21, 'minute':30}]
+    SCHEDULER_TIMEZONE = 'Asia/Taipei'
+</code></pre><p>Jobs為一個list包多個任務，每個任務以字典方式儲存，裡面的參數名稱為：</p>
+<ul>
+<li>id：任務名稱</li>
+<li>func：排程執行的函數</li>
+<li>args：輸入函數的引數值</li>
+<li>trigger：有分為cron和interval，此處用cron
+<ul>
+<li>cron：依確切時間執行排程任務(例如12:00執行)</li>
+<li>interval：定時執行排程任務(例如每5分鐘執行一次)</li>
+</ul>
+</li>
+<li>hour: 排程執行的時</li>
+<li>mintue: 排程執行的分</li>
+</ul>
+<p>此處我的排程任務設定為：</p>
+<ol>
+<li>每天08:50、13:20及18:20執行RemindClass函數，RemindClass函數會至資料庫查詢當日課程資訊，判斷當日上午/下午/夜間是否有課，若有課程則推播訊息提醒學員打卡和教學日誌負責人。</li>
+<li>每晚21:30執行RemindTmrClass函數，判斷隔日是否有課程，若有課程則推播訊息提醒學員。</li>
+</ol>
+<p>另外由於我的程式是放在AWS的雲端機器上執行，會面臨到時區不一致的問題，導致排程和我們預期的時間不一致。此處搜尋網路上的解法(<a href="https://www.jianshu.com/p/b1881db7bc85">參考此頁面</a>)，主要是在Config類別下加入時區設定<code>SCHEDULER_TIMEZONE = 'Asia/Taipei'</code>。</p>
+<p>另外在最後啟用Flask時，將<code>scheduler=APScheduler()</code>這行程式碼改為<code>scheduler = APScheduler(BackgroundScheduler(timezone=&quot;Asia/Taipei&quot;))</code>，即可讓排程依據台灣的時區來執行。</p>
+<pre><code class="language-python=" data-lang="python="># 開始運作Flask
+if __name__ == &quot;__main__&quot;:
+    scheduler = APScheduler(BackgroundScheduler(timezone=&quot;Asia/Taipei&quot;))  # 例項化APScheduler
+    scheduler.init_app(app)  # 把任務列表放進flask
+    scheduler.start()        # 啟動任務列表
+    app.run(host='0.0.0.0')
+</code></pre><p>程式運作後，Line機器人就會定時在群組內推播訊息，例如這是在早上8:50推播的訊息：</p>
+<p><img src="https://i.imgur.com/eqmTgeV.png" alt=""></p>
+<h3 id="2-關鍵字回應">2. 關鍵字回應</h3>
+<p>在Line機器人關鍵字回應部分，主要是對應到前文說的Line機器人功能：</p>
+<blockquote>
+<ol start="3">
+<li>使用者可向Line機器人詢問，取得需要的線上表單連結。</li>
+</ol>
+</blockquote>
+<p>我的設計是使用者需要在訊息中包含「小幫手」這3個字，這樣我的Line機器人才會做回應。</p>
+<p>如果使用者輸入「小幫手 給我課表」，則程式讀取到「小幫手」這三個字後，又偵測到「課表」這個關鍵字，就會提出回應訊息。例如：</p>
+<p><img src="https://i.imgur.com/oHlD0Xh.png" alt=""></p>
+<p>這樣可以避免如果使用者只是單純聊天提到關鍵字時，結果Line機器人跑出來做回應會很奇怪。</p>
+<p>但如果使用者輸入「小幫手」，後面接的關鍵字沒有在我們的清單內，則此時要提醒使用者有哪些關鍵字可以輸入使用。例如：</p>
+<p><img src="https://i.imgur.com/J97HoXj.png" alt=""></p>
+<p>在程式內，主要是在接收文字訊息時進行處理，當發現使用者訊息有「小幫手」3個字存在時，即執行<code>FindKeyWordInText</code>函數(此為我自行定義的函數)。</p>
+<p>此函數會至資料庫內取得目前的關鍵字對應訊息，並進行比對，若有比對到則輸出對應訊息，若沒有則輸出提醒訊息。</p>
+<p>此函數輸出要回復的訊息<code>replyMsg</code>後，透過<code>line_bot_api</code>回傳訊息給使用者。</p>
+<pre><code class="language-python=" data-lang="python="># linebot處理文字訊息
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+
+    # linebot關鍵字回傳訊息
+    if '小幫手' in event.message.text:
+        replyMsg = FindKeyWordInText(text=event.message.text, userId=event.source.user_id)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
+</code></pre><h2 id="五-line機器人架構與部署">五、 Line機器人架構與部署</h2>
+<p>在撰寫好程式碼後，接下來就要開始進行部署。</p>
+<p>CEB102課程小幫手Line機器人架構圖如下：</p>
+<p><img src="https://i.imgur.com/evTNSNG.png" alt=""></p>
+<p>因為希望服務能夠常駐，所以我在AWS上開設一台虛擬主機和資料庫，虛擬主機是用Ubuntu 18.04版本，資料庫為MySQL 8.0。</p>
+<p>此處使用Docker Compose來協助部署line機器人服務，共部署Python和Ngrok兩個容器。</p>
+<p>Python用來做Flask的服務，即機器人的核心程式。</p>
+<p>Ngrok主要是協助在沒有實體IP的情況下，透過Ngrok可以產出網址，讓外網來連入服務。雖然雲端本身已有實體IP，但此處用Ngrok的好處是他的網址有https加密，這樣才能符合Line的Webhook要求。</p>
+<p>Docker Compose的yaml檔案有上傳至<a href="https://github.com/SuYenTing/linebot-ceb102/blob/main/docker-compose.yml">Github</a>，另外裡面有用到的dockerfile也有上傳到<a href="https://github.com/SuYenTing/linebot-ceb102/blob/main/dockerfile/dockerfile-flask">Github</a>。</p>
+<h2 id="六結語">六、結語</h2>
+<p>這個小專案靠自己獨力完成，從0到1花我大概整整兩天時間，寫這個文檔又花了一個早上。</p>
+<p>資料清洗部分就花了半天，因為以前是寫R語言，現在要強迫自己用Python的pandas套件來處理，光是google查寫法加上理解就花很多時間，但透過這次實作對panda套件用法更加熟悉。</p>
+<p>另外花時間的部分是在想排程的架構要怎麼做，有沒有需要寫到Linux的crontab，後來google發現<code>flask_apscheduler</code>套件似乎可行，仔細研究一下寫法並做測試沒問題後，就開始用<code>flask_apscheduler</code>套件來撰寫排程。</p>
+<p>目前還有一個問題需要解決：ngrok的連線會有8小時的時間限制，超過時間會自動斷掉，導致機器人無法常駐提供服務。</p>
+<p>網路上有提供將Line機器人部署到Heroku的方法(<a href="https://medium.com/@mengchiang000/%E4%BD%88%E7%BD%B2%E8%81%8A%E5%A4%A9%E6%A9%9F%E5%99%A8%E4%BA%BA-linebot-%E5%88%B0heroku-65cbe34c8324">參考文章</a>)，之後會來嘗試將服務改成部署到Heroku上面。</p>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+            
+              <span class="button next">
+                <a href="/post/docker-hw4/">
+                  <span class="button__text">Docker作業四筆記</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>

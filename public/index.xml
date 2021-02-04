@@ -9,10 +9,30 @@
     <description>Recent content on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 04 Feb 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>LineBot-課程小幫手</title>
+      <link>/post/linebot-ceb102-class-helper/</link>
+      <pubDate>Thu, 04 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/linebot-ceb102-class-helper/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這個是我自己獨力製作的小專案，主要是透過Docker部署一個Line機器人，這個Line機器人可以主動推播訊息提醒學生上課時間，使用者也可以與機器人進行互動，輸入關鍵字查詢教學相關表單。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Docker作業四筆記</title>
