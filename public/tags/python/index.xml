@@ -9,10 +9,30 @@
     <description>Recent content in Python on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>用Heroku來部署LineBot-課程小幫手</title>
+      <link>/post/linebot-ceb102-class-helper-heroku/</link>
+      <pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/linebot-ceb102-class-helper-heroku/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          在上一篇文章「[LineBot-課程小幫手](https://suyenting.github.io/post/linebot-ceb102-class-helper/)」提到，我們透過Ngrok產生一個有加密的https網址，讓Line來聯繫我們寫的Flask。可是Ngrok免費版有一個致命的缺點是8小時就會自動停止服務，若需要再用必須要換一個新的網址，對我們來說會非常麻煩。為解決上述問題，本篇文章將說明如何用Heroku來部署Line機器人服務。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>LineBot-課程小幫手</title>

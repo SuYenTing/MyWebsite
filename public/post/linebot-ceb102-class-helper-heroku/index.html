@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        用Heroku來部署LineBot-課程小幫手 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="此篇文章用到的程式碼已有上傳至Github，可至Github觀看完整的程式碼及檔案架構。
+一、前言 在上一篇文章「LineBot-課程小幫手」提到，我們透過Ngrok產生一個有加密的https網址，讓Line來聯繫我們寫的Flask。可是Ngrok免費版有一個致命的缺點是8小時就會自動停止服務，若需要再用必須要換一個新的網址，對我們來說會非常麻煩。
+上面這個問題，可以透過Heroku來協助我們解決。Heroku可以直接上傳Python的Flask檔案，他會直接部署並啟用服務，且服務的網址是有加密的https，非常方便。缺點是若半小時內沒能使用服務，即會進入休眠，若有人來造訪才會被喚醒。但網路上有人提供「自動喚醒」的方法協助解決，所以這個問題可以被解決。
+所以接下來這篇文章，將示範如何把LineBot課程小幫手放到Heroku上來提供服務。在一開始要先準備：
+ 申請Heroku帳號(Heroku首頁) 安裝Heroku CLI：可以透過git指令管理放在Heroku的檔案  這篇文章為上篇文章LineBot-課程小幫手的延伸，如果想了解此機器人的功能和要解決的問題，可參考該篇文章。
+二、建立部署檔案 在安裝好Heroku帳號和Heroku CLI後，首先建立相關的部署檔案設定，以下是我部署提交資料夾內的檔案：
+ Procfile  此為讓Heroku知道部署時對應的服務與要執行的檔案，我的設定如下：
+web: gunicorn main:app –log-file - clock: python clock.py web表示這是一個web的服務，gunicorn是一個可以部署Python的HTTP server，後面的main表示我們要執行的web程式是main.py。
+clock表示這是一個定時排程器，clock.py即為要定時排程的檔案。Heroku官網推薦使用APScheduler套件，詳情可參考Heroku官網說明-Scheduled Jobs with Custom Clock Processes in Python with APScheduler。
+Procfile其他詳細設定說明可參考Heroku官網說明-The Procfile。
+ requirements.txt  部署Python服務時需要安裝的套件清單，檔案內容如下：
+gunicorn flask line-bot-sdk mysql-connector-python APScheduler==3.0.0 requests  runtime.txt Python安裝的版本，此處要先查閱Heroku可安裝版本的清單(會隨時更新)，不然會報錯。此處安裝python-3.7.9版本，檔案寫法如下：  python-3.7.9  main.py  此為Python Flask程式碼，主要用於Line機器人在接收使用者訊息後，判斷要回應的訊息。
+ clock.py  此為Python程式碼，主要用於Line機器人定時推播訊息到群組，以及自動喚醒Heroku服務功能，裡面有撰寫APScheduler套件的程式碼。
+此處特別說明一個機制：自動喚醒。由於Heroku在半小時內沒人來使用服務，即會自動休眠，且休眠後排程也會跟著一起休眠，不會因為排程時間到而自動啟動排程。所以為維持機器人的推播功能，一定要讓Heroku持續醒著提供服務。
+參考這邊文章LINE BOT SDK：Heroku 夜未眠（一）的作法，透過Python的requests套件，定時排程去requests我們的服務網址，這樣就可以讓Heroku以為我們的服務一直有人來使用。此處透過APScheduler套件來設定排程，關鍵的程式碼如下：
+# 防止睡眠 def DoNotSleep(): url = &amp;quot;https://linebotceb102."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/linebot-ceb102-class-helper-heroku/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用Heroku來部署LineBot-課程小幫手"/>
+<meta name="twitter:description" content="在上一篇文章「[LineBot-課程小幫手](https://suyenting.github.io/post/linebot-ceb102-class-helper/)」提到，我們透過Ngrok產生一個有加密的https網址，讓Line來聯繫我們寫的Flask。可是Ngrok免費版有一個致命的缺點是8小時就會自動停止服務，若需要再用必須要換一個新的網址，對我們來說會非常麻煩。為解決上述問題，本篇文章將說明如何用Heroku來部署Line機器人服務。"/>
+
+
+
+<meta property="og:title" content="用Heroku來部署LineBot-課程小幫手" />
+<meta property="og:description" content="在上一篇文章「[LineBot-課程小幫手](https://suyenting.github.io/post/linebot-ceb102-class-helper/)」提到，我們透過Ngrok產生一個有加密的https網址，讓Line來聯繫我們寫的Flask。可是Ngrok免費版有一個致命的缺點是8小時就會自動停止服務，若需要再用必須要換一個新的網址，對我們來說會非常麻煩。為解決上述問題，本篇文章將說明如何用Heroku來部署Line機器人服務。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/linebot-ceb102-class-helper-heroku/" />
+<meta property="article:published_time" content="2021-02-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-02-06T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">用Heroku來部署LineBot-課程小幫手</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-02-06
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/heroku/">#Heroku</a>&nbsp;
+        
+          <a href="/tags/python/">#Python</a>&nbsp;
+        
+          <a href="/tags/linebot/">#LineBot</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>此篇文章用到的程式碼已有上傳至<a href="https://github.com/SuYenTing/linebot-ceb102-heroku">Github</a>，可至Github觀看完整的程式碼及檔案架構。</p>
+<h2 id="一前言">一、前言</h2>
+<p>在上一篇文章「<a href="https://suyenting.github.io/post/linebot-ceb102-class-helper/">LineBot-課程小幫手</a>」提到，我們透過Ngrok產生一個有加密的https網址，讓Line來聯繫我們寫的Flask。可是Ngrok免費版有一個致命的缺點是8小時就會自動停止服務，若需要再用必須要換一個新的網址，對我們來說會非常麻煩。</p>
+<p>上面這個問題，可以透過Heroku來協助我們解決。Heroku可以直接上傳Python的Flask檔案，他會直接部署並啟用服務，且服務的網址是有加密的https，非常方便。缺點是若半小時內沒能使用服務，即會進入休眠，若有人來造訪才會被喚醒。但網路上有人提供「自動喚醒」的方法協助解決，所以這個問題可以被解決。</p>
+<p>所以接下來這篇文章，將示範如何把LineBot課程小幫手放到Heroku上來提供服務。在一開始要先準備：</p>
+<ol>
+<li>申請Heroku帳號(<a href="https://www.heroku.com/">Heroku首頁</a>)</li>
+<li>安裝<a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>：可以透過git指令管理放在Heroku的檔案</li>
+</ol>
+<p>這篇文章為上篇文章<a href="https://suyenting.github.io/post/linebot-ceb102-class-helper/">LineBot-課程小幫手</a>的延伸，如果想了解此機器人的功能和要解決的問題，可參考該篇文章。</p>
+<h2 id="二建立部署檔案">二、建立部署檔案</h2>
+<p>在安裝好Heroku帳號和Heroku CLI後，首先建立相關的部署檔案設定，以下是我部署提交資料夾內的檔案：</p>
+<ul>
+<li>Procfile</li>
+</ul>
+<p>此為讓Heroku知道部署時對應的服務與要執行的檔案，我的設定如下：</p>
+<pre><code>web: gunicorn main:app –log-file -
+clock: python clock.py
+</code></pre><p>web表示這是一個web的服務，gunicorn是一個可以部署Python的HTTP server，後面的main表示我們要執行的web程式是<code>main.py</code>。</p>
+<p>clock表示這是一個定時排程器，<code>clock.py</code>即為要定時排程的檔案。Heroku官網推薦使用APScheduler套件，詳情可參考<a href="https://devcenter.heroku.com/articles/clock-processes-python">Heroku官網說明-Scheduled Jobs with Custom Clock Processes in Python with APScheduler</a>。</p>
+<p>Procfile其他詳細設定說明可參考<a href="https://devcenter.heroku.com/articles/procfile">Heroku官網說明-The Procfile</a>。</p>
+<ul>
+<li>requirements.txt</li>
+</ul>
+<p>部署Python服務時需要安裝的套件清單，檔案內容如下：</p>
+<pre><code>gunicorn
+flask
+line-bot-sdk
+mysql-connector-python
+APScheduler==3.0.0
+requests
+</code></pre><ul>
+<li>runtime.txt
+Python安裝的版本，此處要先查閱<a href="https://devcenter.heroku.com/articles/python-support">Heroku可安裝版本的清單</a>(會隨時更新)，不然會報錯。此處安裝python-3.7.9版本，檔案寫法如下：</li>
+</ul>
+<pre><code>python-3.7.9
+</code></pre><ul>
+<li>main.py</li>
+</ul>
+<p>此為Python Flask程式碼，主要用於Line機器人在接收使用者訊息後，判斷要回應的訊息。</p>
+<ul>
+<li>clock.py</li>
+</ul>
+<p>此為Python程式碼，主要用於Line機器人定時推播訊息到群組，以及自動喚醒Heroku服務功能，裡面有撰寫APScheduler套件的程式碼。</p>
+<p>此處特別說明一個機制：自動喚醒。由於Heroku在半小時內沒人來使用服務，即會自動休眠，且<strong>休眠後排程也會跟著一起休眠，不會因為排程時間到而自動啟動排程</strong>。所以為維持機器人的推播功能，一定要讓Heroku持續醒著提供服務。</p>
+<p>參考這邊文章<a href="https://ithelp.ithome.com.tw/articles/10218874">LINE BOT SDK：Heroku 夜未眠（一）</a>的作法，透過Python的requests套件，定時排程去requests我們的服務網址，這樣就可以讓Heroku以為我們的服務一直有人來使用。此處透過APScheduler套件來設定排程，關鍵的程式碼如下：</p>
+<pre><code class="language-python=" data-lang="python="># 防止睡眠
+def DoNotSleep():
+    url = &quot;https://linebotceb102.herokuapp.com/&quot;
+    r = requests.get(url)
+
+# 防止自動休眠
+sched.add_job(DoNotSleep, trigger='interval', id='doNotSleeps_job', minutes=20)
+</code></pre><p>從上面的程式碼，可以看到我每20分鐘即會去request服務的網址。</p>
+<ul>
+<li>secretFile.json
+此為LineBot的token權限與資料庫帳密，main.py和clock.py兩支程式會使用到此資料。</li>
+</ul>
+<h2 id="三開始部署">三、開始部署</h2>
+<p>首先在Heroku建立新專案：</p>
+<p><img src="https://i.imgur.com/9wHoI6R.png" alt=""></p>
+<p>輸入專案名稱，這個名稱會是待會服務的網址名稱：</p>
+<p><img src="https://i.imgur.com/TXlvAJC.png" alt=""></p>
+<p>建立好後，打開命令提示字元，首先在這台電腦登入Heroku，這個只要做一次即可：</p>
+<pre><code class="language-bash=" data-lang="bash="># 登入heroku
+heroku login
+</code></pre><p>接下來執行以下命令，將撰寫好的檔案部署到Heroku上面。</p>
+<pre><code class="language-bash=" data-lang="bash="># 切換到專案路徑
+cd C:\Users\User\Desktop\herouku-linebot
+
+# git指令-將此資料夾和Herouku連動(第一次執行才使用)
+git init
+heroku git:remote -a linebot-class-helper
+
+# git指令(第一次及往後更新時使用)
+git add .
+git commit -am &quot;make it better&quot;
+git push heroku master
+</code></pre><p>以下是我執行上述指令的畫面印出的內容：</p>
+<pre><code class="language-bash=" data-lang="bash=">C:\Users\User&gt;cd C:\Users\User\Desktop\herouku-linebot
+
+C:\Users\User\Desktop\herouku-linebot&gt;git init
+Initialized empty Git repository in C:/Users/User/Desktop/herouku-linebot/.git/
+
+C:\Users\User\Desktop\herouku-linebot&gt;heroku git:remote -a linebot-class-helper
+set git remote heroku to https://git.heroku.com/linebot-class-helper.git
+
+C:\Users\User\Desktop\herouku-linebot&gt;git add .
+warning: LF will be replaced by CRLF in main.py.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in secretFile.json.
+The file will have its original line endings in your working directory
+
+C:\Users\User\Desktop\herouku-linebot&gt;git commit -am &quot;make it better&quot;
+[master (root-commit) d241e91] make it better
+ 6 files changed, 238 insertions(+)
+ create mode 100644 Procfile
+ create mode 100644 clock.py
+ create mode 100644 main.py
+ create mode 100644 requirements.txt
+ create mode 100644 runtime.txt
+ create mode 100644 secretFile.json
+
+C:\Users\User\Desktop\herouku-linebot&gt;git push heroku master
+Enumerating objects: 8, done.
+Counting objects: 100% (8/8), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (8/8), 3.78 KiB | 968.00 KiB/s, done.
+Total 8 (delta 0), reused 0 (delta 0), pack-reused 0
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----&gt; Building on the Heroku-20 stack
+remote: -----&gt; Python app detected
+remote: -----&gt; Installing python-3.7.9
+remote: -----&gt; Installing pip 20.1.1, setuptools 47.1.1 and wheel 0.34.2
+remote: -----&gt; Installing SQLite3
+remote: -----&gt; Installing requirements with pip
+remote:        Collecting gunicorn
+remote:          Downloading gunicorn-20.0.4-py2.py3-none-any.whl (77 kB)
+remote:        Collecting flask
+remote:          Downloading Flask-1.1.2-py2.py3-none-any.whl (94 kB)
+remote:        Collecting line-bot-sdk
+remote:          Downloading line_bot_sdk-1.18.0-py2.py3-none-any.whl (66 kB)
+remote:        Collecting mysql-connector-python
+remote:          Downloading mysql_connector_python-8.0.23-cp37-cp37m-manylinux1_x86_64.whl (18.0 MB)
+remote:        Collecting APScheduler==3.0.0
+remote:          Downloading APScheduler-3.0.0-py2.py3-none-any.whl (46 kB)
+remote:        Collecting click&gt;=5.1
+remote:          Downloading click-7.1.2-py2.py3-none-any.whl (82 kB)
+remote:        Collecting Jinja2&gt;=2.10.1
+remote:          Downloading Jinja2-2.11.3-py2.py3-none-any.whl (125 kB)
+remote:        Collecting itsdangerous&gt;=0.24
+remote:          Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+remote:        Collecting Werkzeug&gt;=0.15
+remote:          Downloading Werkzeug-1.0.1-py2.py3-none-any.whl (298 kB)
+remote:        Collecting requests&gt;=2.0
+remote:          Downloading requests-2.25.1-py2.py3-none-any.whl (61 kB)
+remote:        Collecting future
+remote:          Downloading future-0.18.2.tar.gz (829 kB)
+remote:        Collecting protobuf&gt;=3.0.0
+remote:          Downloading protobuf-3.14.0-cp37-cp37m-manylinux1_x86_64.whl (1.0 MB)
+remote:        Collecting pytz
+remote:          Downloading pytz-2021.1-py2.py3-none-any.whl (510 kB)
+remote:        Collecting six
+remote:          Downloading six-1.15.0-py2.py3-none-any.whl (10 kB)
+remote:        Collecting tzlocal
+remote:          Downloading tzlocal-2.1-py2.py3-none-any.whl (16 kB)
+remote:        Collecting MarkupSafe&gt;=0.23
+remote:          Downloading MarkupSafe-1.1.1-cp37-cp37m-manylinux2010_x86_64.whl (33 kB)
+remote:        Collecting certifi&gt;=2017.4.17
+remote:          Downloading certifi-2020.12.5-py2.py3-none-any.whl (147 kB)
+remote:        Collecting urllib3&lt;1.27,&gt;=1.21.1
+remote:          Downloading urllib3-1.26.3-py2.py3-none-any.whl (137 kB)
+remote:        Collecting chardet&lt;5,&gt;=3.0.2
+remote:          Downloading chardet-4.0.0-py2.py3-none-any.whl (178 kB)
+remote:        Collecting idna&lt;3,&gt;=2.5
+remote:          Downloading idna-2.10-py2.py3-none-any.whl (58 kB)
+remote:        Building wheels for collected packages: future
+remote:          Building wheel for future (setup.py): started
+remote:          Building wheel for future (setup.py): finished with status 'done'
+remote:          Created wheel for future: filename=future-0.18.2-py3-none-any.whl size=491058 sha256=227198e59d98e19080bca5d76a2bba414d024daa76f24c501cdecb8540684c6f
+remote:          Stored in directory: /tmp/pip-ephem-wheel-cache-134xi0gt/wheels/56/b0/fe/4410d17b32f1f0c3cf54cdfb2bc04d7b4b8f4ae377e2229ba0
+remote:        Successfully built future
+remote:        Installing collected packages: gunicorn, click, MarkupSafe, Jinja2, itsdangerous, Werkzeug, flask, certifi, urllib3, chardet, idna, requests, future, line-bot-sdk, six, protobuf, mysql-connector-python, pytz, tzlocal, APScheduler
+remote:        Successfully installed APScheduler-3.0.0 Jinja2-2.11.3 MarkupSafe-1.1.1 Werkzeug-1.0.1 certifi-2020.12.5 chardet-4.0.0 click-7.1.2 flask-1.1.2 future-0.18.2 gunicorn-20.0.4 idna-2.10 itsdangerous-1.1.0 line-bot-sdk-1.18.0 mysql-connector-python-8.0.23 protobuf-3.14.0 pytz-2021.1 requests-2.25.1 six-1.15.0 tzlocal-2.1 urllib3-1.26.3
+remote: -----&gt; Discovering process types
+remote:        Procfile declares types -&gt; clock, web
+remote:
+remote: -----&gt; Compressing...
+remote:        Done: 73.1M
+remote: -----&gt; Launching...
+remote:        Released v3
+remote:        https://linebot-class-helper.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/linebot-class-helper.git
+ * [new branch]      master -&gt; master
+</code></pre><p>若部署沒有問題，結果就會如上面，若有問題，就會印出錯誤訊息。</p>
+<p>接下來到Heroku的Dashboard畫面中，點選Overview的頁籤，可看到我們剛在Procfile設定要啟用的功能已經列在上面。但clock後面卻顯示OFF。</p>
+<p><img src="https://i.imgur.com/9O4vYfU.png" alt=""></p>
+<p>如果要啟用的話，可以到Resources頁籤，在clock點選修改按鈕，將clock功能打開，這樣即可開啟排程功能。</p>
+<p><img src="https://i.imgur.com/7LZp1OR.png" alt=""></p>
+<h2 id="四設定時區">四、設定時區</h2>
+<p>由於LineBot有進行排程，排程的時間設定是以台灣時區為準，但Heroku默認設定的時區會和台灣不一致，所以需要額外設定，這樣排程才會如我們所想的運作。</p>
+<p>時區設定在Settings的頁籤底下，在Config Vars區塊點選Reveal Config Vars按鈕。</p>
+<p><img src="https://i.imgur.com/ipKwH1P.png" alt=""></p>
+<p>接下來輸入參數名稱：<code>TZ</code>及參數值：<code>Asia/Taipei</code>，按下Add按鈕，這樣即可設定好時區。</p>
+<p><img src="https://i.imgur.com/cJbdFYE.png" alt=""></p>
+<h2 id="五與line連動">五、與Line連動</h2>
+<p>Line機器人服務部署完後，即可將服務網址貼到Line Develoer的webhook連結設定。</p>
+<p>服務網址的格式為：<code>https://[專案名稱].herokuapp.com/</code>，可以發現Heroku提供的是加密網址，符合Line機器人Webhook的要求。</p>
+<p>以我們的服務為例，網址即為<a href="https://linebot-class-helper.herokuapp.com/">https://linebot-class-helper.herokuapp.com/</a>。</p>
+<p>將服務網址貼到Line Developer的Webhook：</p>
+<p><img src="https://i.imgur.com/NNRfs83.png" alt=""></p>
+<p>這樣就大功告成，可以開始使用Line機器人的服務！</p>
+<h2 id="六參考文章">六、參考文章</h2>
+<ul>
+<li><a href="https://blog.techbridge.cc/2020/03/08/how-to-use-heroku-to-deploy-clear-mysql-db-web-app-tutorial/">如何使用 Heroku 部屬一個 Web App 網頁應用程式</a></li>
+<li><a href="https://medium.com/@mengchiang000/%E4%BD%88%E7%BD%B2%E8%81%8A%E5%A4%A9%E6%A9%9F%E5%99%A8%E4%BA%BA-linebot-%E5%88%B0heroku-65cbe34c8324">佈署聊天機器人(linebot)到heroku</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10239201">Day04 部署到Heroku</a></li>
+<li><a href="https://devcenter.heroku.com/articles/clock-processes-python">Scheduled Jobs with Custom Clock Processes in Python with APScheduler</a></li>
+<li><a href="https://ithelp.ithome.com.tw/articles/10218874">第 13 天：LINE BOT SDK：Heroku 夜未眠（一）</a></li>
+</ul>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+            
+              <span class="button next">
+                <a href="/post/linebot-ceb102-class-helper/">
+                  <span class="button__text">LineBot-課程小幫手</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>
