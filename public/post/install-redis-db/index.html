@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        Redis資料庫安裝筆記 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="Redis官網   DB-Engines Ranking - 資料庫排名  安裝環境說明  虛擬機器軟體：VMware Workstation 16 Pro 主體作業系統：Windows 10 客體作業系統：CentOS7  Redis官網只提供在Linux作業系統上安裝的方式，故此篇文章是在CentOS7作業系統上進行安裝。
+一、在CentOS7安裝Python3 CentOS7本身自帶Python2程式，需要另行安裝Python3
+我參考的安裝說明: 【Python】在 CentOS 7 上安裝 Python3
+# 安裝python3.6版本 sudo yum install python36 # 升級pip套件 pip3 install --upgrade pip # 提醒:記得是pip3 若為pip會裝成python2的套件 # 輸入Python3後即會進到Python環境 python3 # 提醒:一定要輸入python3 若輸入python會進到python2.7環境 # 若要離開Python環境回到terminal環境則輸入 `quit()` 二、安裝與連線Redis資料庫  redis官網提供的安裝指令  除了在Linux作業系統本機上直接安裝Redis資料庫外，也可利用Docker來安裝
+接下來將分別說明本機直接安裝和Docker安裝
+可自行挑選任一安裝方式
+1. 在Linux本機直接安裝Redis資料庫  此處參考的安裝說明: 【Redis】CentOS7下安装Redis服务  Step1. 安裝gcc9 在本機安裝需編譯Redis資料庫，故需要安裝gcc，此處安裝gcc第9版
+# 首先在CentOS7上安裝gcc sudo yum -y install centos-release-scl sudo yum -y install devtoolset-9-gcc devtoolset-9-gcc-c&#43;&#43; devtoolset-9-binutils # scl命令啟用僅在當前shell有效 退出shell後重進會回復成原本設定(即沒有gcc) scl enable devtoolset-9 bash # 查看gcc版本 gcc --version Step2."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/install-redis-db/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis資料庫安裝筆記"/>
+<meta name="twitter:description" content="本篇文章說明如何在VMware虛擬機(主體為Windows作業系統)的CentOS7作業系統上，安裝Redis資料庫。並可以在Windows作業系統上以Python連入。此處提供兩種安裝方法，第一個是直接在虛擬機安裝，第二個是透過Docker來安裝。"/>
+
+
+
+<meta property="og:title" content="Redis資料庫安裝筆記" />
+<meta property="og:description" content="本篇文章說明如何在VMware虛擬機(主體為Windows作業系統)的CentOS7作業系統上，安裝Redis資料庫。並可以在Windows作業系統上以Python連入。此處提供兩種安裝方法，第一個是直接在虛擬機安裝，第二個是透過Docker來安裝。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/install-redis-db/" />
+<meta property="article:published_time" content="2021-02-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-02-09T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Redis資料庫安裝筆記</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-02-09
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/redis/">#Redis</a>&nbsp;
+        
+          <a href="/tags/database/">#Database</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <ul>
+<li><a href="https://redis.io/">Redis官網</a></li>
+</ul>
+<p><img src="https://i.imgur.com/IyqcjHC.png" alt=""></p>
+<ul>
+<li><a href="https://db-engines.com/en/ranking">DB-Engines Ranking - 資料庫排名</a></li>
+</ul>
+<p><img src="https://i.imgur.com/WfDjbde.png" alt=""></p>
+<h1 id="安裝環境說明">安裝環境說明</h1>
+<ul>
+<li>虛擬機器軟體：VMware Workstation 16 Pro</li>
+<li>主體作業系統：Windows 10</li>
+<li>客體作業系統：CentOS7</li>
+</ul>
+<p>Redis官網只提供在Linux作業系統上安裝的方式，故此篇文章是在CentOS7作業系統上進行安裝。</p>
+<h1 id="一在centos7安裝python3">一、在CentOS7安裝Python3</h1>
+<p>CentOS7本身自帶Python2程式，需要另行安裝Python3</p>
+<p>我參考的安裝說明: <a href="https://kirin.idv.tw/python-install-python3-in-centos7/">【Python】在 CentOS 7 上安裝 Python3</a></p>
+<pre><code class="language-bash=" data-lang="bash="># 安裝python3.6版本
+sudo yum install python36
+
+# 升級pip套件 
+pip3 install --upgrade pip
+# 提醒:記得是pip3 若為pip會裝成python2的套件
+
+# 輸入Python3後即會進到Python環境
+python3
+# 提醒:一定要輸入python3 若輸入python會進到python2.7環境
+
+# 若要離開Python環境回到terminal環境則輸入 `quit()`
+</code></pre><h1 id="二安裝與連線redis資料庫">二、安裝與連線Redis資料庫</h1>
+<ul>
+<li><a href="https://redis.io/download">redis官網提供的安裝指令</a></li>
+</ul>
+<p>除了在Linux作業系統本機上直接安裝Redis資料庫外，也可利用Docker來安裝</p>
+<p>接下來將分別說明<strong>本機直接安裝</strong>和<strong>Docker安裝</strong></p>
+<p>可自行挑選任一安裝方式</p>
+<h2 id="1-在linux本機直接安裝redis資料庫">1. 在Linux本機直接安裝Redis資料庫</h2>
+<ul>
+<li>此處參考的安裝說明: <a href="https://segmentfault.com/a/1190000023092469">【Redis】CentOS7下安装Redis服务</a></li>
+</ul>
+<h3 id="step1-安裝gcc9">Step1. 安裝gcc9</h3>
+<p>在本機安裝需編譯Redis資料庫，故需要安裝gcc，此處安裝gcc第9版</p>
+<pre><code class="language-bash=" data-lang="bash="># 首先在CentOS7上安裝gcc
+sudo yum -y install centos-release-scl
+sudo yum -y install devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+
+# scl命令啟用僅在當前shell有效 退出shell後重進會回復成原本設定(即沒有gcc)
+scl enable devtoolset-9 bash
+
+# 查看gcc版本
+gcc --version
+</code></pre><h3 id="step2-安裝redis">Step2. 安裝Redis</h3>
+<pre><code class="language-bash=" data-lang="bash="># 取得Redis安裝壓縮檔
+wget https://download.redis.io/releases/redis-6.0.10.tar.gz
+
+# 解壓縮
+tar xzf redis-6.0.10.tar.gz
+
+# 切換當redis安裝資料夾路徑
+cd redis-6.0.10
+
+# 執行編譯
+make
+</code></pre><p>安裝成功畫面如下圖所示：
+<img src="https://i.imgur.com/E4xznhD.png" alt=""></p>
+<h3 id="step3-執行redis-server">Step3. 執行Redis server</h3>
+<p>接下來執行redis server</p>
+<pre><code class="language-bash=" data-lang="bash="># 執行redis server
+src/redis-server
+</code></pre><p>成功執行redis server畫面如下：
+<img src="https://i.imgur.com/jPf6EnY.png" alt=""></p>
+<p>執行後畫面會被server綁定，此時需要開新的terminal進行連線</p>
+<p>若要終止server運作，可直接按<code>ctrl+c</code></p>
+<h3 id="step4-連線redis-server">Step4. 連線Redis server</h3>
+<pre><code class="language-bash=" data-lang="bash="># 要記得先切換到redis-6.0.10資料夾底下
+cd redis-6.0.10
+
+# 執行連線
+src/redis-cli
+</code></pre><h3 id="step5-測試redis指令">Step5. 測試Redis指令</h3>
+<pre><code class="language-bash=" data-lang="bash="># 依據官網提供測試程式碼 在Redis環境內執行
+set foo bar
+get foo
+</code></pre><p>執行結果如下：
+<img src="https://i.imgur.com/ONSlKan.png" alt=""></p>
+<h3 id="step6-在python內執行redis">Step6. 在Python內執行Redis</h3>
+<p>我參考的說明：<a href="https://www.runoob.com/w3cnote/python-redis-intro.html">Python redis 使用介绍</a></p>
+<p>若要在CentOS7上執行Python3，直接在terminal上輸入<code>python3</code>，注意這邊不能輸入<code>python</code>，若輸入<code>python</code>會直接進入到<code>python2</code>環境</p>
+<pre><code class="language-bash=" data-lang="bash="># 首先安裝python的redis套件
+sudo pip3 install redis
+
+# 執行Python3
+python3
+</code></pre><p>進到python3環境後，輸入以下指令進行測試：</p>
+<pre><code class="language-python=" data-lang="python="># 載入套件
+import redis
+
+# 連入redis資料庫
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+# redis指令
+r.set('foo', 'bar')
+r.get('foo')
+</code></pre><p>執行成果：
+<img src="https://i.imgur.com/kObBXRi.png" alt=""></p>
+<h3 id="補充-windows主機直接連線redis">補充: Windows主機直接連線Redis</h3>
+<p>在虛擬主機上啟動Redis Server後，也可以從Windows的Python連入虛擬機內的Redis資料庫進行操作，此處需要先打開CentOS7防火牆的Port。</p>
+<p>在CentOS7執行以下指令：</p>
+<pre><code class="language-bash=" data-lang="bash="># 防火牆永久開啟6379的Port  6379為Redis資料庫服務的端口
+sudo firewall-cmd --zone=public --permanent --add-port=6379/tcp
+</code></pre><p>設定好防火牆後，重新啟動Redis伺服器，此處需要多加<code>--protected-mode</code>引數，要關閉保護模式才能從Windows連入：</p>
+<pre><code class="language-bash=" data-lang="bash=">src/redis-server --protected-mode no
+</code></pre><p>此外，還需要設定VMware的Port Forwarding，首先點選Edit-&gt;Virtual Network Editor：</p>
+<p><img src="https://i.imgur.com/Mytm89O.png" alt=""></p>
+<p>啟用管理員權限，這樣才能修改設定：
+<img src="https://i.imgur.com/jsrJW2L.png" alt=""></p>
+<p>選擇VMnet8，然後點選NAT Settings：
+<img src="https://i.imgur.com/0d7ZjjC.png" alt=""></p>
+<p>點選Add：
+<img src="https://i.imgur.com/VGxTDgy.png" alt=""></p>
+<p>輸入相關設定，紅框內的IP需依自行的虛擬主機調整：
+<img src="https://i.imgur.com/LucZRil.png" alt=""></p>
+<p>設定好後一路按ok結束。</p>
+<p>接下來打開Windows的PyCharm，安裝Redis套件(<code>pip install redis</code>)，接下來輸入以下程式碼即可順利連接。</p>
+<pre><code class="language-python=" data-lang="python=">import redis
+
+# 連入redis資料庫
+r = redis.StrictRedis(host='192.168.37.129', port=6379, db=0)
+# 此處需要自行調整host引數值，host為虛擬機的IP，可在linux輸入ifconfig查詢
+
+# redis指令
+r.set('foo', 'bar')
+r.get('foo')
+</code></pre><h2 id="2-用docker安裝redis資料庫">2. 用Docker安裝Redis資料庫</h2>
+<ul>
+<li>
+<p><a href="https://hub.docker.com/_/redis">Docker Hub - redis官方image說明</a></p>
+</li>
+<li>
+<p>我參考的安裝說明: <a href="https://marcus116.blogspot.com/2019/02/how-to-run-redis-in-docker.html">[Redis] 使用 Docker 安裝 Redis</a></p>
+</li>
+</ul>
+<h3 id="step1-安裝centos的docker套件">Step1. 安裝CentOS的Docker套件</h3>
+<p>此處參考周廷諺老師的Docker講義</p>
+<pre><code class="language-bash=" data-lang="bash="># 安裝yum管理工具套件
+sudo yum install -y yum-utils
+
+# 透過yum管理工具導入docker的repo來源
+sudo yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+# 安裝docker主程式及所需套件
+sudo yum install docker-ce docker-ce-cli containerd.io -y
+
+# 啟動docker
+sudo systemctl start docker
+
+# 自動常駐/啟動docker
+sudo systemctl enable docker
+
+# 檢查docker是否啟用並常駐
+sudo systemctl status docker
+
+# 將當前使用者加入docker群組
+sudo usermod -aG docker $USER
+
+# 登出目前使用者
+exit
+
+# 重新登入後即可使用docker
+</code></pre><h3 id="step2-啟動docker-redis容器">Step2. 啟動Docker Redis容器</h3>
+<pre><code class="language-bash=" data-lang="bash="># 建立Redis資料夾
+mkdir redis
+
+# 切換至Redis
+cd redis
+
+# 搜尋Redis image
+docker search redis
+
+# 下載Redis image
+docker pull redis
+
+# 創建並啟動容器 
+docker run \
+--name redis-lab \
+-p 6379:6379 \
+-d \
+-v $(pwd)/data:/data \
+--restart unless-stopped \
+redis
+
+# docker run參數說明
+# --name: 容器名稱
+# -p: 主機port:容器port
+# -d: 背景執行
+# -v: 主機資料夾:容器資料夾
+# --restart: unless-stopped表示除非被手動停止 否則系統重新啟動時該容器即會自動重啟
+# 關於--restart引數可參考: https://docs.docker.com/config/containers/start-containers-automatically/
+</code></pre><h3 id="step3-在python內執行redis">Step3. 在Python內執行redis</h3>
+<p>進到python3環境後，輸入以下指令進行測試：</p>
+<pre><code class="language-python=" data-lang="python="># 載入套件
+import redis
+
+# 連入redis資料庫
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+# redis指令
+r.set('foo', 'bar')
+r.get('foo')
+</code></pre><h3 id="補充-windows主機直接連線redis-1">補充: Windows主機直接連線Redis</h3>
+<p>在虛擬主機上部署好Docker的Redis Server後，除了在CentOS7的terminal上直接執行外，也可直接在Windows上的Python執行。</p>
+<p>Docker部署時會略過防火牆限制，所以不用自行設定防火牆。</p>
+<p>此外，還需要設定VMware的Port Forwarding，首先點選Edit-&gt;Virtual Network Editor：</p>
+<p><img src="https://i.imgur.com/Mytm89O.png" alt=""></p>
+<p>啟用管理員權限，這樣才能修改設定：
+<img src="https://i.imgur.com/jsrJW2L.png" alt=""></p>
+<p>選擇VMnet8，然後點選NAT Settings：
+<img src="https://i.imgur.com/0d7ZjjC.png" alt=""></p>
+<p>點選Add：
+<img src="https://i.imgur.com/VGxTDgy.png" alt=""></p>
+<p>輸入相關設定，紅框內的IP需依自行的虛擬主機調整：
+<img src="https://i.imgur.com/LucZRil.png" alt=""></p>
+<p>設定好後一路按ok結束。</p>
+<p>接下來打開Windows的PyCharm，安裝Redis套件(<code>pip install redis</code>)，接下來輸入以下程式碼即可順利連接。</p>
+<p>打開PyCharm，安裝redis套件(<code>pip install redis</code>)，，接下來輸入以下程式碼即可順利連接。</p>
+<pre><code class="language-python=" data-lang="python=">import redis
+
+# 連入redis資料庫
+r = redis.StrictRedis(host='192.168.37.129', port=6379, db=0)
+# 此處需要自行調整host引數值，host為虛擬機的IP，可在linux輸入ifconfig查詢
+
+# redis指令
+r.set('foo', 'bar')
+r.get('foo')
+</code></pre>
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+            
+              <span class="button next">
+                <a href="/post/linebot-ceb102-class-helper-heroku/">
+                  <span class="button__text">用Heroku來部署LineBot-課程小幫手</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>

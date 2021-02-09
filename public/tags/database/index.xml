@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Database on Hello Friend, I&#39;m Yestin!</title>
+    
+    
+    
+    <link>/tags/database/</link>
+    <description>Recent content in Database on Hello Friend, I&#39;m Yestin!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Feb 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Redis資料庫安裝筆記</title>
+      <link>/post/install-redis-db/</link>
+      <pubDate>Tue, 09 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/install-redis-db/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章說明如何在VMware虛擬機(主體為Windows作業系統)的CentOS7作業系統上，安裝Redis資料庫。並可以在Windows作業系統上以Python連入。此處提供兩種安裝方法，第一個是直接在虛擬機安裝，第二個是透過Docker來安裝。
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>
