@@ -9,10 +9,30 @@
     <description>Recent content in Python on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Feb 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>專題作業-職缺小幫手</title>
+      <link>/post/dash-job-analysis-helper/</link>
+      <pubDate>Sun, 28 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/dash-job-analysis-helper/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這是我獨力製作的一個小專題，專題內容是一個簡單的職缺分析網站。使用者可在此網站上輸入想要搜尋的職缺關鍵字後，系統會至104人力銀行搜尋相關職缺，並將職缺分析結果呈現給使用者觀看。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>用Heroku來部署LineBot-課程小幫手</title>
