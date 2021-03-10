@@ -9,10 +9,30 @@
     <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>以OpenCV實作人臉偵測、特徵捕捉與變裝</title>
+      <link>/post/opencv_face_stickers/</link>
+      <pubDate>Mon, 08 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/opencv_face_stickers/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          這個小專題是我在Tibame AI/Big Data資料分析師養成班的OpenCV課程後的自主練習。主要是以筆電攝像頭拍攝自己的人臉，程式會偵測人臉位置，並在人臉上加入一些貼圖做變裝。這個功能目前在坊間的修圖軟體皆可以看到，我自己是利用[OpenCV](https://opencv.org/)搭配[Dlib函數庫](http://dlib.net/)來實作。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>專題作業-職缺小幫手</title>

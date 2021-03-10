@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+      <title>
+        以OpenCV實作人臉偵測、特徵捕捉與變裝 ::
+        Hello Friend, I&#39;m Yestin!
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="這個小專題是我在Tibame AI/Big Data資料分析師養成班的OpenCV課程後的自主練習。
+主要是以筆電攝像頭拍攝自己的人臉，程式會偵測人臉位置，並在人臉上加入一些貼圖做變裝。
+這個功能目前在坊間的修圖軟體皆可以看到，我自己是利用OpenCV搭配Dlib函數庫來實作。
+成果範例：
+# 使用套件 import cv2 # pip install opencv-python import dlib # pip install dlib from matplotlib import pyplot as plt 在dlib函數庫中，主要用到兩個模型，分別為：
+ 人臉偵測模型：  此處使用dlib.get_frontal_face_detector()函數的內建預設模型。
+ 人臉特徵捕捉模型  此處使用dlib加載預訓練模型：shape_predictor_68_face_landmarks.dat，詳細資訊及模型下載位置可參考官網Github說明，及此篇文章Facial landmarks with dlib, OpenCV, and Python。
+此模型會針對人臉標記出68個特徵點，如下圖所示：
+我們針對每次攝像頭讀進來的畫面，先透過人臉偵測模型找出畫面內每張臉的位置。再來透過人臉特徵捕捉模型，標記出每張臉的68個特徵位置。之後即可依據68個特徵位置的相對關係，放入我們想要的素材貼圖，完成人臉的變裝。
+# 讀取人臉偵測模型 detector = dlib.get_frontal_face_detector() # 讀取人臉特徵捕捉模型 predictor = dlib.shape_predictor(&amp;#34;shape_predictor_68_face_landmarks.dat&amp;#34;) 首先我們先以靜態的照片來進行人臉偵測與特徵捕捉，這是本次實作的靜態照片：
+# 讀取照片 img = cv2.imread(&amp;#34;./images/face.png&amp;#34;) # 呈現照片 plt.figure(figsize = (10, 10)) # 此為放大呈現圖片 plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)) # 由於cv2是以BGR格式儲存照片 以matplotlib繪圖時要轉為RGB 針對這張靜態照片，我們可以先透過detector找出人臉的位置："
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/post/opencv_face_stickers/" />
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'G-L50G2LV7Q6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css" />
+
+<link rel="stylesheet" href="/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="/img/favicon.png" />
+
+
+<link href="/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="以OpenCV實作人臉偵測、特徵捕捉與變裝"/>
+<meta name="twitter:description" content="這個小專題是我在Tibame AI/Big Data資料分析師養成班的OpenCV課程後的自主練習。主要是以筆電攝像頭拍攝自己的人臉，程式會偵測人臉位置，並在人臉上加入一些貼圖做變裝。這個功能目前在坊間的修圖軟體皆可以看到，我自己是利用[OpenCV](https://opencv.org/)搭配[Dlib函數庫](http://dlib.net/)來實作。"/>
+
+
+
+<meta property="og:title" content="以OpenCV實作人臉偵測、特徵捕捉與變裝" />
+<meta property="og:description" content="這個小專題是我在Tibame AI/Big Data資料分析師養成班的OpenCV課程後的自主練習。主要是以筆電攝像頭拍攝自己的人臉，程式會偵測人臉位置，並在人臉上加入一些貼圖做變裝。這個功能目前在坊間的修圖軟體皆可以看到，我自己是利用[OpenCV](https://opencv.org/)搭配[Dlib函數庫](http://dlib.net/)來實作。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/opencv_face_stickers/" />
+<meta property="article:published_time" content="2021-03-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-03-08T00:00:00+00:00" /><meta property="og:site_name" content="Hello Friend, I&#39;m Yestin!" />
+
+
+
+
+
+
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L50G2LV7Q6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-L50G2LV7Q6');
+    </script>
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+      
+      
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
+</header>
+
+
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">以OpenCV實作人臉偵測、特徵捕捉與變裝</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-03-08
+        </span>
+
+        
+          
+        
+      
+
+      
+        <span class="post-author"
+          >— Written by Yen-Ting, Su</span
+        >
+
+
+      
+    </div>
+
+    
+      <span class="post-tags">
+        
+          <a href="/tags/python/">#Python</a>&nbsp;
+        
+          <a href="/tags/opencv/">#OpenCV</a>&nbsp;
+        
+      </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>這個小專題是我在Tibame AI/Big Data資料分析師養成班的OpenCV課程後的自主練習。</p>
+<p>主要是以筆電攝像頭拍攝自己的人臉，程式會偵測人臉位置，並在人臉上加入一些貼圖做變裝。</p>
+<p>這個功能目前在坊間的修圖軟體皆可以看到，我自己是利用<a href="https://opencv.org/">OpenCV</a>搭配<a href="http://dlib.net/">Dlib函數庫</a>來實作。</p>
+<p>成果範例：</p>
+<p><img src="demo.gif" alt="gif"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 使用套件</span>
+<span style="color:#f92672">import</span> cv2          <span style="color:#75715e"># pip install opencv-python</span>
+<span style="color:#f92672">import</span> dlib         <span style="color:#75715e"># pip install dlib</span>
+<span style="color:#f92672">from</span> matplotlib <span style="color:#f92672">import</span> pyplot <span style="color:#66d9ef">as</span> plt
+</code></pre></div><p>在dlib函數庫中，主要用到兩個模型，分別為：</p>
+<ul>
+<li>人臉偵測模型：</li>
+</ul>
+<p>此處使用<a href="http://dlib.net/python/index.html#dlib.get_frontal_face_detector">dlib.get_frontal_face_detector()</a>函數的內建預設模型。</p>
+<ul>
+<li>人臉特徵捕捉模型</li>
+</ul>
+<p>此處使用dlib加載預訓練模型：shape_predictor_68_face_landmarks.dat，詳細資訊及模型下載位置可參考官網<a href="https://github.com/davisking/dlib/blob/master/python_examples/face_landmark_detection.py">Github說明</a>，及此篇文章<a href="https://www.pyimagesearch.com/2017/04/03/facial-landmarks-dlib-opencv-python/">Facial landmarks with dlib, OpenCV, and Python</a>。</p>
+<p>此模型會針對人臉標記出68個特徵點，如下圖所示：</p>
+<p><img src="face_point.png" alt="png"></p>
+<p>我們針對每次攝像頭讀進來的畫面，先透過人臉偵測模型找出畫面內每張臉的位置。再來透過人臉特徵捕捉模型，標記出每張臉的68個特徵位置。之後即可依據68個特徵位置的相對關係，放入我們想要的素材貼圖，完成人臉的變裝。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 讀取人臉偵測模型</span>
+detector <span style="color:#f92672">=</span> dlib<span style="color:#f92672">.</span>get_frontal_face_detector()
+
+<span style="color:#75715e"># 讀取人臉特徵捕捉模型</span>
+predictor <span style="color:#f92672">=</span> dlib<span style="color:#f92672">.</span>shape_predictor(<span style="color:#e6db74">&#34;shape_predictor_68_face_landmarks.dat&#34;</span>)
+</code></pre></div><p>首先我們先以靜態的照片來進行人臉偵測與特徵捕捉，這是本次實作的靜態照片：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 讀取照片</span>
+img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#34;./images/face.png&#34;</span>)
+
+<span style="color:#75715e"># 呈現照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))                    <span style="color:#75715e"># 此為放大呈現圖片</span>
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))  <span style="color:#75715e"># 由於cv2是以BGR格式儲存照片 以matplotlib繪圖時要轉為RGB</span>
+</code></pre></div><p><img src="output_5_1.png" alt="png"></p>
+<p>針對這張靜態照片，我們可以先透過detector找出人臉的位置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 複製原始照片</span>
+detectorImg <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span>copy()
+
+<span style="color:#75715e"># 將照片轉換為灰階照片以做臉部辨識</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(src<span style="color:#f92672">=</span>detectorImg, code<span style="color:#f92672">=</span>cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e"># 依灰階照片內容進行人臉偵測模型</span>
+faces <span style="color:#f92672">=</span> detector(gray)
+
+<span style="color:#75715e"># 迴圈每張偵測到的人臉</span>
+<span style="color:#66d9ef">for</span> face <span style="color:#f92672">in</span> faces:
+    
+    <span style="color:#75715e"># 人臉偵測到的範圍</span>
+    x1 <span style="color:#f92672">=</span> face<span style="color:#f92672">.</span>left()
+    y1 <span style="color:#f92672">=</span> face<span style="color:#f92672">.</span>top()
+    x2 <span style="color:#f92672">=</span> face<span style="color:#f92672">.</span>right()
+    y2 <span style="color:#f92672">=</span> face<span style="color:#f92672">.</span>bottom()
+    
+    <span style="color:#75715e"># 繪製矩形標記偵測到的人臉範圍</span>
+    cv2<span style="color:#f92672">.</span>rectangle(detectorImg, (x1, y1), (x2, y2), (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">0</span>), <span style="color:#ae81ff">4</span>, cv2<span style="color:#f92672">.</span>LINE_AA)
+
+<span style="color:#75715e"># 呈現標記特徵點後的照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(detectorImg, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_7_1.png" alt="png"></p>
+<p>在detector辨識出人臉後，即可透過predictor標註出人臉的特徵點：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 複製原始照片</span>
+landmarkImg <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span>copy()
+
+<span style="color:#75715e"># 將照片轉換為灰階照片以做臉部辨識</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(src<span style="color:#f92672">=</span>landmarkImg, code<span style="color:#f92672">=</span>cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e"># 依灰階照片內容進行人臉偵測模型</span>
+faces <span style="color:#f92672">=</span> detector(gray)
+
+<span style="color:#75715e"># 迴圈每張偵測到的人臉</span>
+<span style="color:#66d9ef">for</span> face <span style="color:#f92672">in</span> faces:
+    
+    <span style="color:#75715e"># 臉部特徵標記位置</span>
+    landmarks <span style="color:#f92672">=</span> predictor(image<span style="color:#f92672">=</span>gray, box<span style="color:#f92672">=</span>face)
+    
+    <span style="color:#75715e"># 在照片上標記各個特徵點</span>
+    <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">68</span>):
+        
+        <span style="color:#75715e"># 特徵點的x和y</span>
+        x <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(n)<span style="color:#f92672">.</span>x
+        y <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(n)<span style="color:#f92672">.</span>y
+        
+        <span style="color:#75715e"># 繪製圓圈點標記特徵點</span>
+        cv2<span style="color:#f92672">.</span>circle(img<span style="color:#f92672">=</span>landmarkImg, center<span style="color:#f92672">=</span>(x, y), radius<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, color<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">0</span>), thickness<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+
+<span style="color:#75715e"># 呈現標記特徵點後的照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(landmarkImg, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_9_1.png" alt="png"></p>
+<p>這是要貼上人臉的素材貼圖-裝逼墨鏡：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 讀取素材貼圖</span>
+materialImg <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#34;./images/sunglasses.png&#34;</span>)
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(materialImg, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_11_1.png" alt="png"></p>
+<p>接下來我們將素材貼圖貼到人臉上，由於是墨鏡，所以要把貼圖放到眼睛的位置上會比較合理。</p>
+<p>我們可以利用人臉的68個特徵點來抓出想要放置的範圍，此處先畫出貼圖預計放置的區域：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 複製原始照片</span>
+rangeImg <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span>copy()
+
+<span style="color:#75715e"># 將照片轉換為灰階照片以做臉部辨識</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(src<span style="color:#f92672">=</span>rangeImg, code<span style="color:#f92672">=</span>cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e"># 依灰階照片內容進行人臉偵測模型</span>
+faces <span style="color:#f92672">=</span> detector(gray)
+
+<span style="color:#75715e"># 迴圈每張偵測到的人臉</span>
+<span style="color:#66d9ef">for</span> face <span style="color:#f92672">in</span> faces:
+    
+    <span style="color:#75715e"># 臉部特徵標記位置</span>
+    landmarks <span style="color:#f92672">=</span> predictor(image<span style="color:#f92672">=</span>gray, box<span style="color:#f92672">=</span>face)
+    
+    <span style="color:#75715e"># 貼圖放置區的起始位置(特徵第0點)</span>
+    x1 <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>x
+    y1 <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>y
+    
+    <span style="color:#75715e"># 貼圖放置區的寬度和高度</span>
+    width <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">16</span>)<span style="color:#f92672">.</span>x <span style="color:#f92672">-</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>x   <span style="color:#75715e"># 特徵第16點和第0點的寬度距離</span>
+    height <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>y <span style="color:#f92672">-</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">17</span>)<span style="color:#f92672">.</span>y  <span style="color:#75715e"># 特徵第1點和第17點的高度距離</span>
+    
+    <span style="color:#75715e"># 貼圖放置區的結束位置(即貼圖放置區右下角)</span>
+    x2 <span style="color:#f92672">=</span> x1 <span style="color:#f92672">+</span> width
+    y2 <span style="color:#f92672">=</span> y1 <span style="color:#f92672">+</span> height
+    
+    <span style="color:#75715e"># 貼圖放置區的範圍</span>
+    cv2<span style="color:#f92672">.</span>rectangle(rangeImg, (x1, y1), (x2, y2), (<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">255</span>, <span style="color:#ae81ff">0</span>), <span style="color:#ae81ff">4</span>, cv2<span style="color:#f92672">.</span>LINE_AA)
+    
+<span style="color:#75715e"># 呈現貼圖放置區</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(rangeImg, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_13_1.png" alt="png"></p>
+<p>貼圖放置區即為墨鏡貼圖要放置的地方，以下是放置墨鏡貼圖的程式碼：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 複製原始照片</span>
+rangeImg <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span>copy()
+
+<span style="color:#75715e"># 將照片轉換為灰階圖片以做臉部辨識</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(src<span style="color:#f92672">=</span>rangeImg, code<span style="color:#f92672">=</span>cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e"># 依灰階照片內容進行人臉偵測模型</span>
+faces <span style="color:#f92672">=</span> detector(gray)
+
+<span style="color:#75715e"># 迴圈每張偵測到的人臉</span>
+<span style="color:#66d9ef">for</span> face <span style="color:#f92672">in</span> faces:
+    
+    <span style="color:#75715e"># 臉部特徵標記位置</span>
+    landmarks <span style="color:#f92672">=</span> predictor(image<span style="color:#f92672">=</span>gray, box<span style="color:#f92672">=</span>face)
+    
+    <span style="color:#75715e"># 素材貼圖貼入的起始位置</span>
+    x1 <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>x
+    y1 <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>y
+    
+    <span style="color:#75715e"># 計算素材貼圖的寬度和高度</span>
+    width <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">16</span>)<span style="color:#f92672">.</span>x <span style="color:#f92672">-</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>x
+    height <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>y <span style="color:#f92672">-</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">17</span>)<span style="color:#f92672">.</span>y
+    
+    <span style="color:#75715e"># 調整素材貼圖</span>
+    materialImgResize <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>resize(materialImg, (width, height))
+    
+    <span style="color:#75715e"># 貼入素材貼圖</span>
+    rangeImg[y1:(y1<span style="color:#f92672">+</span>height), x1:(x1<span style="color:#f92672">+</span>width)] <span style="color:#f92672">=</span> materialImgResize
+    
+<span style="color:#75715e"># 呈現標記特徵點後的照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(rangeImg, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_15_1.png" alt="png"></p>
+<p>貼完之後，如果仔細看照片可以發現墨鏡以外的雜訊像素區域也會被貼進來，變成很不自然，所以還要做一些處理。</p>
+<p>由於我們的素材圖片是png格式，png格式除了RGB三個channel外，還有多一個是透明度(alpha)channel。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 讀取素材照片</span>
+<span style="color:#75715e"># 此處要加入&#39;cv2.IMREAD_UNCHANGED&#39;才能讀入alpha channel</span>
+materialImg <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#34;./images/sunglasses.png&#34;</span>, cv2<span style="color:#f92672">.</span>IMREAD_UNCHANGED)
+
+<span style="color:#75715e"># 印出 B channel矩陣</span>
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;B channel:&#39;</span>)
+<span style="color:#66d9ef">print</span>(materialImg[:, :, <span style="color:#ae81ff">0</span>])
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;=&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">30</span>)
+
+<span style="color:#75715e"># 印出 R channel矩陣</span>
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;R channel:&#39;</span>)
+<span style="color:#66d9ef">print</span>(materialImg[:, :, <span style="color:#ae81ff">1</span>])
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;=&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">30</span>)
+
+<span style="color:#75715e"># 印出 G channel矩陣</span>
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;G channel:&#39;</span>)
+<span style="color:#66d9ef">print</span>(materialImg[:, :, <span style="color:#ae81ff">2</span>])
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;=&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">30</span>)
+
+<span style="color:#75715e"># 印出 alpha channel矩陣</span>
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;alpha channel:&#39;</span>)
+<span style="color:#66d9ef">print</span>(materialImg[:, :, <span style="color:#ae81ff">3</span>])
+</code></pre></div><pre><code>B channel:
+[[  0   0   0 ...   0   0   0]
+ [  0   0   0 ...   0   0   0]
+ [  0   0   0 ...   0   0   0]
+ ...
+ [  0   0 255 ... 255 255 255]
+ [  0   0 255 ... 255   0 255]
+ [255 255   0 ... 255 255   0]]
+==============================
+R channel:
+[[  0   0   0 ...   0   0   0]
+ [  0   0   0 ...   0   0   0]
+ [  0   0   0 ...   0   0   0]
+ ...
+ [  0   0 255 ... 255 255 255]
+ [  0   0 255 ... 255   0 255]
+ [255 255   0 ... 255 255   0]]
+==============================
+G channel:
+[[  0   0   0 ...   0   0   0]
+ [  0   0   0 ...   0   0   0]
+ [  0   0   0 ...   0   0   0]
+ ...
+ [  0   0 255 ... 255 255 255]
+ [  0   0 255 ... 255   0 255]
+ [255 255   0 ... 255 255   0]]
+==============================
+alpha channel:
+[[255 255 255 ... 255 255 255]
+ [255 255 255 ... 255 255 255]
+ [255 255 255 ... 255 255 255]
+ ...
+ [  2   2   0 ...   0   0   0]
+ [  2   2   0 ...   0   2   0]
+ [  0   0   2 ...   0   0   2]]
+</code></pre>
+<p>alpha channel的值愈大代表愈不透明，愈趨近於0代表愈透明。</p>
+<p>所以我們可以利用alpha channel的資訊，建立出一個遮罩(mask)，讓素材貼圖的雜訊位置channel全部變為0。</p>
+<p>接著將人臉照片在貼圖放置區內的照片擷取出來，把剛做的遮罩reverse(即0變1、1變0)，非素材貼圖雜訊對應的像素位置全部歸0。</p>
+<p>最後即可把兩張照片加在一起，素材貼圖透明的像素位置會以人臉照片對應的像素位置取代，這樣貼入照片時就不會有違和感。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 讀取素材貼圖</span>
+<span style="color:#75715e"># 此處要加入&#39;cv2.IMREAD_UNCHANGED&#39;才能讀入alpha channel</span>
+sunglassesImg <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#34;./images/sunglasses.png&#34;</span>, cv2<span style="color:#f92672">.</span>IMREAD_UNCHANGED)
+
+<span style="color:#75715e"># 將素材圖片alpha channel小於一定的值給0</span>
+sunglassesImg[:, :, <span style="color:#ae81ff">3</span>][sunglassesImg[:, :, <span style="color:#ae81ff">3</span>] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">125</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+
+<span style="color:#75715e"># 調整素材貼圖</span>
+materialImgResize <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>resize(sunglassesImg, (width, height))
+
+<span style="color:#75715e"># 建立mask</span>
+materialImgMask <span style="color:#f92672">=</span> materialImgResize[:, :, <span style="color:#ae81ff">3</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">125</span>
+materialImgMask <span style="color:#f92672">=</span> materialImgMask<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;uint8&#39;</span>)
+
+<span style="color:#75715e"># 取RGB channel</span>
+materialImgResize <span style="color:#f92672">=</span> materialImgResize[:, :, <span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">3</span>]
+
+<span style="color:#75715e"># mask素材貼圖</span>
+materialImgResize <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>bitwise_and(materialImgResize, materialImgResize, mask<span style="color:#f92672">=</span>materialImgMask)
+
+<span style="color:#75715e"># 呈現mask後的素材貼圖</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(materialImgResize, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_19_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 處理素材對應的圖片位置</span>
+<span style="color:#75715e"># 選取照片貼圖放置區的範圍</span>
+imgTarget <span style="color:#f92672">=</span> img[y1:(y1<span style="color:#f92672">+</span>height), x1:(x1<span style="color:#f92672">+</span>width)] 
+
+<span style="color:#75715e"># 建立mask</span>
+imgMask <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>materialImgMask
+
+<span style="color:#75715e"># 對照片進行mask</span>
+imgTarget <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>bitwise_and(imgTarget, imgTarget, mask<span style="color:#f92672">=</span>imgMask)
+
+<span style="color:#75715e"># 呈現mask後的照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(imgTarget, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_20_1.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 結合mask後的素材圖片和mask後的照片</span>
+combineImg <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>add(materialImgResize, imgTarget)
+
+<span style="color:#75715e"># 輸出結合後的照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(combineImg, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_21_1.png" alt="png"></p>
+<p>我們將上面的所有程式碼彙整起來：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 使用套件</span>
+<span style="color:#f92672">import</span> cv2          <span style="color:#75715e"># pip install opencv-python</span>
+<span style="color:#f92672">import</span> dlib         <span style="color:#75715e"># pip install dlib</span>
+<span style="color:#f92672">from</span> matplotlib <span style="color:#f92672">import</span> pyplot <span style="color:#66d9ef">as</span> plt
+
+<span style="color:#75715e"># 讀取人臉偵測模型</span>
+detector <span style="color:#f92672">=</span> dlib<span style="color:#f92672">.</span>get_frontal_face_detector()
+
+<span style="color:#75715e"># 讀取人臉特徵捕捉模型</span>
+predictor <span style="color:#f92672">=</span> dlib<span style="color:#f92672">.</span>shape_predictor(<span style="color:#e6db74">&#34;shape_predictor_68_face_landmarks.dat&#34;</span>)
+
+<span style="color:#75715e"># 讀取照片</span>
+img <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#34;./images/face.png&#34;</span>)
+
+<span style="color:#75715e"># 讀取素材照片</span>
+materialImg <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>imread(<span style="color:#e6db74">&#34;./images/sunglasses.png&#34;</span>, cv2<span style="color:#f92672">.</span>IMREAD_UNCHANGED)
+materialImg[:, :, <span style="color:#ae81ff">3</span>][materialImg[:, :, <span style="color:#ae81ff">3</span>] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">125</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+
+<span style="color:#75715e"># 將照片轉換為灰階照片以做臉部辨識</span>
+gray <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>cvtColor(src<span style="color:#f92672">=</span>img, code<span style="color:#f92672">=</span>cv2<span style="color:#f92672">.</span>COLOR_BGR2GRAY)
+
+<span style="color:#75715e"># 依灰階照片內容進行人臉偵測模型</span>
+faces <span style="color:#f92672">=</span> detector(gray)
+
+<span style="color:#75715e"># 迴圈每張偵測到的人臉</span>
+<span style="color:#66d9ef">for</span> face <span style="color:#f92672">in</span> faces:
+    
+    <span style="color:#75715e"># 臉部特徵標記位置</span>
+    landmarks <span style="color:#f92672">=</span> predictor(image<span style="color:#f92672">=</span>gray, box<span style="color:#f92672">=</span>face)
+    
+    <span style="color:#75715e"># 素材貼圖貼入的起始位置</span>
+    x1 <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>x
+    y1 <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>y
+    
+    <span style="color:#75715e"># 計算素材貼圖的寬度和高度</span>
+    width <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">16</span>)<span style="color:#f92672">.</span>x <span style="color:#f92672">-</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">.</span>x
+    height <span style="color:#f92672">=</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>y <span style="color:#f92672">-</span> landmarks<span style="color:#f92672">.</span>part(<span style="color:#ae81ff">17</span>)<span style="color:#f92672">.</span>y
+    
+    <span style="color:#75715e"># 調整素材貼圖寬度和高度</span>
+    materialImgResize <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>resize(sunglassesImg, (width, height))
+    
+    <span style="color:#75715e"># 建立mask</span>
+    materialImgMask <span style="color:#f92672">=</span> materialImgResize[:, :, <span style="color:#ae81ff">3</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">125</span>
+    materialImgMask <span style="color:#f92672">=</span> materialImgMask<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;uint8&#39;</span>)
+
+    <span style="color:#75715e"># 取RGB channel</span>
+    materialImgResize <span style="color:#f92672">=</span> materialImgResize[:, :, <span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">3</span>]
+    
+    <span style="color:#75715e"># mask素材貼圖</span>
+    materialImgResize <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>bitwise_and(materialImgResize, materialImgResize, mask<span style="color:#f92672">=</span>materialImgMask)
+    
+    <span style="color:#75715e"># 選取照片貼圖放置區的範圍</span>
+    imgTarget <span style="color:#f92672">=</span> img[y1:(y1<span style="color:#f92672">+</span>height), x1:(x1<span style="color:#f92672">+</span>width)] 
+
+    <span style="color:#75715e"># 建立mask</span>
+    imgMask <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>materialImgMask
+
+    <span style="color:#75715e"># 對照片進行mask</span>
+    imgTarget <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>bitwise_and(imgTarget, imgTarget, mask<span style="color:#f92672">=</span>imgMask)
+    
+    <span style="color:#75715e"># 結合mask後的素材圖片和mask後的照片</span>
+    combineImg <span style="color:#f92672">=</span> cv2<span style="color:#f92672">.</span>add(materialImgResize, imgTarget)
+
+    <span style="color:#75715e"># 貼入素材圖片</span>
+    img[y1:(y1<span style="color:#f92672">+</span>height), x1:(x1<span style="color:#f92672">+</span>width)] <span style="color:#f92672">=</span> combineImg
+</code></pre></div><p>處理完後輸出照片，貼圖看起來就很不錯了！</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 呈現標記特徵點後的照片</span>
+plt<span style="color:#f92672">.</span>figure(figsize <span style="color:#f92672">=</span> (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>))
+plt<span style="color:#f92672">.</span>imshow(cv2<span style="color:#f92672">.</span>cvtColor(img, cv2<span style="color:#f92672">.</span>COLOR_BGR2RGB))
+</code></pre></div><p><img src="output_25_1.png" alt="png"></p>
+<p>接下來將程式碼導入筆電攝像結合，並將上述程式碼改為物件導向。</p>
+<p>程式碼可參考我的<a href="https://github.com/SuYenTing/opencv_face_stickers/blob/main/main.py">Github</a>，執行程式碼後，筆電會開啟鏡頭偵測前方是否有人臉，若有人臉會貼上素材圖片。</p>
+
+    </div>
+    
+      
+        <div class="pagination">
+          <div class="pagination__title">
+            <span class="pagination__title-h"
+              >Read other posts</span
+            >
+            <hr />
+          </div>
+          <div class="pagination__buttons">
+            
+            
+              <span class="button next">
+                <a href="/post/dash-job-analysis-helper/">
+                  <span class="button__text">專題作業-職缺小幫手</span>
+                  <span class="button__icon">→</span>
+                </a>
+              </span>
+            
+          </div>
+        </div>
+      
+    
+    <hr>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "suyenting" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+      
+        
+
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >Hello Friend, I&#39;m Yestin!</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+      <div class="copyright">
+        <span
+          >© 2021 Powered by
+          <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a></span
+        >
+        <span
+          >Theme created by
+          <a href="https://twitter.com/panr" target="_blank" rel="noopener">panr</a></span
+        >
+      </div>
+    
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+      
+    </div>
+
+    
+  </body>
+</html>
