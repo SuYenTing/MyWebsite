@@ -9,17 +9,37 @@
     <description>Recent content on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 08 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 25 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Shopee Code League 2021競賽心得</title>
+      <link>/post/shopee-competition-2021/</link>
+      <pubDate>Thu, 25 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/shopee-competition-2021/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          蝦皮在2021年3月舉辦一場為期三週的數據競賽，開放給台灣及東南亞各國在學生與在職人士參與。競賽共分成三個項目：數據分析、數據科學及演算法相關問題，每週末各比一個項目。這次我組隊參加其中兩個項目：數據分析及數據科學競賽，這篇文章將和大家分享我此次的參賽心得。
+          
+        
+        </description>
+    </item>
+    
+    <item>
       <title>以OpenCV實作人臉偵測、特徵捕捉與變裝</title>
-      <link>/post/opencv_face_stickers/</link>
+      <link>/post/opencv-face-stickers/</link>
       <pubDate>Mon, 08 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>/post/opencv_face_stickers/</guid>
+      <guid>/post/opencv-face-stickers/</guid>
       <description>
         
           
