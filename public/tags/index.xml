@@ -9,10 +9,50 @@
     <description>Recent content in Tags on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 25 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker</title>
+      <link>/tags/docker/</link>
+      <pubDate>Fri, 26 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/docker/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>frp</title>
+      <link>/tags/frp/</link>
+      <pubDate>Fri, 26 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/frp/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>Python</title>
@@ -140,26 +180,6 @@
       <pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/linebot/</guid>
-      <description>
-        
-          
-          
-          
-        
-        
-        
-          
-          
-        
-        </description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>/tags/docker/</link>
-      <pubDate>Thu, 04 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/docker/</guid>
       <description>
         
           

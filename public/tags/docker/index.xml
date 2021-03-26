@@ -9,10 +9,30 @@
     <description>Recent content in Docker on Hello Friend, I&#39;m Yestin!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Mar 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>以Docker架設frp(fast reverse proxy)流程</title>
+      <link>/post/docker-frp/</link>
+      <pubDate>Fri, 26 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/docker-frp/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近開始要進行Tibame大數據班的專案，中心有提供一台電腦讓我們組別使用，但這台電腦卻只有虛擬IP，如果我在這台電腦上架一個資料庫或網站，沒辦法對外服務。本篇文章提供一個解決方法：在雲端開設免費的主機取得公網IP，並在雲端主機上架設反向代理伺服，實行內網穿透，讓虛擬IP主機能夠對外服務。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>LineBot-課程小幫手</title>
