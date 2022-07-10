@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gitlab on Hello Friend, I&#39;m Yesting!</title>
+    
+    
+    
+    <link>/categories/gitlab/</link>
+    <description>Recent content in gitlab on Hello Friend, I&#39;m Yesting!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 Jul 2022 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/gitlab/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GitLab備份及復原流程筆記</title>
+      <link>/post/gitlab-backup-and-restore/</link>
+      <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/gitlab-backup-and-restore/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          之前在工作上被交辦要架設私有的GitLab Server供團隊使用，方便大家做好程式碼版控以及團隊合作開發。在GitLab Server成功架起並且順利運作一段期間後，近期剛好遇到上面要求要擬一個災難復原演練計畫。於是想說藉由這次機會，把GitLab Server的備份和還原流程跑過一遍，避免在未來真的遇到意外事件時，發生無法挽回的狀況。
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>

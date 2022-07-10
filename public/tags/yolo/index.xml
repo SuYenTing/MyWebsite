@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>YOLO on Hello Friend, I&#39;m Yesting!</title>
+    
+    
+    
+    <link>/tags/yolo/</link>
+    <description>Recent content in YOLO on Hello Friend, I&#39;m Yesting!</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 20 Apr 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/yolo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>YOLOv4手把手實作應用</title>
+      <link>/post/yolov4-hands-on/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/yolov4-hands-on/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章主要為說明如何進行YOLOv4的實作，我是使用YOLOv4-tiny模型，在預訓練好的模型權重為基礎下，讓模型能夠從影像中預測出3個分類：筆電、滑鼠和鍵盤。會選擇這3個分類是因為在生活中比較好取得，可以讓我們在模型訓練完後，以筆電的攝像頭即時偵測，看看模型能不能夠偵測到。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>YOLOv4手把手安裝流程</title>
+      <link>/post/yolov4-install/</link>
+      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/yolov4-install/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在課堂上學到YOLOv3的安裝與使用方法，由於老師上課時講得比較快，且我想自己實作YOLOv4模型(國產模型，要多多支持!)，所以自己整理一份從安裝到實作的筆記，方便之後可以回顧。本篇文章主要說明如何在Windows10上安裝GPU版本的YOLOv4模型。
+          
+        
+        </description>
+    </item>
+    
+  </channel>
+</rss>

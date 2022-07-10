@@ -1,18 +1,78 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Hello Friend, I&#39;m Yestin!</title>
+    <title>Posts on Hello Friend, I&#39;m Yesting!</title>
     
     
     
     <link>/post/</link>
-    <description>Recent content in Posts on Hello Friend, I&#39;m Yestin!</description>
+    <description>Recent content in Posts on Hello Friend, I&#39;m Yesting!</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 26 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Jul 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GitLab備份及復原流程筆記</title>
+      <link>/post/gitlab-backup-and-restore/</link>
+      <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/gitlab-backup-and-restore/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          之前在工作上被交辦要架設私有的GitLab Server供團隊使用，方便大家做好程式碼版控以及團隊合作開發。在GitLab Server成功架起並且順利運作一段期間後，近期剛好遇到上面要求要擬一個災難復原演練計畫。於是想說藉由這次機會，把GitLab Server的備份和還原流程跑過一遍，避免在未來真的遇到意外事件時，發生無法挽回的狀況。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>YOLOv4手把手實作應用</title>
+      <link>/post/yolov4-hands-on/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/yolov4-hands-on/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          本篇文章主要為說明如何進行YOLOv4的實作，我是使用YOLOv4-tiny模型，在預訓練好的模型權重為基礎下，讓模型能夠從影像中預測出3個分類：筆電、滑鼠和鍵盤。會選擇這3個分類是因為在生活中比較好取得，可以讓我們在模型訓練完後，以筆電的攝像頭即時偵測，看看模型能不能夠偵測到。
+          
+        
+        </description>
+    </item>
+    
+    <item>
+      <title>YOLOv4手把手安裝流程</title>
+      <link>/post/yolov4-install/</link>
+      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/yolov4-install/</guid>
+      <description>
+        
+          
+          
+          
+        
+        
+        
+          最近在課堂上學到YOLOv3的安裝與使用方法，由於老師上課時講得比較快，且我想自己實作YOLOv4模型(國產模型，要多多支持!)，所以自己整理一份從安裝到實作的筆記，方便之後可以回顧。本篇文章主要說明如何在Windows10上安裝GPU版本的YOLOv4模型。
+          
+        
+        </description>
+    </item>
     
     <item>
       <title>以Docker架設frp(fast reverse proxy)流程</title>
